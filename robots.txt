@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://ecmelkytz.github.com/sitemap.xml 

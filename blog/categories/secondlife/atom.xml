@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: secondlife | Ecmel Kaytazoğlu]]></title>
+  <link href="http://ecmelkytz.github.com/blog/categories/secondlife/atom.xml" rel="self"/>
+  <link href="http://ecmelkytz.github.com/"/>
+  <updated>2014-10-18T01:24:12+03:00</updated>
+  <id>http://ecmelkytz.github.com/</id>
+  <author>
+    <name><![CDATA[Ecmel Kaytazoğlu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Second Life - Pandorabots]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2014/02/15/second-life-pandorabots/"/>
+    <updated>2014-02-15T09:56:37+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/02/15/second-life-pandorabots</id>
+    <content type="html"><![CDATA[<p>Pandorabots web siteniz için chatbot oluşturmanızı, geliştirmenizi ve yayınlamanızı sağlayan açık kaynak tabanlı bir platformdur. Pandorabots aynı zamanda internetteki en büyük chatbot platformudur. <a href="http://pandorabots.com/static/html/">Pandorabots hakkında daha ayrıntılı bilgi</a>. Bu yazıda Pandorabots ile oluşturduğunuz chatbot&#8217;un Second Life içerisinde nasıl kullanılacağı ile ilgili bilgiler bulabilirsiniz.</p>
+
+<p>Pandorabots&#8217;da  AIML programlama kullanılır ve &ldquo;Standart AIML&rdquo;, &ldquo;Dr.Wallace&rsquo;s A.L.I.C.E&rdquo;, &ldquo;Annotated A.L.I.C.E AIML&rdquo; gibi bazı botlar ile öntanımlı olarak gelir. Pandorabots da oluşturulan her Bot’un kendine ait bir Bot_ID numarası mevcuttur. Bu Bot_ID kullanılarak oluşturduğunuz Bot’un Second Life ortamında kullanımını sağlayabilirsiniz.</p>
+
+<h3>Pandorabots’da Kişisel Bot Oluşturma</h3>
+
+<p>Yeni kayıt olmak için <a href="http://pandorabots.com/botmaster/en/new-account">http://pandorabots.com/botmaster/en/new-account</a> adresini ziyaret ediniz.
+Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüsüne basarak yeni Bot’unuzu oluşturabilirsiniz.</p>
+
+<p><img class="center <a" src="href="http://i.imgur.com/NzdaQ5U.png">http://i.imgur.com/NzdaQ5U.png</a>&#8221;></p>
+
+<p>Bot oluştururken halihazırda oluşturulmuş 5 tane chatbottan birisini seçebilirsiniz. Eğer bu Bot’un AIML dosyalarını kullanmak istemiyor ve sıfırdan yeni bir bot oluşturmak istiyorsanız Bot oluştururken <code>No initial content, the pandorabot starts with no knowledge</code> seçeneğini seçmelisiniz.</p>
+
+<p><img class="center <a" src="href="http://i.imgur.com/cfhS23E.png">http://i.imgur.com/cfhS23E.png</a>&#8221;></p>
+
+<p>Eğer Bot’unuzu oluşturduysanız ve içersinde AIML dosyaları mevcutsa deneme yapmak için <code>Train</code> e basarak oluşturduğunuz bot ile konuşmaya başlayabilirsiniz. Yeni AIML dosyası eklemek istiyorsanız AIML menüsünden <code>Create a new AIML file</code> a basmalısınız.
+<code>Properties</code> menüsü ile Bot’unuzun özelliklerini belirleyebilirsiniz.</p>
+
+<p><strong><em>Önemli:</em></strong> Bot’unuzda yaptığınız değişikliklerin kullanılabilir hale gelmesi için Bot’un ana sayfasında republish tuşuna basmalısınız.</p>
+
+<h3>Pandorabots ile Second Life Bağlantısı</h3>
+
+<p>Second Life&#8217;da oluşturduğunuz herhangi bir nesne içerisine aşağıdaki script kodlarını ekleyin.</p>
+
+<p>Kodlarım <a href="https://gist.github.com/ecmelkytz/9003889">burada!</a></p>
+
+<p><strong><em>Not:</em></strong>  Gist sayfasındaki ilk kod içerisinde bulunan botid kısmını kendi oluşturduğunuz Bot’un id numarası ile değiştirin.</p>
+
+<p>Bu işlemlerden sonra Second Life&#8217;da istediğiniz herhangi bir nesle ile oluşturmuş olduğunuz chatbot vasıtasıyla konuşabilirsiniz.</p>
+
+<p>Kolay gelsin.</p>
+]]></content>
+  </entry>
+  
+</feed>

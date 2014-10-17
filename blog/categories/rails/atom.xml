@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
+  <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://ecmelkytz.github.com/"/>
+  <updated>2014-10-18T01:24:12+03:00</updated>
+  <id>http://ecmelkytz.github.com/</id>
+  <author>
+    <name><![CDATA[Ecmel Kaytazoğlu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails - Devise(Could not found table) Hatası]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/"/>
+    <updated>2014-09-09T11:51:16+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/09/09/rails-devise-could-not-found-table-hatasi</id>
+    <content type="html"><![CDATA[<p>Oluşturulan devise modelinin <strong>user</strong> olduğunu varsayarak okuyunuz.<br/>
+Şimdi devise&#8217;ı Gemfile&#8217;a eklediniz, install ettiniz, viewleri oluşturdunuz, routes ayarladınız (bu konulara girmiyorum devise hakkında ayrıntılı bilgi için <a href="https://github.com/plataformatec/devise">bakınız</a> ) ve rake db:migrate kodunu çalıştırdığınız zaman herhangi bir geri dönüş almadınız.</p>
+
+<p>Neyse birde serverda deneyelim bu işi dediniz. <code>http://localhost:3000/users/sign_in</code> adresine girmeye çalıştığınız zaman <strong>Could not find table &lsquo;users&rsquo;</strong> tarzında bir hata ile karşılaştınız. Yani users tablosu bulunamıyor .</p>
+
+<p><img src="http://i.imgur.com/8Osy4h4.png" alt="Imgur" /></p>
+
+<p>Zaten rake db:migrate kodunun çalışmamasından bir sorunla karşılaşmayı beklemek mantıklı olacaktır.</p>
+
+<p><strong>Çözüm:</strong><br/>
+Çok basit bir çözümü olmasıyla beraber gereksiz yere vaktimi çaldığı için buraya not düşmeye karar verdim.<br/>
+<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/>
+Bir hataya daha elveda&hellip;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails - Ckeditor]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2014/08/28/rails-plus-ckeditor/"/>
+    <updated>2014-08-28T16:13:22+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/08/28/rails-plus-ckeditor</id>
+    <content type="html"><![CDATA[<p>Rails uygulamalarınıza aşağıdaki resimde görülen tarzda bir text editörü eklemek istiyorsanız ckeditor
+kullanmak bu iş için uygun olacaktır.</p>
+
+<p><img class="center <a" src="href="http://i.imgur.com/PlrBDC6.png">http://i.imgur.com/PlrBDC6.png</a>&#8221;></p>
+
+<p>Öncelikle uygulamamızdaki Gemfile içerisine gerekli gem&#8217;leri ekleyelim.</p>
+
+<p><figure class='code'><figcaption><span>Gemfile </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">paperclip</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">ckeditor</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Ve Bundle ediyoruz.</p>
+
+<pre><code class="Ruby Terminal">bundle install
+</code></pre>
+
+<p>Gemleri install ettik. Peki yüklenecek dosyalar için nasıl model oluşturacağız? Active_record orm&#8217;si paperclip gemini default olarak kullanır. Mongoid, Carrierwave ile nasıl kullanılacağını merak ediyorsanız daha ayrıntılı bilgi için <a href="https://github.com/galetahub/ckeditor">README</a> kaynağına göz atabilirsiniz. <br/>
+ActiveRecord + Paperclip kullanımı:</p>
+
+<pre><code class="Ruby Terminal ">rails generate ckeditor:install --orm=active_record --backend=paperclip
+</code></pre>
+
+<p>Bir sorunla karşılaşmadıysanız terminalden hangi dosyaların oluşturulduğunu görebilirsiniz.</p>
+
+<pre><code> create  config/initializers/ckeditor.rb
+ route  mount Ckeditor::Engine =&gt; '/ckeditor'
+ create  app/models/ckeditor/asset.rb
+ create  app/models/ckeditor/picture.rb
+ create  app/models/ckeditor/attachment_file.rb
+ create  db/migrate/20140829114657_create_ckeditor_assets.rb
+</code></pre>
+
+<p>Tabloların oluşmasını tetikleyelim o halde:</p>
+
+<pre><code>rake db:migrate
+</code></pre>
+
+<p>Şimdide javascript kodunu <code>/views/layouts/application.html.erb</code> içerisine include ediyoruz.  Ayrıca <a href="http://ckeditor.com/download">ckeditor-download</a> adresinden ckeditor&#8217;u indirip dosyalara erişebilirsiniz.</p>
+
+<pre><code class="Ruby application.html.erb">&lt;%= javascript_include_tag 'ckeditor/ckeditor.js' %&gt;
+</code></pre>
+
+<p>Sonra <code>body</code> içerisine javascript kodunu ekliyoruz:</p>
+
+<pre><code class="Javascript application.html.erb ">
+ &lt;script type="text/javascript"&gt;
+  $(document).ready(function() {
+      if ($('textarea.ckeditor').length &gt; 0) {
+          var data = $('textarea.ckeditor');
+          $.each(data, function(i) {
+              CKEDITOR.replace(data[i].id);
+          });
+      }
+  });
+&lt;/script&gt;
+</code></pre>
+
+<p>Ckeditor&#8217;u nerede göstermek istiyorsanız onunla ilgili sayfaya form içeriği ekliyoruz. Bu uygulama için ben <a href="https://github.com/plataformatec/simple_form">simple_form</a> gemini kullanıyorum. İstediğiniz görüntüyü elde etmek için form içeriği şöyle olacaktır:</p>
+
+<pre><code class="Ruby _form.html.erb">&lt;%= simple_form_for(@yourmodel) do |f| %&gt;
+&lt;%= form.input :content, :as =&gt; :ckeditor, :input_html =&gt; { :ckeditor =&gt; {:toolbar =&gt; 'Full'} } %&gt;
+&lt;%end%&gt;
+</code></pre>
+
+<p>Artık ckeditor&#8217;u kullanabilirsiniz.
+Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/galetahub/ckeditor">Githubda ckeditor gem</a>, <a href="http://ckeditor.com/download">Ckeditor&#8217;un resmi sayfası</a> adreslerinden ulaşabilirsiniz.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails - 'The json native gem requires installed build tools' hatası]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/"/>
+    <updated>2014-08-10T10:41:35+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi</id>
+    <content type="html"><![CDATA[<p>Rails kurulumunu gerçekleştirirken oluşabilecek hatalardan bir tanesidir. Bu hata bazı kütüphanelerin sistemde eksik olmasından kaynaklanmaktadır. Hatanın çözümü için ise aşağıdaki gibi bir yol izlenebilir.</p>
+
+<p>Ruby 1.9.3 veya üzeri bir ruby sürümünün sisteme yüklü olduğunu ve ruby sürümüne uygun bir development kit’in de sisteminizde kurulu olduğunu farzediyorum. Bunları indirmek için bkz: <a href="http://rubyinstaller.org/downloads">Ruby Installer</a></p>
+
+<pre><code class="Ruby Terminal(Hata Kodu)">ERROR: Error installing json: The 'json' native gem requires installed build tools.
+Please update your PATH to include build tools or download the DevKit from
+'http://rubyinstaller.org/downloads' and follow the instructions at
+'http://github.com/oneclick/rubyinstaller/wiki/Development-Kit'
+</code></pre>
+
+<p>Daha sonra Ruby193 dosyası(versiyona göre sizde farklı olabilir) içerisine kurduğumuz DevKit&#8217;in bulunduğu dizine geçiyoruz ve gerekli işlemleri sırasıyla yapıyoruz.</p>
+
+<pre><code class="Ruby Terminal">cd C:\ruby193\DevKit
+ruby dk.rb init
+ruby dk.review
+ruby dk.rb install
+</code></pre>
+
+<p>Şimdide json kurmayı deneyelim.</p>
+
+<pre><code class="Ruby Terminal">gem install json
+</code></pre>
+
+<p>Json başarılı bir şekilde kurulmuş olmalı. Hepsi bu kadar artık rails kurulumunu gerçekleştirebiliriz.</p>
+
+<pre><code class="Ruby Terminal">gem install rails
+</code></pre>
+
+<p>Kolay gelsin.</p>
+]]></content>
+  </entry>
+  
+</feed>
