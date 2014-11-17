@@ -9,7 +9,7 @@
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
-  <meta name="description" content="Datatable kullanarak bazı verilerinizi listeliyor ve bazı değerlere göre satırların veya kolonların renklerini değiştirmek istiyorsanız aşağıdaki &hellip;">
+  <meta name="description" content="İngilize alfabesini kullanarak kelime/cümle yazıyorsanız bu işlemleri ugularken bir sorun yaşamazsınız. Ancak Türkçe, Rusça vs. karakterler işin &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,190 @@
       <div id="content">
         <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/17/rails-upcase/">Rails - Upcase, Downcase, Capitalize, Titleize Metodları</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-17T21:58:03+02:00" pubdate data-updated="true">Nov 17<sup>th</sup>, 2014</time>
+        
+         | <a href="/blog/2014/11/17/rails-upcase/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>İngilize alfabesini kullanarak kelime/cümle yazıyorsanız bu işlemleri ugularken bir sorun yaşamazsınız. Ancak Türkçe, Rusça vs. karakterler işin içine girince bu işlemler istenilen sonucu vermiyor. Bu tarz problemleri aşmak için <a href="https://github.com/lang/unicode_utils">UnicodeUtils</a> gemini kullanmakta fayda var.</p>
+
+<h2>Upcase</h2>
+
+<p>Bu method girilen kelimenin ya da cümlenin bütün harflerini büyük harfe çevirir.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;ecmel&quot;</span><span class="o">.</span><span class="n">upcase</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;ECMEL&quot;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;ücmöl&quot;</span><span class="o">.</span><span class="n">upcase</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;üCMöL&quot;</span> <span class="c1">#İstenilen bu değil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Diğer yol</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">upcase</span><span class="p">(</span><span class="s2">&quot;öcmül&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;ÖCMÜL&quot;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">upcase</span><span class="p">(</span><span class="s2">&quot;isim&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;ISIm&quot;</span>  <span class="c1">#İstenilen bu değil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Diğer yol</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;öcü&quot;</span><span class="o">.</span><span class="n">mb_chars</span><span class="o">.</span><span class="n">upcase</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;ÖCÜ&quot;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;isim&quot;</span><span class="o">.</span><span class="n">mb_chars</span><span class="o">.</span><span class="n">upcase</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;ISIM&quot;</span> <span class="c1">#İstenilen bu değil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Çözüm</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">upcase</span><span class="p">(</span><span class="s2">&quot;isim&quot;</span><span class="p">,</span> <span class="ss">:tr</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;İSİM&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Downcase</h2>
+
+<p>Bu method girilen kelimenin ya da cümlenin bütün harlerini küçük harfe çevirir.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">downcase</span><span class="p">(</span><span class="s2">&quot;ECMEL&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;ecmel&quot;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">downcase</span><span class="p">(</span><span class="s2">&quot;ÖİLŞÜ&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;öilşü&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Diğer yol</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;ÖİÜŞĞ&quot;</span><span class="o">.</span><span class="n">mb_chars</span><span class="o">.</span><span class="n">downcase</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;öiüşğ&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Capitalize</h2>
+
+<p>Bu method girilen kelimenin ya da cümlenin sadece ilk harfini büyük harfe çevirir.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;ecmel&quot;</span><span class="o">.</span><span class="n">capitalize</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Ecmel&quot;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;öcü&quot;</span><span class="o">.</span><span class="n">capitalize</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;öcü&quot;</span> <span class="c1">#İstenilen bu değil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Diğer yol</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;öcü&quot;</span><span class="o">.</span><span class="n">mb_chars</span><span class="o">.</span><span class="n">capitalize</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Öcü&quot;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;izmir&quot;</span><span class="o">.</span><span class="n">mb_chars</span><span class="o">.</span><span class="n">capitalize</span> <span class="c1">#İstenilen bu değil</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Izmir&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Çözüm</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">upcase</span><span class="p">(</span><span class="s2">&quot;izmir&quot;</span><span class="p">,</span> <span class="ss">:tr</span><span class="p">)</span><span class="o">.</span><span class="n">mb_chars</span><span class="o">.</span><span class="n">capitalize</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;İzmir&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Titleize</h2>
+
+<p>Bu method girilen bir cümlenin her kelimesinin ilk harfini büyük harfe çevirir.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;ecmel kytz&quot;</span><span class="o">.</span><span class="n">titleize</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Ecmel Kytz&quot;</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;önsöz iyi&quot;</span><span class="o">.</span><span class="n">titleize</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;önsöz Iyi&quot;</span> <span class="c1">#İstenilen bu değil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Diğer yol</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="s2">&quot;önsöz iyi&quot;</span><span class="o">.</span><span class="n">mb_chars</span><span class="o">.</span><span class="n">titleize</span><span class="o">.</span><span class="n">to_s</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Önsöz Iyi&quot;</span> <span class="c1">#İstenilen bu değil</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Diğer yol</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">titlecase</span><span class="p">(</span><span class="s2">&quot;önsöz iyi&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Önsöz Iyi&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">#Çözüm</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">UnicodeUtils</span><span class="o">.</span><span class="n">titlecase</span><span class="p">(</span><span class="s2">&quot;önsöz iyi&quot;</span><span class="p">,</span> <span class="ss">:tr</span><span class="p">)</span>
+</span><span class='line'><span class="o">=&gt;</span> <span class="s2">&quot;Önsöz İyi&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -590,6 +774,10 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/11/17/rails-upcase/">Rails - Upcase, Downcase, Capitalize, Titleize Metodları</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/">How to change a particular column background color in jquery of datatable</a>
       </li>
     
@@ -603,10 +791,6 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
     
       <li class="post">
         <a href="/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/">Rails - &#8216;The json native gem requires installed build tools&#8217; hatası</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/06/05/tekno-girisim/">Teknogirişim</a>
       </li>
     
   </ul>
@@ -626,7 +810,7 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
   </script>
 
   <h1>Categories</h1>
-  <li><a href='/blog/categories/datatable/'>datatable (1)</a></li><li><a href='/blog/categories/pandorabots/'>pandorabots (1)</a></li><li><a href='/blog/categories/rails/'>rails (3)</a></li><li><a href='/blog/categories/secondlife/'>secondlife (1)</a></li><li><a href='/blog/categories/teknogirisim/'>teknogirişim (1)</a></li> 
+  <li><a href='/blog/categories/datatable/'>datatable (1)</a></li><li><a href='/blog/categories/pandorabots/'>pandorabots (1)</a></li><li><a href='/blog/categories/rails/'>rails (4)</a></li><li><a href='/blog/categories/secondlife/'>secondlife (1)</a></li><li><a href='/blog/categories/teknogirisim/'>teknogirişim (1)</a></li> 
   <br/>
   <script src="/javascripts/twitter.js" type="text/javascript"> </script>
   

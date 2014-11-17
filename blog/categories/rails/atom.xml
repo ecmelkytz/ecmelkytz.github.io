@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2014-10-28T22:46:45+02:00</updated>
+  <updated>2014-11-17T22:05:42+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,106 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails - Upcase, Downcase, Capitalize, Titleize Metodları]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2014/11/17/rails-upcase/"/>
+    <updated>2014-11-17T21:58:03+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/11/17/rails-upcase</id>
+    <content type="html"><![CDATA[<p>İngilize alfabesini kullanarak kelime/cümle yazıyorsanız bu işlemleri ugularken bir sorun yaşamazsınız. Ancak Türkçe, Rusça vs. karakterler işin içine girince bu işlemler istenilen sonucu vermiyor. Bu tarz problemleri aşmak için <a href="https://github.com/lang/unicode_utils">UnicodeUtils</a> gemini kullanmakta fayda var.</p>
+
+<h2>Upcase</h2>
+
+<p>Bu method girilen kelimenin ya da cümlenin bütün harflerini büyük harfe çevirir.
+&#8220;`Ruby</p>
+
+<blockquote><p>&ldquo;ecmel&rdquo;.upcase
+=> &ldquo;ECMEL&rdquo;
+&ldquo;ücmöl&rdquo;.upcase
+=> &ldquo;üCMöL&rdquo; #İstenilen bu değil</p></blockquote>
+
+<h1>Diğer yol</h1>
+
+<blockquote><p>UnicodeUtils.upcase(&ldquo;öcmül&rdquo;)
+=> &ldquo;ÖCMÜL&rdquo;
+UnicodeUtils.upcase(&ldquo;isim&rdquo;)
+=> &ldquo;ISIm&rdquo;  #İstenilen bu değil</p></blockquote>
+
+<h1>Diğer yol</h1>
+
+<blockquote><p>&ldquo;öcü&rdquo;.mb_chars.upcase.to_s
+=> &ldquo;ÖCÜ&rdquo;
+&ldquo;isim&rdquo;.mb_chars.upcase.to_s
+=> &ldquo;ISIM&rdquo; #İstenilen bu değil</p></blockquote>
+
+<h1>Çözüm</h1>
+
+<blockquote><p>UnicodeUtils.upcase(&ldquo;isim&rdquo;, :tr)
+=> &ldquo;İSİM&rdquo;
+&#8220;`</p></blockquote>
+
+<h2>Downcase</h2>
+
+<p>Bu method girilen kelimenin ya da cümlenin bütün harlerini küçük harfe çevirir.
+&#8220;`Ruby</p>
+
+<blockquote><p>UnicodeUtils.downcase(&ldquo;ECMEL&rdquo;)
+=> &ldquo;ecmel&rdquo;
+UnicodeUtils.downcase(&ldquo;ÖİLŞÜ&rdquo;)
+=> &ldquo;öilşü&rdquo;</p></blockquote>
+
+<h1>Diğer yol</h1>
+
+<blockquote><p>&ldquo;ÖİÜŞĞ&rdquo;.mb_chars.downcase
+=> &ldquo;öiüşğ&rdquo;
+&#8220;`</p></blockquote>
+
+<h2>Capitalize</h2>
+
+<p>Bu method girilen kelimenin ya da cümlenin sadece ilk harfini büyük harfe çevirir.
+&#8220;`Ruby</p>
+
+<blockquote><p>&ldquo;ecmel&rdquo;.capitalize
+=> &ldquo;Ecmel&rdquo;
+&ldquo;öcü&rdquo;.capitalize
+=> &ldquo;öcü&rdquo; #İstenilen bu değil</p></blockquote>
+
+<h1>Diğer yol</h1>
+
+<blockquote><p>&ldquo;öcü&rdquo;.mb_chars.capitalize
+=> &ldquo;Öcü&rdquo;
+&ldquo;izmir&rdquo;.mb_chars.capitalize #İstenilen bu değil
+=> &ldquo;Izmir&rdquo;</p></blockquote>
+
+<h1>Çözüm</h1>
+
+<blockquote><p>UnicodeUtils.upcase(&ldquo;izmir&rdquo;, :tr).mb_chars.capitalize
+=> &ldquo;İzmir&rdquo;
+&#8220;`</p></blockquote>
+
+<h2>Titleize</h2>
+
+<p>Bu method girilen bir cümlenin her kelimesinin ilk harfini büyük harfe çevirir.</p>
+
+<pre><code class="Ruby">&gt; "ecmel kytz".titleize 
+=&gt; "Ecmel Kytz"
+&gt; "önsöz iyi".titleize
+=&gt; "önsöz Iyi" #İstenilen bu değil
+
+#Diğer yol
+&gt; "önsöz iyi".mb_chars.titleize.to_s
+=&gt; "Önsöz Iyi" #İstenilen bu değil
+
+#Diğer yol
+&gt; UnicodeUtils.titlecase("önsöz iyi")
+=&gt; "Önsöz Iyi" 
+
+#Çözüm
+&gt; UnicodeUtils.titlecase("önsöz iyi", :tr)
+=&gt; "Önsöz İyi"
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails - Devise(Could not found table) Hatası]]></title>
