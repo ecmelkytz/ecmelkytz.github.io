@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2014-11-17T22:05:42+02:00</updated>
+  <updated>2014-11-17T22:12:36+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -18,7 +18,7 @@
     <link href="http://ecmelkytz.github.com/blog/2014/11/17/rails-upcase/"/>
     <updated>2014-11-17T21:58:03+02:00</updated>
     <id>http://ecmelkytz.github.com/blog/2014/11/17/rails-upcase</id>
-    <content type="html"><![CDATA[<p>İngilize alfabesini kullanarak kelime/cümle yazıyorsanız bu işlemleri ugularken bir sorun yaşamazsınız. Ancak Türkçe, Rusça vs. karakterler işin içine girince bu işlemler istenilen sonucu vermiyor. Bu tarz problemleri aşmak için <a href="https://github.com/lang/unicode_utils">UnicodeUtils</a> gemini kullanmakta fayda var.</p>
+    <content type="html"><![CDATA[<p>Kelime, cümle vs. yazarken ingiliz alfabesi işinizi görüyorsa upcase, downcase, capitalize, titleize gibi metodlar istediğiniz gibi çalışacaktır. Ancak Türkçe, Rusça vs. karakterler işin içine girince bu metodlar tek başına istenilen sonucu vermemektedir. Bu tarz problemleri aşmak için <a href="https://github.com/lang/unicode_utils">UnicodeUtils</a> gemini kullanmakta fayda var.</p>
 
 <h2>Upcase</h2>
 
