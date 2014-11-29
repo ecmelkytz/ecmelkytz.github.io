@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: chroma | Ecmel Kaytazoğlu]]></title>
+  <link href="http://ecmelkytz.github.com/blog/categories/chroma/atom.xml" rel="self"/>
+  <link href="http://ecmelkytz.github.com/"/>
+  <updated>2014-11-29T22:32:46+02:00</updated>
+  <id>http://ecmelkytz.github.com/</id>
+  <author>
+    <name><![CDATA[Ecmel Kaytazoğlu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Chroma Key Nedir?]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir/"/>
+    <updated>2014-01-29T21:46:50+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir</id>
+    <content type="html"><![CDATA[<p>Film çekim setlerinde arkaplanın sadece mavi ya da sadece yeşil renkte olduğunu gördüyseniz ne amaçla böyle yapıldığını merak etmişsinizdir. Filmlerin böyle bir ortamda çekilmesi Chroma Key tekniğini uygulayabilmek içindir.</p>
+
+<p><img class="center <a" src="href="http://upload.wikimedia.org/wikipedia/en/0/0d/300_comparison.JPG">http://upload.wikimedia.org/wikipedia/en/0/0d/300_comparison.JPG</a>&#8221;></p>
+
+<h3>Teknik olarak chroma key nasıl uygulanır?</h3>
+
+<p>Chroma Key eşit şekilde aydınlatılmış mavi veya yeşil (tek renk) bir arka plan önünde bulunan bir kişi veya nesnenin, başka bir video görüntüsü veya resim üzerine bindirilmesi esasına dayanır.</p>
+
+<ul>
+<li>Blue Screen, Green Screen, Chroma Key, greenbox, bluebox ve CSO (Color Seperation Overlay) terimleri ortak kullanılan terimlerdir ve temelleri aynı esaslara dayanır.</li>
+<li>Chroma key bir program değil tamamen bir tekniktir.</li>
+</ul>
+
+
+<p>Öncelikle düz yeşil renkli (veya mavi renkli) arkaplanda, çekilmesi gereken sahneler çekiliyor ardından post-prodüksiyon(çekimler bittikten sonra çekim üzerinde yapılan düzenlemeler) aşamasında özel bilgisayar programları aracılığıyla bu tek renk arkaplan anahtar renk olarak seçilip siliniyor (transparan yapılıyor) ve yerine konulması istenen görüntü giydirilir.
+Görüntüdeki renkli arkaplanı (greenscreen, bluescreen) silme işlemine “key”lemek denir.</p>
+
+<h3>Chroma Key Tarihi</h3>
+
+<ul>
+<li>Chroma key ilk olarak Larry Butler tarafından 1940 yılında çekilmiş Bağdat Hırsızı (The Thief of Bagdad) filminde kullanılmış ve daha sonra bu tekniği geliştiren Petro Vlahos&#8217;a Oscar ödülü kazandırmıştır.</li>
+<li>Aynı zamanda 1940 yılından beri chroma key tekniği için yeşil ve mavi renkler standart olarak kullanılmaktadır.</li>
+</ul>
+
+
+<h3>Neden Genellikle Mavi ya da Yeşil Renk Kullanılır?</h3>
+
+<p>Aslında arkaplan rengi olarak yeşil ve mavi renkler dışında başka renklerde kullanılabilir. Ancak buradaki amaç insan tenine en uzak renklerin seçilmesidir. Eğer siyah renk, anahtar renk olarak seçilirse ve bu renk üzerine görüntü bindirmesi yapılırsa kişinin veya nesnenin üzerinde bulunan siyah renkli yerler üzerine de görüntü binecektir. Böylece kişiler ve nesneler üzerinde görüntü bozuklukları yaşanacaktır. Bu yüzden chroma key tekniğinde anahtar renk seçerken nesneler üzerinde fazla kullanılmayan renk seçilmeli ve ekran önündeki insan veya nesnenin seçilen anahtar renk ile aynı renkte bir şey barındırmaması gerekmektedir.</p>
+
+<p><img class="center <a" src="href="http://www.virtualstudio.tv/assets/media/blog-images/what_is_chroma_keying_green_screen.jpg">http://www.virtualstudio.tv/assets/media/blog-images/what_is_chroma_keying_green_screen.jpg</a>&#8221;>
+Croma key çekim bittikten sonra (post-production) uygulanabileceği gibi çekim ile eş zamanlı(real-time) olarakta uygulanabilen bir tekniktir.
+Günlük olarak hepimizin şahit olabileceği bir örnek vermek gerekirse hava tahmin programlarını ele alabiliriz. Spiker hava tahminini sunarken genelde önünde hava durumunun bulunduğu bir coğrafi bölge haritası bulunur ve kendisi bu harita üzerinde belirli bölgeleri göstererek sunumunu yapar. Bu çekim eğer canlı olarak yapılıyorsa chroma key real-time olarak uygulanır. Aksi takdirde spiker greenscreen önünde sunumunu bitirdikten sonra chroma key uygulanacaktır.</p>
+
+<h3>Chroma Key Gelişme Aşamaları</h3>
+
+<p>Chroma key tekniği günümüzdeki kullanılan hale gelene kadar çok aşamadan geçmiştir. İlk başlarda bu teknik ile hareketli görüntüler çekilemiyordu.
+Yani greenscreen teknolojisinin kullanıldığı sahnelerde kamera sabitti. Bunun sebebi ise arkaplanı ve önde duran aktörü saptamada sorun yaşanmasıydı.
+<img class="center <a" src="href="http://ralph-dte.eu/files/2011/02/matrix_chroma_key.jpg">http://ralph-dte.eu/files/2011/02/matrix_chroma_key.jpg</a>&#8221;></p>
+
+<p>Ancak günümüzde arkaplana “+”, “x” işaretleriyle yada düzgün aralıklı noktalarla referans noktaları konulmakta ve bu yardımcı noktalar aracılığıyla bilgisayarlar, arkaplanı ve öndeki aktörü çok daha rahat bir şekilde saptayabilmektedir.
+Yukarıdaki resimde siyah noktalar aşağı veya yukarı doğru biraz meyilli yerleştirilmiştir. Bu sebeple kamera hareketinin de o yönde olacağını söyleyebiliriz. Dolayısıyla çekim kapsamına giren bu arkaplanlar öndeki aktörden daha kolay ayırt edilmektedir.<br/>
+Bu yöntemle kamera hareketli dahi olsa bu noktalar bilgisayar tarafından takip edilebilmekte ve kamera açısı kaybedilmemektedir.</p>
+
+<h3>Croma Key Tekniğinde Dikkat Edilmesi Gerekenler</h3>
+
+<ul>
+<li><p>Çekilen görüntülerde arkaplan rengi olarak yeşil kullanılıyorsa oyuncunuzun yeşil tonlarında bir şey giymemesi gereklidir. Bu özellik tüm renkler için geçerlidir.</p></li>
+<li><p>Cilalı yüzeyler ve cam gibi yansıtıcılığı yüksek nesneler arkaplanı yansıtabilirler. Bu yüzden parlak mücevherler, cilalı ayakkabılar ve yansıtıcı dekorlardan kaçınmak gerekmektedir.</p></li>
+<li><p>Çekimlerde, arkaplan perdesinin eşit olarak aydınlatılması önemli olduğu için çok sayıda ışık kullanmak gerekli olabilir. Bu yüzden dar alanlarda çekim yapmaktan kaçınılmalıdır. Oyuncunun perdeden mümkün olduğu kadar uzakta durması da kenarlarda oluşacak renk akmalarını önleyecektir. Bu yüzden profesyonel stüdyolarda çekim yapmak tercih edilmelidir.</p></li>
+<li><p>Çok ince detaylar &ldquo;key&#8221;leme esnasında kaybolabilir. Bu nedenle mümkünse oyuncunun saçlarının toplu olması, bol ve saçaklı kıyafetlerden kaçınılması, hızlı hareketler yapılmaması ve sahnede aynı anda az kişi ve obje olması bu problemleri minimize eder.</p></li>
+</ul>
+
+
+<h3>Chroma Key Reflect Media Teknolojisi</h3>
+
+<p><img class="center <a" src="href="http://www.lighthouse.ae/galorg/21022013020832ledring.jpg/21022013020832ledring.jpg">http://www.lighthouse.ae/galorg/21022013020832ledring.jpg/21022013020832ledring.jpg</a>&#8221;></p>
+
+<p>Son olarak Chroma key yeni teknolojisi olan Reflect Media teknolojisinden bahsedeceğim.
+Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide kullanılmasına gerek yoktur. Bu teknoloji ile arkaplan fonunun yeşil veya mavi olmasına da gerek yoktur. Yeşil veya mavi LED&#8217;lerin halka oluşturacak şekilde dizilmesiyle oluşturulan alete LiteRing denilmektedir.  Bu alet kameranın merceğinin önüne takılmaktadır. Resimde görüldüğü gibi arkadaki perde gri olmasına rağmen LiteRing sayesinde elde edilen arkaplan rengi yeşil olmaktadır.</p>
+]]></content>
+  </entry>
+  
+</feed>
