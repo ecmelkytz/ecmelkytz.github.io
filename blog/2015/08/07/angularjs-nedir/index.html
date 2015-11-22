@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Angularjs Nedir? - Ecmel Kaytazoğlu</title>
+  <meta name="author" content="Ecmel Kaytazoğlu">
+
+  
+  <meta name="description" content="Google&#8217;da çalışan Misko Hevery&#8217;nin 2009 yılında şahsi bir projesi olarak başlayan AngularJS şuan açık kaynak olarak yayınlanmakta olup; &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Ecmel Kaytazoğlu" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Merienda:700" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body>
+  <div id="navigation">
+    <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ecmelkytz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Arşiv</a></li>
+</ul>
+
+</nav>
+  </div>
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ecmel Kaytazoğlu</a></h1>
+  
+</hgroup>
+
+</header>
+  <div id="body"  >
+    <div id="main">
+      <div id="content">
+        <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Angularjs Nedir?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-07T22:31:00+03:00" pubdate data-updated="true">Aug 7<sup>th</sup>, 2015</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Google&#8217;da çalışan Misko Hevery&#8217;nin 2009 yılında şahsi bir projesi olarak başlayan AngularJS şuan açık kaynak olarak yayınlanmakta olup; yüzlerce geliştiriciye ve binlerce kullanıcıya sahip devasa bir  frontend geliştirme frameworklerinden biridir. Adındanda anlaşılacağı üzere gelişmiş bir javascript kütüphanesidir.</p>
+
+<p>Aslına bakarsanız AngularJS ile Javascript ve Jquery&#8217;nin yaptığı herşeyi yapabilirsiniz.  Bu noktada Anguları tercih etme meselesine gelirsek; kolaylığı, custom directive özelliği, az kod ile çok iş yapılabilmesi (“Write less do more” her ne kadar Jquery sloganı olsada..), hızlı response sağlaması vs. şeklinde sayılabilecek bir çok güzelliği barındırmaktadır. Angular kullanmak için daha fazla neden arıyorsanız Murat Çorlu&#8217;nun yazdığı <a href="http://muratcorlu.com/post/angularjs-kullanmak-icin-10-neden/">yazıyı</a> okumanızı tavsiye ederim.</p>
+
+<p><img class="center" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRIgkmHJXLPra2-SCPAmtpn6xXWSwcvVOnrLc9hn_wV3ntJH6RZ1g"></p>
+
+<p>Angularjs deyince hepsi olmamakla birlikte akla gelebilecek temel unsurlar yukarıdaki resimde mevcuttur. Hepsinden kabaca söz edip daha detaylı bilgileri başka blog girdilerinde yazmayı düşünüyorum.</p>
+
+<ul>
+<li>Angularda two way binding dediğimiz şey çift taraflı bağlama yani Model&#8217;deki değişiklikleri View&#8217;e, View&#8217;deki değişiklikleri Model&#8217;e aktarma işlemidir. Bir de one time binding var. Bunların izahını sonraya bırakıyorum.</li>
+<li>Angularda Template dediğimiz şeyler aslında viewlerimizdir.</li>
+<li>Bir sayfadan başka sayfaya geçildiğinde geri işlemi için eski state&#8217;i tutan bir hafızaya (geçmiş bilgisine) ihtiyaç vardır bunu  History mekanızması sağlar.</li>
+<li>Factories, Services ve yukarıdaki resimde olmayan Provider Angular&#8217;da servis oluşturma komponentleridir.</li>
+<li>Angular bünyesinde Jquery&#8217;nin Lite versiyonu vardır. Bunu jqLite modülü ile sağlar. Eğer projenizde jquery dosyaları yok ise Angular jqlite modülünü kullanacaktır. Aksi takdirde sistemde yüklü olan jquery dosyasını kullanır.</li>
+<li>MVC bir design patterndir. Angular ilk başlarda MVC mantığı ile geliştirilmiş ancak daha sonrasında MVVM design patterni kullanılmıştır.  Buradaki VM(ViewModel) aynı zamanda angulardaki $scope servisine denkttir.</li>
+<li>Angularda Directive&#8217;ler dışında DOM&#8217;a müdahale etmemek gerekiyor. Directive deyince DOM manipülasyonlarının yoğun olarak yapıldığı yer aklımıza gelmeli. Yapısal directiveler anguların kendi bünyesindeki  directivelerdir (ng-controller, ng-if, ng-show vs.). Birde kendimizin oluşturabileceği custom directiveler vardır. Custom directiveler ile kendi Html etiketimizi oluşturup Html&#8217;e yeni özellikler ekleyebiliriz.</li>
+<li>Angular form validasyonlarında benimde severek kullandığım validasyon mekanizmasına sahiptir. Sunucuya gitmeden client tarafında verileri validasyona tabi tutuyoruz.</li>
+<li><p>Dependency Injection ise uygulamanın bağımlılıklarının belirtilmesidir. Mesela bir modulde third party kütüphane kullanma ihtiyacı var ise ya da farklı bir modul ile ilişkili ise bunları dependecy olarak module eklememiz gerekmektedir.</p></li>
+<li><p>Angular ile Single Page Application(SPA) oluşturabilirsiniz. SPA imkanıyla beraber angular route kaynaklı bazı SEO problemleri yaşanabilir. Angularda route yapısında # karakteri kullanılır.</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#/users
+</span><span class='line'>#/users/new</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Google # işaretinin gerçek bir adres karakteri olmadığını bildiği için bu karakterden sonra ne yazıldıysa yazılsın onu indexlemiyor. =(</p>
+
+<p>Yukarıdaki bilgiler detaya inmeden kabaca üstünden geçilerek yazılmıştır. Bu sayfadaki bütün bilgilerin ayrıntısını ilerleyen zamanlarda yazmayı düşünmekteyim.</p>
+
+<p>Son olarak;
+Angular hızlı response oluşturur dedik. Peki nasıl?</p>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1448222532/browser1_pyrbaa.png" alt="" /></p>
+
+<p>Bir web sitesine girmeye çalıştığınızı düşünün. İlk olarak browserdan server&#8217;a URL isteğinde bulunuyoruz. Server bize cevap olarak web sayfasını ve assets (Javascript vs.)&lsquo;i döndürüyor. Daha sonra kullanıcı herhangi bir linke tıkladığında, server&#8217;a yine bir istek gidiyor ve dönen cevap ilk dönen cevap ile aynı oluyor. Yani tekrar sayfanın tamamı ve assets yükleniyor.</p>
+
+<p>Birde AngularJS ile bu iş nasıl oluyor ona bakalım.</p>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1448222636/browser2_fqhyc3.png" alt="" /></p>
+
+<p>Sayfa ilk yüklendiğinde geleneksel senaryo ile aynı responsu alacağız. Ancak kullanıcı bir linke tıkladığında veya başka bir yeni istekte bulunduğunda diğerinde olduğu gibi bütün bir sayfayı ve assets&#8217;i yüklemiyor. Önceden oluşturduğu veriden istenilen veriyi JSON data olarak çekiyor. Dolayısıyla istemci-sunucu trafiğini azaltmış olup hızlı bir cevap elde etmiş oluyoruz.</p>
+
+<h3>Faydalı olabilecek linkler</h3>
+
+<ul>
+<li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
+<li>Mail listesi: <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x61;&#110;&#103;&#x75;&#x6c;&#x61;&#x72;&#x40;&#103;&#111;&#x6f;&#x67;&#108;&#101;&#x67;&#x72;&#x6f;&#x75;&#112;&#115;&#x2e;&#x63;&#x6f;&#x6d;">&#97;&#110;&#103;&#x75;&#108;&#97;&#114;&#x40;&#103;&#111;&#111;&#103;&#x6c;&#x65;&#x67;&#x72;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;</a></li>
+<li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
+<li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ecmel Kaytazoğlu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-07T22:31:00+03:00" pubdate data-updated="true">Aug 7<sup>th</sup>, 2015</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/11/17/rails-upcase/" title="Previous Post: Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)">&laquo; Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/08/07/angularjs-nedir/">Angularjs Nedir?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/11/17/rails-upcase/">Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/">How to change a particular column background color in jquery of datatable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/">Rails - Devise(Could not found table) Hatası</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/28/rails-plus-ckeditor/">Rails - Ckeditor</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+      </div>
+    </div>
+    <footer role="contentinfo"><center><p>
+  Copyright &copy; 2015 - Ecmel Kaytazoğlu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p></center>
+
+</footer>
+    
+
+<script type="text/javascript">
+      var disqus_shortname = 'ecmelkytz';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </div>
+
+</body>
+</html>
