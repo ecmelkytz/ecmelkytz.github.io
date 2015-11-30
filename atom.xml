@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2015-11-22T22:29:24+02:00</updated>
+  <updated>2015-11-30T21:18:04+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -27,7 +27,7 @@
 <p>Angularjs deyince hepsi olmamakla birlikte akla gelebilecek temel unsurlar yukarıdaki resimde mevcuttur. Hepsinden kabaca söz edip daha detaylı bilgileri başka blog girdilerinde yazmayı düşünüyorum.</p>
 
 <ul>
-<li>Angularda two way binding dediğimiz şey çift taraflı bağlama yani Model&#8217;deki değişiklikleri View&#8217;e, View&#8217;deki değişiklikleri Model&#8217;e aktarma işlemidir. Bir de one time binding var. Bunların izahını sonraya bırakıyorum.</li>
+<li>Angularda two way binding dediğimiz şey çift yönlü veri bağlama yani Model&#8217;deki değişiklikleri View&#8217;e, View&#8217;deki değişiklikleri Model&#8217;e aktarma işlemidir. Bir de one time binding var. Bunların izahını sonraya bırakıyorum.</li>
 <li>Angularda Template dediğimiz şeyler aslında viewlerimizdir.</li>
 <li>Bir sayfadan başka sayfaya geçildiğinde geri işlemi için eski state&#8217;i tutan bir hafızaya (geçmiş bilgisine) ihtiyaç vardır bunu  History mekanızması sağlar.</li>
 <li>Factories, Services ve yukarıdaki resimde olmayan Provider Angular&#8217;da servis oluşturma komponentleridir.</li>
@@ -67,7 +67,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x61;&#110;&#103;&#x75;&#x6c;&#x61;&#x72;&#x40;&#103;&#111;&#x6f;&#x67;&#108;&#101;&#x67;&#x72;&#x6f;&#x75;&#112;&#115;&#x2e;&#x63;&#x6f;&#x6d;">&#97;&#110;&#103;&#x75;&#108;&#97;&#114;&#x40;&#103;&#111;&#111;&#103;&#x6c;&#x65;&#x67;&#x72;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#97;&#x6e;&#103;&#x75;&#x6c;&#x61;&#114;&#64;&#103;&#111;&#x6f;&#103;&#108;&#101;&#103;&#x72;&#111;&#117;&#x70;&#115;&#46;&#x63;&#x6f;&#x6d;">&#x61;&#110;&#103;&#117;&#x6c;&#x61;&#x72;&#x40;&#x67;&#x6f;&#111;&#103;&#108;&#101;&#103;&#114;&#x6f;&#x75;&#112;&#x73;&#x2e;&#x63;&#111;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
