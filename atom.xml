@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2015-11-30T21:18:04+02:00</updated>
+  <updated>2015-12-05T00:27:05+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,149 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJS Çalışma Mantığı]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2015/08/11/angularjs-calisma-mantigi/"/>
+    <updated>2015-08-11T00:26:37+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2015/08/11/angularjs-calisma-mantigi</id>
+    <content type="html"><![CDATA[<p>Angularjs ile ilgili beni en çok uğraştıran konu kesinlikle angularjs&#8217;in çalışma mantığını anlatmak olacak. Çünkü angularjs ng-app directive&#8217;i gibi basit bir söz dizilimi ile çalışmaya başlayıp, mekanizmayı tam anlamıyla anlamak için içerisine dallandıkça <strong>digest cycle</strong>,  <strong>$watch list</strong>, <strong>two way binding</strong>, <strong>dirty cheking</strong> mekanizmasının birbiri ile alakasının anlatılması gereken bir konu haline geliyor.</p>
+
+<p>Eğer bir Angularjs uygulaması oluşturmak istiyorsanız elbetteki ilk yapacağınız iş anguların kütüphanesini projenize eklemek olacaktır. Angularjs&#8217;nin sayfanın başına veya sonuna eklenmesinin bir önemi yok çünkü Angularjs uygulaması DomReady olmadan yani tüm scriptler yüklenmeden boot etmiyor.</p>
+
+<p>Angularjs uygulamasını başlatmak için <code>ng-app</code> yapısal directive ihtiyacımız vardır. Angularjs yüklendikten sonra uygulamanın başlaması için aranan ilk directive <code>ng-app</code>&lsquo;dir. <code>ng-app</code>&#8216;ın bulunduğu etiketin sarmaladığı alanlar arasında Angular uygulaması başlar.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span><span class='line'><span class="nt">&lt;html</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yukarıdaki kodda <code>ng-app</code> html etiketine eklendiği için bu taglar arasında kalan yer Angularjs uygulaması olarak çalışacaktır. <code>ng-app</code> direktive&#8217;i aynı zamanda uygulamanın global scope&#8217;u olan <code>$rootScope</code> nesnesini oluşturmaktadır.
+Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C standartlarına uymadığı için <code>data-ng-app</code> kullanımı tavsiye edilmektedir.</p>
+
+<p><code>ng-app</code> directive&#8217;inden sonra sayfa içerisindeki diğer directiveler aranmaya başlanır. Bulunan direktiveler uygulamaya bind edilir.  Bind edilenler <code>$wacth list</code>&lsquo;e eklenir. Daha sonrasında digest cycle kullanıcı etkileşimlerini dinlemeye başlar.</p>
+
+<h4>Digest Cycle</h4>
+
+<p>Digest Cycle uygulamanın view katmanını yani kullanıcının gördüğü ekrandaki verileri güncel tutmakla görevlidir. Kullanıcı tarafından yapılan en ufak bir etkileşimde view&#8217;in otomatik güncellenmesini sağlar.
+Özetle Digest Cycle kullanıcı etkileşimlerini dinliyor, bir değişiklik var ise view kısmını güncel tutuyor vs. tamam ama bunun sağlanmasında arkada nasıl bir mekanizma çalışıyor asıl buna değinmek ve biraz daha derine inmek istiyorum. Bu olayı two way binding üzerinden anlatacağım.</p>
+
+<h4>Two Way Binding denilen şey ne, nasıl işler?</h4>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1449136639/desktop-animation2_av1hak.gif" alt="" /></p>
+
+<p>Yukarıdaki gif görsel olarak two way binding dediğimiz şeydir. Görüldüğü üzere model içerisinde yaptığım her değişiklik bind ettiğim view kısmına anında aktarılıyor. <a href="http://plnkr.co/edit/ayo5ZxwxmKeptLTSxElu?p=preview">Plunker Code</a></p>
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;body</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span> Merhaba {{ name }} <span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>{{ }} işareti angular&#8217;da expression olarak adlandırılır ve scope nesnesini view&#8217;e bind (bağlamaya) etmeye yarar.</p>
+
+<p>Şimdi elimizde bir <code>$watch list</code>  adında bir listemizin olduğunu hayal edelim. Biz UI&#8217;ye her bind ettiklerimizi bu <code>$watch list</code>&lsquo;e  <code>$watch</code> nesnesi olarak eklediğimizi düşünelim. Digest cycle kullanıcı etkileşimlerini dinlerken her defasında bu  <code>$watch list</code>&#8216;e bakar.  Eğer bu <code>$watch</code>&#8216;lardan birinde herhangi bir değişiklik var ise model-view senkronizasyonunu sağlar (Two way binding&#8217;de olduğu gibi). Bu senkronizasyonu dirty cheking mekanizması ile yapar.</p>
+
+<p><strong>Dirty Cheking Mekanizmasi:</strong> Bir değerin eski değeri ile yeni değerinin karşılaştırılmasıdır.</p>
+
+<p><strong>$watch list oluşturma örneği 1</strong></p>
+
+<figure class='code'><figcaption><span>controller.js </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;MainController&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="s2">&quot;Foo&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s2">&quot;Bar&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>  Hello {{ bar }}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello, Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlecek ve view&#8217;e aktarılacak.</p>
+
+<p><strong>$watch list oluşturma örneği 2</strong></p>
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>  Name: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;name&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>  Password: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;password&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>ng-model</code> directivenin özelliklerinden birisi input nesnesini scope’a bağlamaktır. Yani $scope.name ve $scope.password&#8217;un ikiside bind edildiği için <code>$watch list</code>&lsquo;e 2 tane $watch nesnesi eklenecek ve digest cycle bu iki inputtaki değişiklikleri dinleyecek.</p>
+
+<p><strong>Ufak bilgi:</strong> Digest çevirimi tetiklendikten sonra minimum 2 maximum 10 kez çalışır. (Angular 1.4’de 20 kez)</p>
+
+<p><strong>Digest Loop <code>$watch list</code> gezerken nasıl bir senaryo izliyor biraz daha bakalım:</strong></p>
+
+<blockquote><ul>
+<li>Hey $watch, senin değerin ne?
+
+<ul>
+<li>9</li>
+</ul>
+</li>
+<li>Pekala, bir değişiklik var mı?
+
+<ul>
+<li>Hayır yok.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>(Herhangi bir değişiklik olmadığı için diğer $watch’a geçer.)</p>
+
+<ul>
+<li>Hey sen, senin değerin ne?
+
+<ul>
+<li>Foo</li>
+</ul>
+</li>
+<li>Bir değişiklik var mı?  (Dirty Checking)
+
+<ul>
+<li>Evet, önceden Bar’dım.</li>
+</ul>
+</li>
+<li>Güzel, o halde DOM’u güncelleyelim.</li>
+</ul>
+</blockquote>
+
+<p><code>$watch</code>’lar bitene kadar bu çevirim devam eder. $digest loop bittiğinde değişiklik var ise DOM&#8217;da değişiklik yapılır.</p>
+
+<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım. Ne demiş Mevlana Hazretleri, “Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.” Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Angularjs Nedir?]]></title>
@@ -67,7 +210,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#97;&#x6e;&#103;&#x75;&#x6c;&#x61;&#114;&#64;&#103;&#111;&#x6f;&#103;&#108;&#101;&#103;&#x72;&#111;&#117;&#x70;&#115;&#46;&#x63;&#x6f;&#x6d;">&#x61;&#110;&#103;&#117;&#x6c;&#x61;&#x72;&#x40;&#x67;&#x6f;&#111;&#103;&#108;&#101;&#103;&#114;&#x6f;&#x75;&#112;&#x73;&#x2e;&#x63;&#111;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x61;&#110;&#x67;&#117;&#108;&#x61;&#114;&#x40;&#103;&#111;&#111;&#x67;&#108;&#x65;&#103;&#114;&#x6f;&#117;&#x70;&#115;&#x2e;&#99;&#111;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#97;&#x72;&#x40;&#103;&#x6f;&#x6f;&#x67;&#108;&#x65;&#103;&#114;&#x6f;&#117;&#112;&#115;&#46;&#99;&#111;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
