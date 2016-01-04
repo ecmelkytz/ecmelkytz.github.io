@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2015-12-05T00:27:05+02:00</updated>
+  <updated>2016-01-04T23:11:24+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails-Angularjs (Unknown provider: tProvider <- t at Error) Hatası]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/"/>
+    <updated>2015-09-12T23:49:27+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-<-t-at-error-hatasi</id>
+    <content type="html"><![CDATA[<p>Zamanında bu hata ile karşılaştığımda çözümü bulana kadar projede ilerlememi durdurduğu için kendi adıma buraya not etmekte fayda görüyorum.</p>
+
+<p>Diyelimki Rails ile yazdığınız bir projede Angularjs kullandınız. Uygulamanız local&#8217;de sıkıntısız bir şekilde çalışıyor. Gelin görün ki production ortamında assets ile alakalı bir hata ile karşılaştınız.
+Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
+
+<pre><code class="Ruby">RAILS_ENV=production rake assets:precompile
+</code></pre>
+
+<p>Ancak console&#8217;da aldığınız hata  <code>Error: Unknown provider: tProvider</code> ise precompile işlemi ile sorun çözülmeyecektir.</p>
+
+<h4>Çözüm:</h4>
+
+<p><code>/config/environments/production.rb</code>&lsquo;e aşağıdaki kodu eklemelisiniz.</p>
+
+<pre><code class="ruby">config.assets.js_compressor = Uglifier.new(mangle: false)
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)]]></title>
@@ -129,8 +153,7 @@ UnicodeUtils.downcase(&ldquo;ÖİLŞÜ&rdquo;)
 
 <p><strong>Çözüm:</strong><br/>
 Çok basit bir çözümü olmasıyla beraber gereksiz yere vaktimi çaldığı için buraya not düşmeye karar verdim.<br/>
-<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/>
-Bir hataya daha elveda&hellip;</p>
+<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/></p>
 ]]></content>
   </entry>
   
@@ -243,8 +266,6 @@ ruby dk.rb install
 
 <pre><code class="Ruby Terminal">gem install rails
 </code></pre>
-
-<p>Kolay gelsin.</p>
 ]]></content>
   </entry>
   

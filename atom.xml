@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2015-12-05T00:27:05+02:00</updated>
+  <updated>2016-01-04T23:11:24+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,182 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails-Angularjs (Unknown provider: tProvider <- t at Error) Hatası]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/"/>
+    <updated>2015-09-12T23:49:27+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-<-t-at-error-hatasi</id>
+    <content type="html"><![CDATA[<p>Zamanında bu hata ile karşılaştığımda çözümü bulana kadar projede ilerlememi durdurduğu için kendi adıma buraya not etmekte fayda görüyorum.</p>
+
+<p>Diyelimki Rails ile yazdığınız bir projede Angularjs kullandınız. Uygulamanız local&#8217;de sıkıntısız bir şekilde çalışıyor. Gelin görün ki production ortamında assets ile alakalı bir hata ile karşılaştınız.
+Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="no">RAILS_ENV</span><span class="o">=</span><span class="n">production</span> <span class="n">rake</span> <span class="ss">assets</span><span class="p">:</span><span class="n">precompile</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ancak console&#8217;da aldığınız hata  <code>Error: Unknown provider: tProvider</code> ise precompile işlemi ile sorun çözülmeyecektir.</p>
+
+<h4>Çözüm:</h4>
+
+<p><code>/config/environments/production.rb</code>&lsquo;e aşağıdaki kodu eklemelisiniz.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">js_compressor</span> <span class="o">=</span> <span class="no">Uglifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">mangle</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Angularjs Two Way Binding - One Time Binding]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/"/>
+    <updated>2015-08-28T23:31:15+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding</id>
+    <content type="html"><![CDATA[<p><img class="center" src="https://docs.angularjs.org/img/guide/concepts-databinding1.png"></p>
+
+<p>Two way binding (Çift yönlü veri bağlama) modeldeki değişiklikleri view&#8217;e, view&#8217;deki değişiklikleri modele aktarma işlemidir. Daha önceki <a href="http://ecmelkytz.github.io/blog/2015/08/11/angularjs-calisma-mantigi/">yazımda</a> two way binding ve doğal olarak digest cycle&#8217;dan uzun uzadıya bahsetmiştim.</p>
+
+<p>Two way binding, kullanıcı etkileşimlerinin direk view kısmına aktarılması kısmında çok güzel bir işleve sahip olsada; digest cycle tetiklendikten sonra en az 2, maksimum 10 kez çalıştığı düşünülürse performans anlamında büyük sorunlar oluşturacaktır. Şöyleki benim data binding sayım arttığı ölçüde $digest loop&#8217;un sayısıda artacaktır. Kullanıcı etkileşiminin yoğun olduğu bir sayfada performans anlamında yaşanabilecek sıkıntılar elbetteki kaçınılmaz olacaktır.</p>
+
+<p>Hal böyle olunca Angularjs geliştiricileri Angular 1.3 versiyonu ile data binding&#8217;den kaynaklanan performans sorunlarını gidermek adına one-time binding&#8217;i tanıttılar. One time binding view-model güncelleme işlemini bir kez yapıyor, bundan sonra yapılan etkileşimler herhangi bir şekilde view&#8217;e ya da modele yansıtılmıyor. Yani güncellememizi bir kereye mahsus olmak üzere yapmış oluyoruz.</p>
+
+<h3>One-time binding nasıl çalışır görelim:</h3>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1449581533/one-time-binding_eaj5td.gif" alt="" /></p>
+
+<p>Yukarıdaki gif&#8217;den de anlaşılacağı üzere model&#8217;de yazdığım yazının ilk karakteri view&#8217;e bağlanıyor. Ondan sonraki etkileşimlerde hiçbir şekilde veri bağlama yapılmıyor.</p>
+
+<h4>Syntax farkına bakalım:</h4>
+
+<p>Two way binding</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;p&gt;</span> {{ name }} <span class="nt">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One time binding</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;p&gt;</span> {{ ::name }} <span class="nt">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Angularjs Single Page Application]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application/"/>
+    <updated>2015-08-15T23:04:08+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application</id>
+    <content type="html"><![CDATA[<p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
+
+<p>Angularjs ile bir single page application nasıl oluşturuluyor. Angular bunun için nasıl bir route mekanizması kullanıyor ona bakalım.</p>
+
+<figure class='code'><figcaption><span>app.js </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;myApp&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;ngRoute&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">config</span><span class="p">([</span><span class="s1">&#39;$routeProvider&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$routeProvider</span><span class="p">.</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/home&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;home.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/services&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;services.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/clients&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;clients.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">otherwise</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uygulamamızın modul&#8217;une ngRoute modul&#8217;unu dependency olarak belirtiyoruz. Yani modulun bağımlılıklarını belirtiyoruz. Bu sayede ngRoute içindeki her fonksiyonu/servisi kendi uygulamamızda da kullanabiliyoruz.</p>
+
+<p>Config sadece Provider&#8217;lar için kullanılır. Provider&#8217;lar Angularjs&#8217;de en gelişmiş servis oluşturma kompanentidir. Buradaki <code>$routeProvider</code> servisi uygulama başlamadan Routing konfigürasyonunu sağlar.</p>
+
+<p><code>$routeProvider</code> sayesinde eğer url isteği /home olursa template olarak <code>home.html</code> kullanılmasını, eğer istek /services olursa template olarak <code>services.html</code> kullanılmasını sağlıyoruz. <code>.otherwise</code> ise olmayan herhangi farklı bir istekte bulunulursa /home url&#8217;e yönlendirmek için kullanılmaktadır.</p>
+
+<figure class='code'><figcaption><span>services.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h1&gt;</span>Services Page<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>Nobody can give you freedom. If you&#39;re a man, you take it.<span class="nt">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Angular route yapısı için daha çok <a href="https://github.com/angular-ui/ui-router">ui-router</a> kullanılması tavsiye edilir.</p>
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">&quot;myApp&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;style.css&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular-route.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;script.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/home&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/services&quot;</span><span class="nt">&gt;</span>Services<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/clients&quot;</span><span class="nt">&gt;</span>Clients<span class="nt">&lt;/a&gt;&lt;/li&gt;&lt;br&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">ng-view</span><span class="nt">&gt;&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Angularjs route yapısında <code>#</code> karakteri kullanılır. O yüzden linklerdeki url&#8217;lerde <code>#</code> karakteri kullanılmıştır. <code>ng-view</code> aslında Rails&#8217;de ki <code>yield</code> ile aynı işlevi görür. Angularda eğer bunu eklemezsek sayfada görüntü oluşmayacaktır.</p>
+
+<p>Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[AngularJS Çalışma Mantığı]]></title>
@@ -210,7 +386,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x61;&#110;&#x67;&#117;&#108;&#x61;&#114;&#x40;&#103;&#111;&#111;&#x67;&#108;&#x65;&#103;&#114;&#x6f;&#117;&#x70;&#115;&#x2e;&#99;&#111;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#97;&#x72;&#x40;&#103;&#x6f;&#x6f;&#x67;&#108;&#x65;&#103;&#114;&#x6f;&#117;&#112;&#115;&#46;&#99;&#111;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#97;&#110;&#x67;&#117;&#108;&#97;&#114;&#64;&#103;&#111;&#x6f;&#x67;&#x6c;&#x65;&#103;&#114;&#x6f;&#117;&#x70;&#115;&#46;&#99;&#111;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#x61;&#114;&#64;&#x67;&#111;&#111;&#x67;&#108;&#101;&#x67;&#114;&#111;&#117;&#x70;&#x73;&#46;&#x63;&#x6f;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -468,8 +644,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <p><strong>Çözüm:</strong><br/>
 Çok basit bir çözümü olmasıyla beraber gereksiz yere vaktimi çaldığı için buraya not düşmeye karar verdim.<br/>
-<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/>
-Bir hataya daha elveda&hellip;</p>
+<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/></p>
 ]]></content>
   </entry>
   
@@ -627,7 +802,7 @@ Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/gal
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Kolay gelsin.</p>
+
 ]]></content>
   </entry>
   
@@ -704,8 +879,6 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
 <p><strong><em>Not:</em></strong>  Gist sayfasındaki ilk kod içerisinde bulunan botid kısmını kendi oluşturduğunuz Bot’un id numarası ile değiştirin.</p>
 
 <p>Bu işlemlerden sonra Second Life&#8217;da istediğiniz herhangi bir nesle ile oluşturmuş olduğunuz chatbot vasıtasıyla konuşabilirsiniz.</p>
-
-<p>Kolay gelsin.</p>
 ]]></content>
   </entry>
   

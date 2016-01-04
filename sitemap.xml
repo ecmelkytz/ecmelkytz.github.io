@@ -3,6 +3,24 @@
   
   
   <url>
+    <loc>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/</loc>
+    <lastmod>2015-09-12T23:49:27+03:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/</loc>
+    <lastmod>2015-08-28T23:31:15+03:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application/</loc>
+    <lastmod>2015-08-15T23:04:08+03:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://ecmelkytz.github.com/blog/2015/08/11/angularjs-calisma-mantigi/</loc>
     <lastmod>2015-08-11T00:26:37+03:00</lastmod>
     <priority>0.8</priority>
@@ -65,14 +83,14 @@
   
   <url>
     <loc>http://ecmelkytz.github.com/</loc>
-    <lastmod>2015-12-05T00:27:05+02:00</lastmod>
+    <lastmod>2016-01-04T23:11:24+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://ecmelkytz.github.com/blog/archives/</loc>
-    <lastmod>2015-12-05T00:27:05+02:00</lastmod>
+    <lastmod>2016-01-04T23:11:24+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
