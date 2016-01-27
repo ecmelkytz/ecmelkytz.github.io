@@ -9,7 +9,23 @@
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
-  <meta name="description" content="Zamanında bu hata ile karşılaştığımda çözümü bulana kadar projede ilerlememi durdurduğu için kendi adıma buraya not etmekte fayda görüyorum. &hellip;">
+  <meta name="description" content="Şöyle bir route&#8217;a sahip olduğumuzu düşünelim: routes.rb 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+resources :comments do member do post :like end
+end &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,7 +88,115 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">Rails-Angularjs (Unknown Provider: tProvider <- T at Error) Hatası</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails - Routes Don&#8217;t Repeat Yourself (DRY)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-27T10:37:13+02:00" pubdate data-updated="true">Jan 27<sup>th</sup>, 2016</time>
+        
+         | <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Şöyle bir route&#8217;a sahip olduğumuzu düşünelim:</p>
+
+<figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:comments</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Hem <code>:comments</code> hemde <code>:posts</code> resources yapıları aynı route&#8217;a sahip <code>post :like</code>.</p>
+
+<p>Rails 4&#8217;te route yapısında <strong>concern</strong>  kullanarak DRY aykırı durumları idare edebiliriz.</p>
+
+<p>Şöyleki:</p>
+
+<figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">concern</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">Rails-AngularJS (Unknown Provider: tProvider <- T at Error) Hatası</a></h1>
     
     
       <p class="meta">
@@ -129,7 +253,7 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">Angularjs Two Way Binding - One Time Binding</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a></h1>
     
     
       <p class="meta">
@@ -195,7 +319,7 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/08/15/angularjs-single-page-application/">Angularjs Single Page Application</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a></h1>
     
     
       <p class="meta">
@@ -439,7 +563,7 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello, Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlecek ve view&#8217;e aktarılacak.</p>
+<p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlenecek ve view&#8217;e aktarılacak.</p>
 
 <p><strong>$watch list oluşturma örneği 2</strong></p>
 
@@ -494,7 +618,13 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p><code>$watch</code>’lar bitene kadar bu çevirim devam eder. $digest loop bittiğinde değişiklik var ise DOM&#8217;da değişiklik yapılır.</p>
 
-<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım. Ne demiş Mevlana Hazretleri, “Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.” Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
+<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım.</p>
+
+<p>O halde şu sözde burada dursun:</p>
+
+<blockquote><p>&ldquo;Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.”</p></blockquote>
+
+<p>Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
 </div>
   
   
@@ -507,7 +637,7 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">Angularjs Nedir?</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">AngularJS Nedir?</a></h1>
     
     
       <p class="meta">
@@ -581,7 +711,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#97;&#110;&#x67;&#117;&#108;&#97;&#114;&#64;&#103;&#111;&#x6f;&#x67;&#x6c;&#x65;&#103;&#114;&#x6f;&#117;&#x70;&#115;&#46;&#99;&#111;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#x61;&#114;&#64;&#x67;&#111;&#111;&#x67;&#108;&#101;&#x67;&#114;&#111;&#117;&#x70;&#x73;&#46;&#x63;&#x6f;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x61;&#110;&#103;&#x75;&#x6c;&#97;&#114;&#x40;&#103;&#x6f;&#111;&#x67;&#108;&#x65;&#x67;&#114;&#x6f;&#117;&#112;&#115;&#x2e;&#x63;&#111;&#109;">&#97;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#x40;&#103;&#x6f;&#111;&#103;&#108;&#101;&#x67;&#114;&#x6f;&#x75;&#112;&#115;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -1070,86 +1200,6 @@ Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/gal
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/">Rails - &#8216;the Json Native Gem Requires Installed Build Tools&#8217; Hatası</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-10T10:41:35+03:00" pubdate data-updated="true">Aug 10<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Rails kurulumunu gerçekleştirirken oluşabilecek hatalardan bir tanesidir. Bu hata bazı kütüphanelerin sistemde eksik olmasından kaynaklanmaktadır. Hatanın çözümü için ise aşağıdaki gibi bir yol izlenebilir.</p>
-
-<p>Ruby 1.9.3 veya üzeri bir ruby sürümünün sisteme yüklü olduğunu ve ruby sürümüne uygun bir development kit’in de sisteminizde kurulu olduğunu farzediyorum. Bunları indirmek için bkz: <a href="http://rubyinstaller.org/downloads">Ruby Installer</a></p>
-
-<figure class='code'><figcaption><span>Terminal(Hata Kodu)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="ss">ERROR</span><span class="p">:</span> <span class="no">Error</span> <span class="n">installing</span> <span class="ss">json</span><span class="p">:</span> <span class="no">The</span> <span class="s1">&#39;json&#39;</span> <span class="n">native</span> <span class="n">gem</span> <span class="n">requires</span> <span class="n">installed</span> <span class="n">build</span> <span class="n">tools</span><span class="o">.</span>
-</span><span class='line'><span class="no">Please</span> <span class="n">update</span> <span class="n">your</span> <span class="no">PATH</span> <span class="n">to</span> <span class="kp">include</span> <span class="n">build</span> <span class="n">tools</span> <span class="ow">or</span> <span class="n">download</span> <span class="n">the</span> <span class="no">DevKit</span> <span class="n">from</span>
-</span><span class='line'><span class="s1">&#39;http://rubyinstaller.org/downloads&#39;</span> <span class="ow">and</span> <span class="n">follow</span> <span class="n">the</span> <span class="n">instructions</span> <span class="n">at</span>
-</span><span class='line'><span class="s1">&#39;http://github.com/oneclick/rubyinstaller/wiki/Development-Kit&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Daha sonra Ruby193 dosyası(versiyona göre sizde farklı olabilir) içerisine kurduğumuz DevKit&#8217;in bulunduğu dizine geçiyoruz ve gerekli işlemleri sırasıyla yapıyoruz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">cd</span> <span class="ss">C</span><span class="p">:\</span><span class="n">ruby193</span><span class="p">\</span><span class="no">DevKit</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">init</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">review</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Şimdide json kurmayı deneyelim.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">json</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Json başarılı bir şekilde kurulmuş olmalı. Hepsi bu kadar artık rails kurulumunu gerçekleştirebiliriz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rails</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="2">&larr; Older</a>
@@ -1165,23 +1215,23 @@ Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/gal
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">Rails-Angularjs (Unknown provider: tProvider <- t at Error) Hatası</a>
+        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails - Routes Don&#8217;t Repeat Yourself (DRY)</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">Angularjs Two Way Binding - One Time Binding</a>
+        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/08/15/angularjs-single-page-application/">Angularjs Single Page Application</a>
+        <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a>
       </li>
     
       <li class="post">
         <a href="/blog/2015/08/11/angularjs-calisma-mantigi/">AngularJS Çalışma Mantığı</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/07/angularjs-nedir/">Angularjs Nedir?</a>
       </li>
     
   </ul>
@@ -1201,7 +1251,7 @@ Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/gal
   </script>
 
   <h1>Categories</h1>
-  <li><a href='/blog/categories/angularjs/'>angularjs (5)</a></li><li><a href='/blog/categories/chromakey/'>chromakey (1)</a></li><li><a href='/blog/categories/datatable/'>datatable (1)</a></li><li><a href='/blog/categories/pandorabots/'>pandorabots (1)</a></li><li><a href='/blog/categories/rails/'>rails (5)</a></li><li><a href='/blog/categories/secondlife/'>secondlife (1)</a></li><li><a href='/blog/categories/teknogirisim/'>teknogirişim (1)</a></li> 
+  <li><a href='/blog/categories/angularjs/'>angularjs (5)</a></li><li><a href='/blog/categories/chromakey/'>chromakey (1)</a></li><li><a href='/blog/categories/datatable/'>datatable (1)</a></li><li><a href='/blog/categories/pandorabots/'>pandorabots (1)</a></li><li><a href='/blog/categories/rails/'>rails (6)</a></li><li><a href='/blog/categories/secondlife/'>secondlife (1)</a></li><li><a href='/blog/categories/teknogirisim/'>teknogirişim (1)</a></li> 
   <br/>
   <script src="/javascripts/twitter.js" type="text/javascript"> </script>
   

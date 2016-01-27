@@ -5,11 +5,27 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası - Ecmel Kaytazoğlu</title>
+  <title>Rails - Routes Don't Repeat Yourself (DRY) - Ecmel Kaytazoğlu</title>
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
-  <meta name="description" content="Zamanında bu hata ile karşılaştığımda çözümü bulana kadar projede ilerlememi durdurduğu için kendi adıma buraya not etmekte fayda görüyorum. &hellip;">
+  <meta name="description" content="Şöyle bir route&#8217;a sahip olduğumuzu düşünelim: routes.rb 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+resources :comments do member do post :like end
+end &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +34,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -69,7 +85,7 @@
   
   <header>
     
-      <h1 class="entry-title">Rails-AngularJS (Unknown Provider: tProvider <- T at Error) Hatası</h1>
+      <h1 class="entry-title">Rails - Routes Don't Repeat Yourself (DRY)</h1>
     
     
       <p class="meta">
@@ -85,7 +101,7 @@
   
 
 
-<time datetime="2015-09-12T23:49:27+03:00" pubdate data-updated="true">Sep 12<sup>th</sup>, 2015</time>
+<time datetime="2016-01-27T10:37:13+02:00" pubdate data-updated="true">Jan 27<sup>th</sup>, 2016</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -94,24 +110,75 @@
   </header>
 
 
-<div class="entry-content"><p>Zamanında bu hata ile karşılaştığımda çözümü bulana kadar projede ilerlememi durdurduğu için kendi adıma buraya not etmekte fayda görüyorum.</p>
+<div class="entry-content"><p>Şöyle bir route&#8217;a sahip olduğumuzu düşünelim:</p>
 
-<p>Diyelimki Rails ile yazdığınız bir projede Angularjs kullandınız. Uygulamanız local&#8217;de sıkıntısız bir şekilde çalışıyor. Gelin görün ki production ortamında assets ile alakalı bir hata ile karşılaştınız.
-Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="no">RAILS_ENV</span><span class="o">=</span><span class="n">production</span> <span class="n">rake</span> <span class="ss">assets</span><span class="p">:</span><span class="n">precompile</span>
+<figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:comments</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Ancak console&#8217;da aldığınız hata  <code>Error: Unknown provider: tProvider</code> ise precompile işlemi ile sorun çözülmeyecektir.</p>
+<p>Hem <code>:comments</code> hemde <code>:posts</code> resources yapıları aynı route&#8217;a sahip <code>post :like</code>.</p>
 
-<h4>Çözüm:</h4>
+<p>Rails 4&#8217;te route yapısında <strong>concern</strong>  kullanarak DRY aykırı durumları idare edebiliriz.</p>
 
-<p><code>/config/environments/production.rb</code>&lsquo;e aşağıdaki kodu eklemelisiniz.</p>
+<p>Şöyleki:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">js_compressor</span> <span class="o">=</span> <span class="no">Uglifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">mangle</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span>
+<figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">concern</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
@@ -136,12 +203,12 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
   
 
 
-<time datetime="2015-09-12T23:49:27+03:00" pubdate data-updated="true">Sep 12<sup>th</sup>, 2015</time>
+<time datetime="2016-01-27T10:37:13+02:00" pubdate data-updated="true">Jan 27<sup>th</sup>, 2016</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/angularjs/'>angularjs</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
+    <a class='category' href='/blog/categories/rails/'>rails</a>
   
 </span>
 
@@ -150,7 +217,7 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -163,10 +230,8 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/" title="Previous Post: AngularJS Two Way Binding - One Time Binding">&laquo; AngularJS Two Way Binding - One Time Binding</a>
+        <a class="basic-alignment left" href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/" title="Previous Post: Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası">&laquo; Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/" title="Next Post: Rails - Routes Don't Repeat Yourself (DRY)">Rails - Routes Don't Repeat Yourself (DRY) &raquo;</a>
       
     </p>
   </footer>
@@ -232,8 +297,8 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/';
-        var disqus_url = 'http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/';
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/';
         var disqus_script = 'embed.js';
       
     (function () {

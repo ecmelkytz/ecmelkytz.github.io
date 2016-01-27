@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-01-04T23:11:24+02:00</updated>
+  <updated>2016-01-27T11:03:48+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -14,7 +14,84 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Rails-Angularjs (Unknown provider: tProvider <- t at Error) Hatası]]></title>
+    <title type="html"><![CDATA[Rails - Routes Don't Repeat Yourself (DRY)]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/"/>
+    <updated>2016-01-27T10:37:13+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry</id>
+    <content type="html"><![CDATA[<p>Şöyle bir route&#8217;a sahip olduğumuzu düşünelim:</p>
+
+<p><figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:comments</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;resources :posts do</span>
+</span><span class='line'><span class="sr">  member do</span>
+</span><span class='line'><span class="sr">    post :like</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Hem <code>:comments</code> hemde <code>:posts</code> resources yapıları aynı route&#8217;a sahip <code>post :like</code>.</p>
+
+<p>Rails 4&#8217;te route yapısında <strong>concern</strong>  kullanarak DRY aykırı durumları idare edebiliriz.</p>
+
+<p>Şöyleki:</p>
+
+<p><figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">concern</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;resources :comments, concerns: :vote&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="n">resources</span> <span class="ss">:posts</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası]]></title>
     <link href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/"/>
     <updated>2015-09-12T23:49:27+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-<-t-at-error-hatasi</id>
@@ -231,41 +308,6 @@ ActiveRecord + Paperclip kullanımı:</p>
 
 <p>Artık ckeditor&#8217;u kullanabilirsiniz.
 Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/galetahub/ckeditor">Githubda ckeditor gem</a>, <a href="http://ckeditor.com/download">Ckeditor&#8217;un resmi sayfası</a> adreslerinden ulaşabilirsiniz.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails - 'The json native gem requires installed build tools' hatası]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/"/>
-    <updated>2014-08-10T10:41:35+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi</id>
-    <content type="html"><![CDATA[<p>Rails kurulumunu gerçekleştirirken oluşabilecek hatalardan bir tanesidir. Bu hata bazı kütüphanelerin sistemde eksik olmasından kaynaklanmaktadır. Hatanın çözümü için ise aşağıdaki gibi bir yol izlenebilir.</p>
-
-<p>Ruby 1.9.3 veya üzeri bir ruby sürümünün sisteme yüklü olduğunu ve ruby sürümüne uygun bir development kit’in de sisteminizde kurulu olduğunu farzediyorum. Bunları indirmek için bkz: <a href="http://rubyinstaller.org/downloads">Ruby Installer</a></p>
-
-<pre><code class="Ruby Terminal(Hata Kodu)">ERROR: Error installing json: The 'json' native gem requires installed build tools.
-Please update your PATH to include build tools or download the DevKit from
-'http://rubyinstaller.org/downloads' and follow the instructions at
-'http://github.com/oneclick/rubyinstaller/wiki/Development-Kit'
-</code></pre>
-
-<p>Daha sonra Ruby193 dosyası(versiyona göre sizde farklı olabilir) içerisine kurduğumuz DevKit&#8217;in bulunduğu dizine geçiyoruz ve gerekli işlemleri sırasıyla yapıyoruz.</p>
-
-<pre><code class="Ruby Terminal">cd C:\ruby193\DevKit
-ruby dk.rb init
-ruby dk.review
-ruby dk.rb install
-</code></pre>
-
-<p>Şimdide json kurmayı deneyelim.</p>
-
-<pre><code class="Ruby Terminal">gem install json
-</code></pre>
-
-<p>Json başarılı bir şekilde kurulmuş olmalı. Hepsi bu kadar artık rails kurulumunu gerçekleştirebiliriz.</p>
-
-<pre><code class="Ruby Terminal">gem install rails
-</code></pre>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-01-04T23:11:24+02:00</updated>
+  <updated>2016-01-27T11:03:48+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -14,7 +14,86 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Rails-Angularjs (Unknown provider: tProvider <- t at Error) Hatası]]></title>
+    <title type="html"><![CDATA[Rails - Routes Don't Repeat Yourself (DRY)]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/"/>
+    <updated>2016-01-27T10:37:13+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry</id>
+    <content type="html"><![CDATA[<p>Şöyle bir route&#8217;a sahip olduğumuzu düşünelim:</p>
+
+<figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:comments</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Hem <code>:comments</code> hemde <code>:posts</code> resources yapıları aynı route&#8217;a sahip <code>post :like</code>.</p>
+
+<p>Rails 4&#8217;te route yapısında <strong>concern</strong>  kullanarak DRY aykırı durumları idare edebiliriz.</p>
+
+<p>Şöyleki:</p>
+
+<figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">concern</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası]]></title>
     <link href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/"/>
     <updated>2015-09-12T23:49:27+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-<-t-at-error-hatasi</id>
@@ -42,7 +121,7 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Angularjs Two Way Binding - One Time Binding]]></title>
+    <title type="html"><![CDATA[AngularJS Two Way Binding - One Time Binding]]></title>
     <link href="http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/"/>
     <updated>2015-08-28T23:31:15+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding</id>
@@ -79,7 +158,7 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Angularjs Single Page Application]]></title>
+    <title type="html"><![CDATA[AngularJS Single Page Application]]></title>
     <link href="http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application/"/>
     <updated>2015-08-15T23:04:08+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application</id>
@@ -273,7 +352,7 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello, Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlecek ve view&#8217;e aktarılacak.</p>
+<p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlenecek ve view&#8217;e aktarılacak.</p>
 
 <p><strong>$watch list oluşturma örneği 2</strong></p>
 
@@ -328,12 +407,18 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p><code>$watch</code>’lar bitene kadar bu çevirim devam eder. $digest loop bittiğinde değişiklik var ise DOM&#8217;da değişiklik yapılır.</p>
 
-<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım. Ne demiş Mevlana Hazretleri, “Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.” Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
+<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım.</p>
+
+<p>O halde şu sözde burada dursun:</p>
+
+<blockquote><p>&ldquo;Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.”</p></blockquote>
+
+<p>Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Angularjs Nedir?]]></title>
+    <title type="html"><![CDATA[AngularJS Nedir?]]></title>
     <link href="http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/"/>
     <updated>2015-08-07T22:31:00+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir</id>
@@ -386,7 +471,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#97;&#110;&#x67;&#117;&#108;&#97;&#114;&#64;&#103;&#111;&#x6f;&#x67;&#x6c;&#x65;&#103;&#114;&#x6f;&#117;&#x70;&#115;&#46;&#99;&#111;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#x61;&#114;&#64;&#x67;&#111;&#111;&#x67;&#108;&#101;&#x67;&#114;&#111;&#117;&#x70;&#x73;&#46;&#x63;&#x6f;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x61;&#110;&#103;&#x75;&#x6c;&#97;&#114;&#x40;&#103;&#x6f;&#111;&#x67;&#108;&#x65;&#x67;&#114;&#x6f;&#117;&#112;&#115;&#x2e;&#x63;&#111;&#109;">&#97;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#x40;&#103;&#x6f;&#111;&#103;&#108;&#101;&#x67;&#114;&#x6f;&#x75;&#112;&#115;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
