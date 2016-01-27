@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>AngularJS Two Way Binding - One Time Binding - Ecmel Kaytazoğlu</title>
+  <title>Ubuntu initramfs hatası - Ecmel Kaytazoğlu</title>
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
-  <meta name="description" content="Two way binding (Çift yönlü veri bağlama) modeldeki değişiklikleri view&#8217;e, view&#8217;deki değişiklikleri modele aktarma işlemidir. Daha &hellip;">
+  <meta name="description" content="Araştırmalarım neticesinde elde ettiğim bilgilere göre bu hatanın olası 2 sebebi var. Sebep 1: Eğer Ubuntu&#8217;nuz Windows dosya sistemi üzerine &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -69,7 +69,7 @@
   
   <header>
     
-      <h1 class="entry-title">AngularJS Two Way Binding - One Time Binding</h1>
+      <h1 class="entry-title">Ubuntu Initramfs Hatası</h1>
     
     
       <p class="meta">
@@ -85,7 +85,7 @@
   
 
 
-<time datetime="2015-08-28T23:31:15+03:00" pubdate data-updated="true">Aug 28<sup>th</sup>, 2015</time>
+<time datetime="2016-01-20T14:30:38+02:00" pubdate data-updated="true">Jan 20<sup>th</sup>, 2016</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -94,35 +94,47 @@
   </header>
 
 
-<div class="entry-content"><p><img class="center" src="https://docs.angularjs.org/img/guide/concepts-databinding1.png"></p>
+<div class="entry-content"><p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/v1450428402/initramfs_jihx5g.png"></p>
 
-<p>Two way binding (Çift yönlü veri bağlama) modeldeki değişiklikleri view&#8217;e, view&#8217;deki değişiklikleri modele aktarma işlemidir. Daha önceki <a href="http://ecmelkytz.github.io/blog/2015/08/11/angularjs-calisma-mantigi/">yazımda</a> two way binding ve doğal olarak digest cycle&#8217;dan uzun uzadıya bahsetmiştim.</p>
+<p>Araştırmalarım neticesinde elde ettiğim bilgilere göre bu hatanın olası 2 sebebi var.</p>
 
-<p>Two way binding, kullanıcı etkileşimlerinin direk view kısmına aktarılması kısmında çok güzel bir işleve sahip olsada; digest cycle tetiklendikten sonra en az 2, maksimum 10 kez çalıştığı düşünülürse performans anlamında büyük sorunlar oluşturacaktır. Şöyleki benim data binding sayım arttığı ölçüde $digest loop&#8217;un sayısıda artacaktır. Kullanıcı etkileşiminin yoğun olduğu bir sayfada performans anlamında yaşanabilecek sıkıntılar elbetteki kaçınılmaz olacaktır.</p>
+<p><strong>Sebep 1:</strong> Eğer Ubuntu&#8217;nuz Windows dosya sistemi üzerine kuruluysa ve windows düzgün bir şekilde kapatılmadıysa (incorrectly shutdown) bu sorun yaşanabilir.</p>
 
-<p>Hal böyle olunca Angularjs geliştiricileri Angular 1.3 versiyonu ile data binding&#8217;den kaynaklanan performans sorunlarını gidermek adına one-time binding&#8217;i tanıttılar. One time binding view-model güncelleme işlemini bir kez yapıyor, bundan sonra yapılan etkileşimler herhangi bir şekilde view&#8217;e ya da modele yansıtılmıyor. Yani güncellememizi bir kereye mahsus olmak üzere yapmış oluyoruz.</p>
+<p><strong>Sebep 2:</strong> Ubuntu kernel yükseltildiği (upgrated) için ya da kötü bir superblock&#8217;a sahip olduğunuz için bu sorun yaşanabilir.
+Çözüm için önerilen bir çok yolu denedim. Ancak bir tanesi ile sorunu halledebildim. Bende tam olarak onu buraya not etmiş olacağım.</p>
 
-<h3>One-time binding nasıl çalışır görelim:</h3>
+<p>Ubuntu Live CD ile bilgisayarı boot ediyoruz. Ekrana aşağıdaki gibi bir görüntü geldiğinde <code>Try Ubuntu</code> deyip devam ediyoruz.</p>
 
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1449581533/one-time-binding_eaj5td.gif" alt="" /></p>
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_385,w_561/v1450429545/ubuntu_ohikd8.png"></p>
 
-<p>Yukarıdaki gif&#8217;den de anlaşılacağı üzere model&#8217;de yazdığım yazının ilk karakteri view&#8217;e bağlanıyor. Ondan sonraki etkileşimlerde hiçbir şekilde veri bağlama yapılmıyor.</p>
+<p>Ubuntu masaüstü açılacaktır. Sonrasında Ctrl + Alt + T ile terminali açıyoruz.</p>
 
-<h4>Syntax farkına bakalım:</h4>
-
-<p>Two way binding</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;p&gt;</span> {{ name }} <span class="nt">&lt;/p&gt;</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo fdisk -l
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>One time binding</p>
+<p>Devamında bilgisayarınıza takılı tüm diskler ve disk bölümlerinin listelendiği bir tablo karşınıza gelecektir.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;p&gt;</span> {{ ::name }} <span class="nt">&lt;/p&gt;</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Device Boot Start End Blocks Id System
+</span><span class='line'>/dev/sda1 * <span class="m">1</span> <span class="m">30238</span> 242886703+ <span class="m">83</span> Linux
+</span><span class='line'>/dev/sda2 <span class="m">30239</span> <span class="m">30401</span> 1309297+ <span class="m">5</span> Extended
+</span><span class='line'>/dev/sda5 <span class="m">30239</span> <span class="m">30401</span> <span class="m">1309266</span> <span class="m">82</span> Linux swap / Solaris
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>Linux hangi disk alanında ise onu seçip fsck komutu ile diski tamir etmek için aşağıdaki kod satırını çalıştırıyoruz.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo fsck /dev/sda1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sistemin boot ayarlarını eski haline getirdikten sonra yeniden başlatıyoruz ve problem çözülmüş olması gerekiyor.</p>
 </div>
 
 
@@ -145,21 +157,15 @@
   
 
 
-<time datetime="2015-08-28T23:31:15+03:00" pubdate data-updated="true">Aug 28<sup>th</sup>, 2015</time>
+<time datetime="2016-01-20T14:30:38+02:00" pubdate data-updated="true">Jan 20<sup>th</sup>, 2016</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/angularjs/'>angularjs</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -172,10 +178,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/08/15/angularjs-single-page-application/" title="Previous Post: AngularJS Single Page Application">&laquo; AngularJS Single Page Application</a>
+        <a class="basic-alignment left" href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/" title="Previous Post: Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası">&laquo; Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası</a>
       
       
-        <a class="basic-alignment right" href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/" title="Next Post: Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası">Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/" title="Next Post: Rails - Routes Don't Repeat Yourself (DRY)">Rails - Routes Don't Repeat Yourself (DRY) &raquo;</a>
       
     </p>
   </footer>
@@ -241,8 +247,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/';
-        var disqus_url = 'http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/';
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/';
         var disqus_script = 'embed.js';
       
     (function () {

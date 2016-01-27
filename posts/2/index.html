@@ -9,7 +9,8 @@
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
-  <meta name="description" content="Rails kurulumunu gerçekleştirirken oluşabilecek hatalardan bir tanesidir. Bu hata bazı kütüphanelerin sistemde eksik olmasından kaynaklanmaktadır. &hellip;">
+  <meta name="description" content="Rails uygulamalarınıza aşağıdaki resimde görülen tarzda bir text editörü eklemek istiyorsanız ckeditor
+kullanmak bu iş için uygun olacaktır. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +67,142 @@
       <div id="content">
         <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/28/rails-plus-ckeditor/">Rails - Ckeditor</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-28T16:13:22+03:00" pubdate data-updated="true">Aug 28<sup>th</sup>, 2014</time>
+        
+         | <a href="/blog/2014/08/28/rails-plus-ckeditor/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Rails uygulamalarınıza aşağıdaki resimde görülen tarzda bir text editörü eklemek istiyorsanız ckeditor
+kullanmak bu iş için uygun olacaktır.</p>
+
+<p><img class="center" src="http://i.imgur.com/PlrBDC6.png"></p>
+
+<p>Öncelikle uygulamamızdaki Gemfile içerisine gerekli gem&#8217;leri ekleyelim.</p>
+
+<figure class='code'><figcaption><span>Gemfile </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">gem</span> <span class="s1">&#39;paperclip&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;ckeditor&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ve Bundle ediyoruz.</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">bundle</span> <span class="n">install</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Gemleri install ettik. Peki yüklenecek dosyalar için nasıl model oluşturacağız? Active_record orm&#8217;si paperclip gemini default olarak kullanır. Mongoid, Carrierwave ile nasıl kullanılacağını merak ediyorsanız daha ayrıntılı bilgi için <a href="https://github.com/galetahub/ckeditor">README</a> kaynağına göz atabilirsiniz. <br/>
+ActiveRecord + Paperclip kullanımı:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">rails</span> <span class="n">generate</span> <span class="ss">ckeditor</span><span class="p">:</span><span class="n">install</span> <span class="o">--</span><span class="n">orm</span><span class="o">=</span><span class="n">active_record</span> <span class="o">--</span><span class="n">backend</span><span class="o">=</span><span class="n">paperclip</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bir sorunla karşılaşmadıysanız terminalden hangi dosyaların oluşturulduğunu görebilirsiniz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'> <span class="n">create</span>  <span class="n">config</span><span class="o">/</span><span class="n">initializers</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'> <span class="n">route</span>  <span class="n">mount</span> <span class="no">Ckeditor</span><span class="o">::</span><span class="no">Engine</span> <span class="o">=&gt;</span> <span class="s1">&#39;/ckeditor&#39;</span>
+</span><span class='line'> <span class="n">create</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">/</span><span class="n">asset</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'> <span class="n">create</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">/</span><span class="n">picture</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'> <span class="n">create</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">/</span><span class="n">attachment_file</span><span class="o">.</span><span class="n">rb</span>
+</span><span class='line'> <span class="n">create</span>  <span class="n">db</span><span class="o">/</span><span class="n">migrate</span><span class="o">/</span><span class="mi">20140829114657</span><span class="n">_create_ckeditor_assets</span><span class="o">.</span><span class="n">rb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Tabloların oluşmasını tetikleyelim o halde:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">migrate</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Şimdide javascript kodunu <code>/views/layouts/application.html.erb</code> içerisine include ediyoruz.  Ayrıca <a href="http://ckeditor.com/download">ckeditor-download</a> adresinden ckeditor&#8217;u indirip dosyalara erişebilirsiniz.</p>
+
+<figure class='code'><figcaption><span>application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s1">&#39;ckeditor/ckeditor.js&#39;</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sonra <code>body</code> içerisine javascript kodunu ekliyoruz:</p>
+
+<figure class='code'><figcaption><span>application.html.erb </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='Javascript'><span class='line'> <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;textarea.ckeditor&#39;</span><span class="p">).</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;textarea.ckeditor&#39;</span><span class="p">);</span>
+</span><span class='line'>          <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">CKEDITOR</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">});</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ckeditor&#8217;u nerede göstermek istiyorsanız onunla ilgili sayfaya form içeriği ekliyoruz. Bu uygulama için ben <a href="https://github.com/plataformatec/simple_form">simple_form</a> gemini kullanıyorum. İstediğiniz görüntüyü elde etmek için form içeriği şöyle olacaktır:</p>
+
+<figure class='code'><figcaption><span>_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= simple_form_for(@yourmodel) do |f| %&gt;</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:ckeditor</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:ckeditor</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:toolbar</span> <span class="o">=&gt;</span> <span class="s1">&#39;Full&#39;</span><span class="p">}</span> <span class="p">}</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;%end%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Artık ckeditor&#8217;u kullanabilirsiniz.
+Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/galetahub/ckeditor">Githubda ckeditor gem</a>, <a href="http://ckeditor.com/download">Ckeditor&#8217;un resmi sayfası</a> adreslerinden ulaşabilirsiniz.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -396,6 +533,10 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
       </li>
     
       <li class="post">
+        <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası</a>
       </li>
     
@@ -405,10 +546,6 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
     
       <li class="post">
         <a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/11/angularjs-calisma-mantigi/">AngularJS Çalışma Mantığı</a>
       </li>
     
   </ul>

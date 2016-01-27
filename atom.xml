@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-01-27T11:03:48+02:00</updated>
+  <updated>2016-01-27T14:44:19+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -89,6 +89,55 @@
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu initramfs hatası]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/"/>
+    <updated>2016-01-20T14:30:38+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/v1450428402/initramfs_jihx5g.png"></p>
+
+<p>Araştırmalarım neticesinde elde ettiğim bilgilere göre bu hatanın olası 2 sebebi var.</p>
+
+<p><strong>Sebep 1:</strong> Eğer Ubuntu&#8217;nuz Windows dosya sistemi üzerine kuruluysa ve windows düzgün bir şekilde kapatılmadıysa (incorrectly shutdown) bu sorun yaşanabilir.</p>
+
+<p><strong>Sebep 2:</strong> Ubuntu kernel yükseltildiği (upgrated) için ya da kötü bir superblock&#8217;a sahip olduğunuz için bu sorun yaşanabilir.
+Çözüm için önerilen bir çok yolu denedim. Ancak bir tanesi ile sorunu halledebildim. Bende tam olarak onu buraya not etmiş olacağım.</p>
+
+<p>Ubuntu Live CD ile bilgisayarı boot ediyoruz. Ekrana aşağıdaki gibi bir görüntü geldiğinde <code>Try Ubuntu</code> deyip devam ediyoruz.</p>
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_385,w_561/v1450429545/ubuntu_ohikd8.png"></p>
+
+<p>Ubuntu masaüstü açılacaktır. Sonrasında Ctrl + Alt + T ile terminali açıyoruz.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo fdisk -l
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Devamında bilgisayarınıza takılı tüm diskler ve disk bölümlerinin listelendiği bir tablo karşınıza gelecektir.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Device Boot Start End Blocks Id System
+</span><span class='line'>/dev/sda1 * <span class="m">1</span> <span class="m">30238</span> 242886703+ <span class="m">83</span> Linux
+</span><span class='line'>/dev/sda2 <span class="m">30239</span> <span class="m">30401</span> 1309297+ <span class="m">5</span> Extended
+</span><span class='line'>/dev/sda5 <span class="m">30239</span> <span class="m">30401</span> <span class="m">1309266</span> <span class="m">82</span> Linux swap / Solaris
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Linux hangi disk alanında ise onu seçip fsck komutu ile diski tamir etmek için aşağıdaki kod satırını çalıştırıyoruz.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo fsck /dev/sda1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sistemin boot ayarlarını eski haline getirdikten sonra yeniden başlatıyoruz ve problem çözülmüş olması gerekiyor.</p>
 ]]></content>
   </entry>
   
@@ -471,7 +520,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x61;&#110;&#103;&#x75;&#x6c;&#97;&#114;&#x40;&#103;&#x6f;&#111;&#x67;&#108;&#x65;&#x67;&#114;&#x6f;&#117;&#112;&#115;&#x2e;&#x63;&#111;&#109;">&#97;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#x40;&#103;&#x6f;&#111;&#103;&#108;&#101;&#x67;&#114;&#x6f;&#x75;&#112;&#115;&#x2e;&#x63;&#111;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x61;&#x6e;&#x67;&#117;&#x6c;&#x61;&#114;&#x40;&#x67;&#x6f;&#111;&#103;&#x6c;&#x65;&#103;&#114;&#111;&#117;&#112;&#x73;&#46;&#99;&#x6f;&#x6d;">&#x61;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#64;&#103;&#111;&#111;&#x67;&#108;&#101;&#103;&#x72;&#111;&#x75;&#x70;&#x73;&#46;&#x63;&#x6f;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
