@@ -40,20 +40,26 @@ end &hellip;">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="Ecmel Kaytazoğlu" type="application/atom+xml">
+  <link href="atom.xml" rel="alternate" title="Ecmel Kaytazoğlu" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=Arvo:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Merienda:700" rel="stylesheet" type="text/css">
 
   
 
 </head>
 
-<body>
-  <div id="navigation">
-    <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ecmel Kaytazoğlu</a></h1>
+  
+    <h2>$scope.life = ['black', 'white']</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
   
@@ -66,21 +72,13 @@ end &hellip;">
   
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Arşiv</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
 </ul>
 
 </nav>
-  </div>
-  <header role="banner"><hgroup>
-  <h1><a href="/">Ecmel Kaytazoğlu</a></h1>
-  
-</hgroup>
-
-</header>
-  <div id="body"  >
-    <div id="main">
-      <div id="content">
-        <div class="blog-index">
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
   
   
   
@@ -274,7 +272,7 @@ end &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">Rails-AngularJS (Unknown Provider: tProvider <- T at Error) Hatası</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-Angularjs (Unknown Provider: tProvider) Hatası</a></h1>
     
     
       <p class="meta">
@@ -292,7 +290,7 @@ end &hellip;">
 
 <time datetime="2015-09-12T23:49:27+03:00" pubdate data-updated="true">Sep 12<sup>th</sup>, 2015</time>
         
-         | <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/#disqus_thread">Comments</a>
+         | <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/#disqus_thread">Comments</a>
         
       </p>
     
@@ -331,7 +329,7 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">Angularjs Two Way Binding - One Time Binding</a></h1>
     
     
       <p class="meta">
@@ -397,7 +395,7 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/08/15/angularjs-single-page-application/">Angularjs Single Page Application</a></h1>
     
     
       <p class="meta">
@@ -619,7 +617,7 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p><strong>Dirty Cheking Mekanizmasi:</strong> Bir değerin eski değeri ile yeni değerinin karşılaştırılmasıdır.</p>
 
-<p><strong>$watch list oluşturma örneği 1</strong></p>
+<p><strong>$watch list oluşturma örneği 1:</strong></p>
 
 <figure class='code'><figcaption><span>controller.js </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -643,7 +641,7 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlenecek ve view&#8217;e aktarılacak.</p>
 
-<p><strong>$watch list oluşturma örneği 2</strong></p>
+<p><strong>$watch list oluşturma örneği 2:</strong></p>
 
 <figure class='code'><figcaption><span>index.html </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -698,9 +696,9 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım.</p>
 
-<p>O halde şu sözde burada dursun:</p>
+<p>O halde şu söz de burada dursun:</p>
 
-<blockquote><p>&ldquo;Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.”</p></blockquote>
+<blockquote><p>“Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.”</p></blockquote>
 
 <p>Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
 </div>
@@ -715,7 +713,7 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">AngularJS Nedir?</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">Angularjs Nedir?</a></h1>
     
     
       <p class="meta">
@@ -789,7 +787,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x61;&#x6e;&#x67;&#117;&#x6c;&#x61;&#114;&#x40;&#x67;&#x6f;&#111;&#103;&#x6c;&#x65;&#103;&#114;&#111;&#117;&#112;&#x73;&#46;&#99;&#x6f;&#x6d;">&#x61;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#64;&#103;&#111;&#111;&#x67;&#108;&#101;&#103;&#x72;&#111;&#x75;&#x70;&#x73;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#97;&#x6e;&#x67;&#117;&#108;&#x61;&#x72;&#64;&#103;&#x6f;&#111;&#103;&#108;&#x65;&#103;&#114;&#x6f;&#117;&#x70;&#115;&#46;&#99;&#x6f;&#109;">&#x61;&#110;&#x67;&#117;&#x6c;&#x61;&#114;&#64;&#103;&#x6f;&#111;&#103;&#108;&#x65;&#103;&#x72;&#111;&#x75;&#x70;&#x73;&#46;&#x63;&#x6f;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -1146,7 +1144,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
     
       <a class="prev" href="2">&larr; Older</a>
     
-    <a href="/blog/archives">Arşiv</a>
+    <a href="/blog/archives">Blog Archives</a>
     
   </div>
 </div>
@@ -1165,15 +1163,15 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/">Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası</a>
+        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-Angularjs (Unknown provider: tProvider) Hatası</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a>
+        <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">Angularjs Two Way Binding - One Time Binding</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a>
+        <a href="/blog/2015/08/15/angularjs-single-page-application/">Angularjs Single Page Application</a>
       </li>
     
   </ul>
@@ -1181,40 +1179,29 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 
 
-
-
-  
-<section>
-
-  <script type="text/javascript">
-    $.domReady(function(){
-      getTwitterFeed("__EcmeL__", 4, false);
-    });
-  </script>
-
-  <h1>Categories</h1>
-  <li><a href='/blog/categories/angularjs/'>angularjs (5)</a></li><li><a href='/blog/categories/chromakey/'>chromakey (1)</a></li><li><a href='/blog/categories/datatable/'>datatable (1)</a></li><li><a href='/blog/categories/pandorabots/'>pandorabots (1)</a></li><li><a href='/blog/categories/rails/'>rails (6)</a></li><li><a href='/blog/categories/secondlife/'>secondlife (1)</a></li><li><a href='/blog/categories/teknogirisim/'>teknogirişim (1)</a></li> 
-  <br/>
-  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
-  
-    <a href="http://twitter.com/__EcmeL__" class="twitter-follow-button" data-show-count="false">Follow @__EcmeL__</a>
-  
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/118106468866506746709?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
 </section>
+
+
+
+  
 </aside>
 
-
-
-
-
-      </div>
     </div>
-    <footer role="contentinfo"><center><p>
+  </div>
+  <footer role="contentinfo"><p>
   Copyright &copy; 2016 - Ecmel Kaytazoğlu -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p></center>
+</p>
 
 </footer>
-    
+  
 
 <script type="text/javascript">
       var disqus_shortname = 'ecmelkytz';
@@ -1265,8 +1252,6 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 
 
-
-  </div>
 
 </body>
 </html>

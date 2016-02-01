@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-01-27T14:44:19+02:00</updated>
+  <updated>2016-02-01T09:03:18+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -91,10 +91,10 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Rails-AngularJS (Unknown provider: tProvider <- t at Error) Hatası]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-%3C-t-at-error-hatasi/"/>
+    <title type="html"><![CDATA[Rails-Angularjs (Unknown provider: tProvider) Hatası]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/"/>
     <updated>2015-09-12T23:49:27+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-<-t-at-error-hatasi</id>
+    <id>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi</id>
     <content type="html"><![CDATA[<p>Zamanında bu hata ile karşılaştığımda çözümü bulana kadar projede ilerlememi durdurduğu için kendi adıma buraya not etmekte fayda görüyorum.</p>
 
 <p>Diyelimki Rails ile yazdığınız bir projede Angularjs kullandınız. Uygulamanız local&#8217;de sıkıntısız bir şekilde çalışıyor. Gelin görün ki production ortamında assets ile alakalı bir hata ile karşılaştınız.
