@@ -5,26 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Rails - Routes Don't Repeat Yourself (DRY) - Ecmel Kaytazoğlu</title>
+  <title>Html Renklerin Hex ve RGB Kodlarını Bulan Terminal Uygulaması: Grabc - Ecmel Kaytazoğlu</title>
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
-  <meta name="description" content="Şöyle bir routes&#8217;a sahip olduğumuzu düşünelim: routes.rb 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-resources :comments do member do post :like end &hellip;">
+  <meta name="description" content="Zamanında, ekranda gördüğüm herhangi bir rengin html kodunu anında nasıl bulabilirim diye araştırma yaparken grabc diye bir terminal uygulamasına &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -33,7 +18,7 @@ resources :comments do member do post :like end &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -82,7 +67,7 @@ resources :comments do member do post :like end &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Rails - Routes Don't Repeat Yourself (DRY)</h1>
+      <h1 class="entry-title">Html Renklerin Hex Ve RGB Kodlarını Bulan Terminal Uygulaması: Grabc</h1>
     
     
       <p class="meta">
@@ -98,7 +83,7 @@ resources :comments do member do post :like end &hellip;">
   
 
 
-<time datetime="2016-01-27T10:37:13+02:00" pubdate data-updated="true">Jan 27<sup>th</sup>, 2016</time>
+<time datetime="2015-06-14T12:44:17+03:00" pubdate data-updated="true">Jun 14<sup>th</sup>, 2015</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -107,76 +92,30 @@ resources :comments do member do post :like end &hellip;">
   </header>
 
 
-<div class="entry-content"><p>Şöyle bir routes&#8217;a sahip olduğumuzu düşünelim:</p>
+<div class="entry-content"><p>Zamanında, ekranda gördüğüm herhangi bir rengin html kodunu anında nasıl bulabilirim diye araştırma yaparken <strong>grabc</strong> diye bir terminal uygulamasına denk gelmiştim. Uzun zamandan beri de severek kullanmaktayım.</p>
 
-<figure class='code'><figcaption><span>routes.rb </span></figcaption>
+<p>Özellikle front-end geliştirenler için çok güzel bir kolaylık sağlayacağını söyleyebilirim.</p>
+
+<h3>Kurulum:</h3>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install grabc</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Kullanım:</h3>
+
+<p>Terminale <strong>grabc</strong> yazdığınız zaman cursor(imleç) <code>+</code> şekline benzer bir hal alacaktır ve siz nereye tıklarsanız oranın renginin hex ve rgb kodunu ekrana basacaktır.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:comments</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ grabc
 </span><span class='line'>
-</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Hem <code>:comments</code> hemde <code>:posts</code> resources yapıları aynı route&#8217;a sahip <code>post :like</code>.</p>
-
-<p>Rails 4&#8217;te route yapısında <strong>concern</strong>  kullanarak DRY aykırı durumları idare edebiliriz.</p>
-
-<p>Şöyleki:</p>
-
-<figure class='code'><figcaption><span>routes.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">concern</span> <span class="ss">:vote</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>#f55567
+</span><span class='line'>245,85,103</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
@@ -200,21 +139,15 @@ resources :comments do member do post :like end &hellip;">
   
 
 
-<time datetime="2016-01-27T10:37:13+02:00" pubdate data-updated="true">Jan 27<sup>th</sup>, 2016</time>
+<time datetime="2015-06-14T12:44:17+03:00" pubdate data-updated="true">Jun 14<sup>th</sup>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/rails/'>rails</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -227,8 +160,10 @@ resources :comments do member do post :like end &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/01/20/ubuntu-initramfs-hatasi/" title="Previous Post: Ubuntu initramfs hatası">&laquo; Ubuntu initramfs hatası</a>
+        <a class="basic-alignment left" href="/blog/2014/11/17/rails-upcase/" title="Previous Post: Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)">&laquo; Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)</a>
       
+      
+        <a class="basic-alignment right" href="/blog/2015/08/07/angularjs-nedir/" title="Next Post: Angularjs Nedir?">Angularjs Nedir? &raquo;</a>
       
     </p>
   </footer>
@@ -303,8 +238,8 @@ resources :comments do member do post :like end &hellip;">
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/';
-        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/';
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-02-01T09:14:23+02:00</updated>
+  <updated>2016-02-01T16:25:59+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -18,7 +18,7 @@
     <link href="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/"/>
     <updated>2016-01-27T10:37:13+02:00</updated>
     <id>http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry</id>
-    <content type="html"><![CDATA[<p>Şöyle bir route&#8217;a sahip olduğumuzu düşünelim:</p>
+    <content type="html"><![CDATA[<p>Şöyle bir routes&#8217;a sahip olduğumuzu düşünelim:</p>
 
 <p><figure class='code'><figcaption><span>routes.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

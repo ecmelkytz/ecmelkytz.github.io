@@ -107,29 +107,29 @@
 
 <p>Ubuntu masaüstü açılacaktır. Sonrasında Ctrl + Alt + T ile terminali açıyoruz.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo fdisk -l
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo fdisk -l</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Devamında bilgisayarınıza takılı tüm diskler ve disk bölümlerinin listelendiği bir tablo karşınıza gelecektir.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Device Boot Start End Blocks Id System
-</span><span class='line'>/dev/sda1 * <span class="m">1</span> <span class="m">30238</span> 242886703+ <span class="m">83</span> Linux
-</span><span class='line'>/dev/sda2 <span class="m">30239</span> <span class="m">30401</span> 1309297+ <span class="m">5</span> Extended
-</span><span class='line'>/dev/sda5 <span class="m">30239</span> <span class="m">30401</span> <span class="m">1309266</span> <span class="m">82</span> Linux swap / Solaris
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Device Boot Start End Blocks Id System
+</span><span class='line'>/dev/sda1 * 1 30238 242886703+ 83 Linux
+</span><span class='line'>/dev/sda2 30239 30401 1309297+ 5 Extended
+</span><span class='line'>/dev/sda5 30239 30401 1309266 82 Linux swap / Solaris</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Linux hangi disk alanında ise onu seçip fsck komutu ile diski tamir etmek için aşağıdaki kod satırını çalıştırıyoruz.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo fsck /dev/sda1
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo fsck /dev/sda1</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Sistemin boot ayarlarını eski haline getirdikten sonra yeniden başlatıyoruz ve problem çözülmüş olması gerekiyor.</p>
