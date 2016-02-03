@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-02-03T08:28:57+02:00</updated>
+  <updated>2016-02-03T08:39:03+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -91,7 +91,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Rails-Angularjs (Unknown provider: tProvider) Hatası]]></title>
+    <title type="html"><![CDATA[Rails-AngularJS (Unknown provider: tProvider) Hatası]]></title>
     <link href="http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/"/>
     <updated>2015-09-12T23:49:27+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi</id>
