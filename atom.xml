@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-02-03T08:39:03+02:00</updated>
+  <updated>2016-02-03T08:53:32+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -520,7 +520,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x61;&#110;&#103;&#x75;&#x6c;&#x61;&#x72;&#x40;&#103;&#x6f;&#111;&#x67;&#x6c;&#101;&#103;&#x72;&#111;&#117;&#112;&#x73;&#46;&#99;&#x6f;&#x6d;">&#x61;&#x6e;&#x67;&#117;&#108;&#x61;&#x72;&#x40;&#x67;&#x6f;&#111;&#103;&#108;&#x65;&#x67;&#x72;&#111;&#117;&#112;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#97;&#x6e;&#x67;&#117;&#108;&#97;&#114;&#64;&#103;&#111;&#x6f;&#103;&#108;&#x65;&#103;&#x72;&#x6f;&#x75;&#112;&#x73;&#x2e;&#x63;&#111;&#x6d;">&#x61;&#x6e;&#x67;&#117;&#108;&#97;&#x72;&#64;&#x67;&#111;&#111;&#x67;&#108;&#101;&#103;&#114;&#x6f;&#x75;&#x70;&#x73;&#46;&#x63;&#111;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -1054,7 +1054,7 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
     <link href="http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir/"/>
     <updated>2014-01-29T21:46:50+02:00</updated>
     <id>http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir</id>
-    <content type="html"><![CDATA[<p>Film çekim setlerinde arkaplanın sadece mavi ya da sadece yeşil renkte olduğunu gördüyseniz ne amaçla böyle yapıldığını merak etmişsinizdir. Filmlerin böyle bir ortamda çekilmesi Chroma Key tekniğini uygulayabilmek içindir.</p>
+    <content type="html"><![CDATA[<p>Film çekim setlerinde arkaplanın sadece mavi ya da sadece yeşil renkte olduğunu gördüyseniz ne amaçla bu şekilde yapıldığını merak etmiş olabilirsiniz. Filmlerin böyle bir ortamda çekilmesi Chroma Key tekniğini uygulayabilmek içindir.</p>
 
 <p><img class="center" src="http://upload.wikimedia.org/wikipedia/en/0/0d/300_comparison.JPG"></p>
 
@@ -1068,7 +1068,7 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
 </ul>
 
 
-<p>Öncelikle düz yeşil renkli (veya mavi renkli) arkaplanda, çekilmesi gereken sahneler çekiliyor ardından post-prodüksiyon(çekimler bittikten sonra çekim üzerinde yapılan düzenlemeler) aşamasında özel bilgisayar programları aracılığıyla bu tek renk arkaplan anahtar renk olarak seçilip siliniyor (transparan yapılıyor) ve yerine konulması istenen görüntü giydirilir.
+<p>Öncelikle düz yeşil renkli (veya mavi renkli) arkaplanda çekilmesi gereken sahneler çekiliyor ardından post-prodüksiyon(çekimler bittikten sonra çekim üzerinde yapılan düzenlemeler) aşamasında özel bilgisayar programları aracılığıyla bu tek renk arkaplan anahtar renk olarak seçilip siliniyor (transparan yapılıyor) ve yerine konulması istenen görüntü giydiriliyor.
 Görüntüdeki renkli arkaplanı (greenscreen, bluescreen) silme işlemine “key”lemek denir.</p>
 
 <h3>Chroma Key Tarihi</h3>
@@ -1081,7 +1081,7 @@ Görüntüdeki renkli arkaplanı (greenscreen, bluescreen) silme işlemine “ke
 
 <h3>Neden Genellikle Mavi ya da Yeşil Renk Kullanılır?</h3>
 
-<p>Aslında arkaplan rengi olarak yeşil ve mavi renkler dışında başka renklerde kullanılabilir. Ancak buradaki amaç insan tenine en uzak renklerin seçilmesidir. Eğer siyah renk, anahtar renk olarak seçilirse ve bu renk üzerine görüntü bindirmesi yapılırsa kişinin veya nesnenin üzerinde bulunan siyah renkli yerler üzerine de görüntü binecektir. Böylece kişiler ve nesneler üzerinde görüntü bozuklukları yaşanacaktır. Bu yüzden chroma key tekniğinde anahtar renk seçerken nesneler üzerinde fazla kullanılmayan renk seçilmeli ve ekran önündeki insan veya nesnenin seçilen anahtar renk ile aynı renkte bir şey barındırmaması gerekmektedir.</p>
+<p>Aslında arkaplan rengi olarak yeşil ve mavi renkler dışında başka renklerde kullanılabilir. Ancak buradaki amaç insan tenine en uzak renklerin seçilmesidir. Eğer siyah renk, anahtar renk olarak seçilirse ve bu renk üzerine görüntü bindirilirse kişinin veya nesnenin üzerinde bulunan siyah renkli yerler üzerine de görüntü binecektir. Böylece kişiler ve nesneler üzerinde görüntü bozuklukları yaşanacaktır. Bu yüzden chroma key tekniğinde anahtar renk seçerken nesneler üzerinde fazla kullanılmayan renk seçilmeli ve ekran önündeki insan veya nesnenin seçilen anahtar renk ile aynı renkte bir şey barındırmaması gerekmektedir.</p>
 
 <p><img class="center" src="http://www.virtualstudio.tv/assets/media/blog-images/what_is_chroma_keying_green_screen.jpg">
 Croma key çekim bittikten sonra (post-production) uygulanabileceği gibi çekim ile eş zamanlı(real-time) olarakta uygulanabilen bir tekniktir.
@@ -1091,7 +1091,7 @@ Günlük olarak hepimizin şahit olabileceği bir örnek vermek gerekirse hava t
 
 <p>Chroma key tekniği günümüzdeki kullanılan hale gelene kadar çok aşamadan geçmiştir. İlk başlarda bu teknik ile hareketli görüntüler çekilemiyordu.
 Yani greenscreen teknolojisinin kullanıldığı sahnelerde kamera sabitti. Bunun sebebi ise arkaplanı ve önde duran aktörü saptamada sorun yaşanmasıydı.
-<img class="center" src="http://ralph-dte.eu/files/2011/02/matrix_chroma_key.jpg"></p>
+<img class="center" src="http://ibxk.com.br/2012/6/materias/14572694012135422.jpg"></p>
 
 <p>Ancak günümüzde arkaplana “+”, “x” işaretleriyle yada düzgün aralıklı noktalarla referans noktaları konulmakta ve bu yardımcı noktalar aracılığıyla bilgisayarlar, arkaplanı ve öndeki aktörü çok daha rahat bir şekilde saptayabilmektedir.
 Yukarıdaki resimde siyah noktalar aşağı veya yukarı doğru biraz meyilli yerleştirilmiştir. Bu sebeple kamera hareketinin de o yönde olacağını söyleyebiliriz. Dolayısıyla çekim kapsamına giren bu arkaplanlar öndeki aktörden daha kolay ayırt edilmektedir.<br/>
