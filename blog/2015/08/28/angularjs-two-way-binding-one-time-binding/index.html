@@ -108,9 +108,9 @@
 
 <p>Two way binding (Çift yönlü veri bağlama) modeldeki değişiklikleri view&#8217;e, view&#8217;deki değişiklikleri modele aktarma işlemidir. Daha önceki <a href="http://ecmelkytz.github.io/blog/2015/08/11/angularjs-calisma-mantigi/">yazımda</a> two way binding ve doğal olarak digest cycle&#8217;dan uzun uzadıya bahsetmiştim.</p>
 
-<p>Two way binding, kullanıcı etkileşimlerinin direk view kısmına aktarılması kısmında çok güzel bir işleve sahip olsada; digest cycle tetiklendikten sonra en az 2, maksimum 10 kez çalıştığı düşünülürse performans anlamında büyük sorunlar oluşturacaktır. Şöyleki benim data binding sayım arttığı ölçüde $digest loop&#8217;un sayısıda artacaktır. Kullanıcı etkileşiminin yoğun olduğu bir sayfada performans anlamında yaşanabilecek sıkıntılar elbetteki kaçınılmaz olacaktır.</p>
+<p>Two way binding, kullanıcı etkileşimlerinin direk view kısmına aktarılması kısmında çok güzel bir işleve sahip olsa da; digest cycle tetiklendikten sonra en az 2, maksimum 10 kez çalıştığı düşünülürse performans anlamında büyük sorunlar oluşturacaktır. Şöyle ki; benim data binding sayım arttığı ölçüde $digest loop&#8217;un sayısı da artacaktır. Kullanıcı etkileşiminin yoğun olduğu bir sayfada performans anlamında yaşanabilecek sıkıntılar elbette ki kaçınılmaz olacaktır.</p>
 
-<p>Hal böyle olunca Angularjs geliştiricileri Angular 1.3 versiyonu ile data binding&#8217;den kaynaklanan performans sorunlarını gidermek adına one-time binding&#8217;i tanıttılar. One time binding view-model güncelleme işlemini bir kez yapıyor, bundan sonra yapılan etkileşimler herhangi bir şekilde view&#8217;e ya da modele yansıtılmıyor. Yani güncellememizi bir kereye mahsus olmak üzere yapmış oluyoruz.</p>
+<p>Hal böyle olunca Angularjs geliştiricileri Angular 1.3 versiyonu ile data binding&#8217;den kaynaklanan performans sorunlarını gidermek adına one-time binding&#8217;i tanıttılar. One time binding view-model güncelleme işlemini bir kez yapıyor, bundan sonra yapılan etkileşimler herhangi bir şekilde view&#8217;e ya da modele yansıtılmıyor. Yani digest cycle bir kez kullanıcı etkileşimlerini dinliyor ve bu sayede güncelleme bir kez yapılmış oluyor.</p>
 
 <h3>One-time binding nasıl çalışır görelim:</h3>
 
