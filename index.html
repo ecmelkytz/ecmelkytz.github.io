@@ -784,11 +784,192 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#x61;&#110;&#103;&#117;&#108;&#x61;&#114;&#64;&#x67;&#111;&#x6f;&#103;&#x6c;&#101;&#x67;&#114;&#x6f;&#x75;&#x70;&#115;&#x2e;&#x63;&#x6f;&#109;">&#x61;&#110;&#x67;&#x75;&#108;&#x61;&#114;&#64;&#x67;&#x6f;&#111;&#x67;&#108;&#101;&#103;&#x72;&#111;&#x75;&#x70;&#x73;&#x2e;&#99;&#x6f;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#97;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#x40;&#103;&#111;&#x6f;&#103;&#x6c;&#x65;&#x67;&#114;&#x6f;&#x75;&#112;&#115;&#46;&#99;&#x6f;&#109;">&#97;&#110;&#103;&#x75;&#108;&#97;&#x72;&#x40;&#103;&#111;&#111;&#x67;&#108;&#101;&#103;&#114;&#111;&#117;&#x70;&#x73;&#x2e;&#99;&#x6f;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
 
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/">Ruby: Attr_accessor Kullanımı</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-03T15:45:44+03:00" pubdate data-updated="true">Jul 3<sup>rd</sup>, 2015</time>
+        
+         | <a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Person adında bir sınıfımızın olduğunu farzedelim:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span> <span class="c1"># =&gt; NoMethodError: undefined method &#39;name&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>name</code> adında bir metot tanımlamadığımız sürece yukarıdaki gibi hata alacağız.</p>
+
+<p>O halde metodumuzu tanımlayalım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span>
+</span><span class='line'>    <span class="vi">@name</span> <span class="c1">#  instance variable</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; nil</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span> <span class="c1"># =&gt; NoMethodError: undefined method `name=&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>name</code> metodunu tanımladık ancak görüldüğü gibi sadece okuma yapabiliyoruz, herhangi bir değer atayamıyoruz.</p>
+
+<p>İşte bu iki işlemden biri reader (değişkenin değerine erişilmesi) diğeri ise writer (değişkenin değerinin değiştirilmesi) olarak adlandırılır.</p>
+
+<p>Yukarıda writer metodu oluşturmamıştık şimdi onu da oluşturalım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span> <span class="c1"># reader</span>
+</span><span class='line'>    <span class="vi">@name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span><span class="o">=</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="c1"># writer</span>
+</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="n">str</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Artık reader ve writer metodları kullanarak örnek değişkenin (@name) değerine erişip onu değiştirebiliriz.
+Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
+
+<p><strong>Bu işin kolayına bakalım:</strong></p>
+
+<p>Yukarıdaki gibi iki ayrı fonksiyon tanımlamaya gerek yok.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="kp">attr_writer</span> <span class="ss">:name</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Daha kolayına bakalım:</strong></p>
+
+<p>Hem reader hem de writer metodlarının işlevselliğine sahip bir metot:  <code>attr_accessor</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>attr_accessor :name</code>  reader ve writer metodlarını oluşturmanın yanı sıra bir de @name (instance variable/örnek değişken) oluşturur.</p>
+
+<p>İnstance variable&#8217;ı kullanalım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">say_hello</span>
+</span><span class='line'>    <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">say_hello</span> <span class="c1"># =&gt; &quot;Hello Ecmel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally</p>
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_280,w_346/v1457011914/thatsit.png_m778zf.jpg"></p>
 </div>
  
  
@@ -1035,114 +1216,6 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 
 
-</div>
- 
- 
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/">How to Change a Particular Column Background Color in Jquery of Datatable</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-09-26T23:13:32+03:00" pubdate data-updated="true">Sep 26<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Datatable kullanarak bazı verilerinizi listeliyor ve bazı değerlere göre satırların veya kolonların renklerini değiştirmek istiyorsanız aşağıdaki gibi bir yöntem kullanabilirsiniz.</p>
-
-<p>Aşağıdaki Datatable&#8217;da <code>Durum</code> kolonuna göre satırların arkaplan renginin nasıl değiştirileceğine bakalım.</p>
-
-<p><img src="http://i.imgur.com/dZbtEg4.png" alt="Imgur" /></p>
-
-<p><code>Durum</code> kolonundaki değer eğer &ldquo;Onaylanmış&rdquo; ise arkaplan rengini yeşil, diğer durumlar için arkaplan rengini kırmızı yapalım.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#datatable&#39;</span><span class="p">).</span><span class="nx">dataTable</span><span class="p">({</span>
-</span><span class='line'>    <span class="s2">&quot;fnRowCallback&quot;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">nRow</span><span class="p">,</span> <span class="nx">aData</span><span class="p">,</span> <span class="nx">iDisplayIndex</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="nx">aData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Onaylanmış&quot;</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#dff0d8&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#f2dede&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">nRow</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Eğer aşağıdaki Datatable&#8217;da ki gibi sadece bir kolon için arkaplan renginin değişmesini istiyorsanız:</p>
-
-<p><img src="http://i.imgur.com/kLMGeX9.png" alt="Imgur" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#datatable&#39;</span><span class="p">).</span><span class="nx">dataTable</span><span class="p">({</span>
-</span><span class='line'>    <span class="s2">&quot;fnRowCallback&quot;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">nRow</span><span class="p">,</span> <span class="nx">aData</span><span class="p">,</span> <span class="nx">iDisplayIndex</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="nx">aData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Onaylanmış&quot;</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td:eq(5)&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#dff0d8&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td:eq(5)&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#f2dede&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">nRow</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
 </div>
  
  

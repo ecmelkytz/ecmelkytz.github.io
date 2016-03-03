@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ubuntu | Ecmel Kaytazoğlu]]></title>
+  <link href="http://ecmelkytz.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
+  <link href="http://ecmelkytz.github.com/"/>
+  <updated>2016-03-03T15:42:33+02:00</updated>
+  <id>http://ecmelkytz.github.com/</id>
+  <author>
+    <name><![CDATA[Ecmel Kaytazoğlu]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu initramfs hatası]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/"/>
+    <updated>2016-01-20T14:30:38+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi</id>
+    <content type="html"><![CDATA[<p><img class="center <a" src="href="http://res.cloudinary.com/dro8cemyf/image/upload/v1450428402/initramfs_jihx5g.png">http://res.cloudinary.com/dro8cemyf/image/upload/v1450428402/initramfs_jihx5g.png</a>&#8221;></p>
+
+<p>Araştırmalarım neticesinde elde ettiğim bilgilere göre bu hatanın olası 2 sebebi var.</p>
+
+<p><strong>Sebep 1:</strong> Eğer Ubuntu&#8217;nuz Windows dosya sistemi üzerine kuruluysa ve windows düzgün bir şekilde kapatılmadıysa (incorrectly shutdown) bu sorun yaşanabilir.</p>
+
+<p><strong>Sebep 2:</strong> Ubuntu kernel yükseltildiği (upgrated) için ya da kötü bir superblock&#8217;a sahip olduğunuz için bu sorun yaşanabilir.
+Çözüm için önerilen bir çok yolu denedim. Ancak bir tanesi ile sorunu halledebildim. Bende tam olarak onu buraya not etmiş olacağım.</p>
+
+<p>Ubuntu Live CD ile bilgisayarı boot ediyoruz. Ekrana aşağıdaki gibi bir görüntü geldiğinde <code>Try Ubuntu</code> deyip devam ediyoruz.</p>
+
+<p><img class="center <a" src="href="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_385,w_561/v1450429545/ubuntu_ohikd8.png">http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_385,w_561/v1450429545/ubuntu_ohikd8.png</a>&#8221;></p>
+
+<p>Ubuntu masaüstü açılacaktır. Sonrasında Ctrl + Alt + T ile terminali açıyoruz.</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo fdisk -l</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Devamında bilgisayarınıza takılı tüm diskler ve disk bölümlerinin listelendiği bir tablo karşınıza gelecektir.</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Device Boot Start End Blocks Id System
+</span><span class='line'>/dev/sda1 * 1 30238 242886703+ 83 Linux
+</span><span class='line'>/dev/sda2 30239 30401 1309297+ 5 Extended
+</span><span class='line'>/dev/sda5 30239 30401 1309266 82 Linux swap / Solaris</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Linux hangi disk alanında ise onu seçip fsck komutu ile diski tamir etmek için aşağıdaki kod satırını çalıştırıyoruz.</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo fsck /dev/sda1</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Sistemin boot ayarlarını eski haline getirdikten sonra yeniden başlatıyoruz ve problem çözülmüş olması gerekiyor.</p>
+]]></content>
+  </entry>
+  
+</feed>
