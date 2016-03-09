@@ -21,6 +21,12 @@
   </url>
   
   <url>
+    <loc>http://ecmelkytz.github.com/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/</loc>
+    <lastmod>2015-09-02T12:37:26+03:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/</loc>
     <lastmod>2015-08-28T23:31:15+03:00</lastmod>
     <priority>0.8</priority>
@@ -107,14 +113,14 @@
   
   <url>
     <loc>http://ecmelkytz.github.com/blog/archives/</loc>
-    <lastmod>2016-03-03T15:42:33+02:00</lastmod>
+    <lastmod>2016-03-09T14:49:22+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ecmelkytz.github.com/</loc>
-    <lastmod>2016-03-03T15:42:33+02:00</lastmod>
+    <lastmod>2016-03-09T14:49:22+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
