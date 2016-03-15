@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-03-15T16:29:06+02:00</updated>
+  <updated>2016-03-15T16:31:07+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: ActiveRecord Enum Kullanımı]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/03/10/rails-activerecord-enum-kullanimi/"/>
+    <updated>2016-03-10T14:00:01+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/03/10/rails-activerecord-enum-kullanimi</id>
+    <content type="html"><![CDATA[<p>Rails 4.1 ile gelen enum özelliğini örnek senaryolar üzerinden açıklamaya çalışacağım.</p>
+
+<p>Şimdi Car adında bir modelimiz olsun ve biz  aracın  kiralanmış (rented), kullanıma uygun (suitable_for_use) veya kullanım dışı (out_of_use) olması gibi bilgilerini tutmak isteyelim.</p>
+
+<h5>Birden fazla kolon mu kullanalım? Neden?</h5>
+
+<p>Aşağıdaki gibi tablomuza bu alanları eklediğimizi düşünelim.</p>
+
+<pre><code class="Ruby">class AddStatusesToCars &lt; ActiveRecord::Migration
+  def change
+    add_column :cars, :suitable_for_use?, :boolean
+    add_column :cars, :rented, :boolean
+    add_column :cars, :out_of_use?, :boolean
+  end
+end
+</code></pre>
+
+<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
+
+<p>Böyle durumlarda temsili ruh hali:</p>
+
+<p><img class="center <a" src="href="http://rack.0.mshcdn.com/media/ZgkyMDEzLzA2LzEyL2Y4L0xpenp5TWNHdWlyLmMzYThhLmdpZgpwCXRodW1iCTEyMDB4OTYwMD4/312b02fe/7d8/Lizzy-McGuire.gif">http://rack.0.mshcdn.com/media/ZgkyMDEzLzA2LzEyL2Y4L0xpenp5TWNHdWlyLmMzYThhLmdpZgpwCXRodW1iCTEyMDB4OTYwMD4/312b02fe/7d8/Lizzy-McGuire.gif</a>&#8221;></p>
+
+<p> O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
+
+<pre><code class="Ruby">class AddStatusToCars &lt; ActiveRecord::Migration
+  def change
+    add_column :cars, :status, :integer, default: 0
+  end
+end
+</code></pre>
+
+<pre><code class="Ruby">class Car &lt; ActiveRecord::Base
+  STATUSES = %w{suitable_for_use rented out_of_use}
+
+    def status_to_s
+      STATUSES[status]
+    end
+
+    def suitable_for_use?
+      status_to_s == 'suitable_for_use'
+    end
+
+    def rented?
+      status_to_s == 'rented'
+    end
+
+    def out_of_use?
+      status_to_s == 'out_of_use'
+    end
+end
+</code></pre>
+
+<p>Kullanımına bakalım:</p>
+
+<pre><code>&gt; Car.first.status_to_s
+# =&gt; “suitable_for_use”
+
+&gt; Car.first.suitable_for_use?
+# =&gt; true
+
+&gt; Car.first.rented?
+# =&gt; false
+
+&gt; Car.first.out_of_use?
+# =&gt; false
+</code></pre>
+
+<p>Üç kolon oluşturmak yerine bu daha tercih edilebilir. Ancak ekstra fonksiyon oluşturma işleri nereye kadar?</p>
+
+<p><img alt="sparkles" src="/images/emoji/unicode/2728.png" class="emoji" /> Enum&#8217;u devreye sokalım.</p>
+
+<p>Car modelimize status alanını ekleyelim:</p>
+
+<pre><code class="Ruby">class AddStatusToCars &lt; ActiveRecord::Migration
+  def change
+    add_column :cars, :status, :integer, default: 0
+  end
+end
+</code></pre>
+
+<p>Modelimize enum ile status&#8217;larımızı tanımlayalım.</p>
+
+<pre><code class="Ruby">class Book &lt; ActiveRecord::Base
+  enum status: [:suitable_for_use, :rented, :out_of_use]
+end
+</code></pre>
+
+<p>Kullanımına bakalım:</p>
+
+<pre><code class="Ruby">&gt; Car.first.status
+# =&gt; “suitable_for_use”
+
+&gt; Car.first.rented?
+# =&gt; false
+
+# Kitap durumunu kiralık olarak değiştirelim
+book.status = :rented
+book.rented! # güncellendi
+book.rented?
+# =&gt; true
+
+# Bütün kiralık arabaları bulmak için (scope metodu)
+ &gt; Car.rented
+# =&gt; SELECT "cars".* FROM "cars" WHERE "cars"."status" = ?  [["status", 1]]
+# [#&lt;Car:0x007f41d3eeeeee
+# id: 1,
+# status: 1,
+# ]
+
+
+# Bütün kullanım dışı arabaları bulmak için (scope metodu)
+&gt; Car.out_of_use
+# =&gt; SELECT "cars".* FROM "cars" WHERE "cars"."status" = ?  [["status", 2]]
+# =&gt; []  (Kullanım dışı araç yok)
+</code></pre>
+
+<p>Özetlersek:</p>
+
+<p>Status ile ilgili verileri veritabanında tek bir kolonda tutuyoruz.
+Enum ile tanımlanan attribute&#8217;lar ile veritabanındaki tamsayılar eşleştirilir.  ActiveRecord bu dizi indislerine karşılık gerçek sembolleri çeker ve onları döndürür. Enum aynı zamanda  suitable_for_use, rented, out_of_use scope&#8217;larını oluşturur.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails - Routes Don't Repeat Yourself (DRY)]]></title>
@@ -231,83 +360,6 @@ UnicodeUtils.downcase(&ldquo;ÖİLŞÜ&rdquo;)
 <p><strong>Çözüm:</strong><br/>
 Çok basit bir çözümü olmasıyla beraber gereksiz yere vaktimi çaldığı için buraya not düşmeye karar verdim.<br/>
 <strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails - Ckeditor]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/08/28/rails-plus-ckeditor/"/>
-    <updated>2014-08-28T16:13:22+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/08/28/rails-plus-ckeditor</id>
-    <content type="html"><![CDATA[<p>Rails uygulamalarınıza aşağıdaki resimde görülen tarzda bir text editörü eklemek istiyorsanız ckeditor
-kullanmak bu iş için uygun olacaktır.</p>
-
-<p><img class="center <a" src="href="http://i.imgur.com/PlrBDC6.png">http://i.imgur.com/PlrBDC6.png</a>&#8221;></p>
-
-<p>Öncelikle uygulamamızdaki Gemfile içerisine gerekli gem&#8217;leri ekleyelim.</p>
-
-<p><figure class='code'><figcaption><span>Gemfile </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">paperclip</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span><span class='line'><span class="n">gem</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">ckeditor</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Ve Bundle ediyoruz.</p>
-
-<pre><code class="Ruby Terminal">bundle install
-</code></pre>
-
-<p>Gemleri install ettik. Peki yüklenecek dosyalar için nasıl model oluşturacağız? Active_record orm&#8217;si paperclip gemini default olarak kullanır. Mongoid, Carrierwave ile nasıl kullanılacağını merak ediyorsanız daha ayrıntılı bilgi için <a href="https://github.com/galetahub/ckeditor">README</a> kaynağına göz atabilirsiniz. <br/>
-ActiveRecord + Paperclip kullanımı:</p>
-
-<pre><code class="Ruby Terminal ">rails generate ckeditor:install --orm=active_record --backend=paperclip
-</code></pre>
-
-<p>Bir sorunla karşılaşmadıysanız terminalden hangi dosyaların oluşturulduğunu görebilirsiniz.</p>
-
-<pre><code> create  config/initializers/ckeditor.rb
- route  mount Ckeditor::Engine =&gt; '/ckeditor'
- create  app/models/ckeditor/asset.rb
- create  app/models/ckeditor/picture.rb
- create  app/models/ckeditor/attachment_file.rb
- create  db/migrate/20140829114657_create_ckeditor_assets.rb
-</code></pre>
-
-<p>Tabloların oluşmasını tetikleyelim o halde:</p>
-
-<pre><code>rake db:migrate
-</code></pre>
-
-<p>Şimdide javascript kodunu <code>/views/layouts/application.html.erb</code> içerisine include ediyoruz.  Ayrıca <a href="http://ckeditor.com/download">ckeditor-download</a> adresinden ckeditor&#8217;u indirip dosyalara erişebilirsiniz.</p>
-
-<pre><code class="Ruby application.html.erb">&lt;%= javascript_include_tag 'ckeditor/ckeditor.js' %&gt;
-</code></pre>
-
-<p>Sonra <code>body</code> içerisine javascript kodunu ekliyoruz:</p>
-
-<pre><code class="Javascript application.html.erb ">
- &lt;script type="text/javascript"&gt;
-  $(document).ready(function() {
-      if ($('textarea.ckeditor').length &gt; 0) {
-          var data = $('textarea.ckeditor');
-          $.each(data, function(i) {
-              CKEDITOR.replace(data[i].id);
-          });
-      }
-  });
-&lt;/script&gt;
-</code></pre>
-
-<p>Ckeditor&#8217;u nerede göstermek istiyorsanız onunla ilgili sayfaya form içeriği ekliyoruz. Bu uygulama için ben <a href="https://github.com/plataformatec/simple_form">simple_form</a> gemini kullanıyorum. İstediğiniz görüntüyü elde etmek için form içeriği şöyle olacaktır:</p>
-
-<pre><code class="Ruby _form.html.erb">&lt;%= simple_form_for(@yourmodel) do |f| %&gt;
-&lt;%= form.input :content, :as =&gt; :ckeditor, :input_html =&gt; { :ckeditor =&gt; {:toolbar =&gt; 'Full'} } %&gt;
-&lt;%end%&gt;
-</code></pre>
-
-<p>Artık ckeditor&#8217;u kullanabilirsiniz.
-Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/galetahub/ckeditor">Githubda ckeditor gem</a>, <a href="http://ckeditor.com/download">Ckeditor&#8217;un resmi sayfası</a> adreslerinden ulaşabilirsiniz.</p>
 ]]></content>
   </entry>
   
