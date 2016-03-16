@@ -108,9 +108,9 @@
 
 <p>Şimdi Car adında bir modelimiz olsun ve biz  aracın  kiralanmış (rented), kullanıma uygun (suitable_for_use) veya kullanım dışı (out_of_use) olması gibi bilgilerini tutmak isteyelim.</p>
 
-<h5>Birden fazla kolon mu kullanalım? Neden?</h5>
+<h5>Bunun için birden fazla kolon mu kullanalım? Neden?</h5>
 
-<p>Aşağıdaki gibi tablomuza bu alanları eklediğimizi düşünelim.</p>
+<p>Aşağıdaki gibi bir migration ile tablomuza bu alanları eklediğimizi düşünelim.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -129,13 +129,15 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
+<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birinin değerini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
 
-<p>Böyle durumlarda temsili ruh hali:</p>
+<p>Bu gibi durumlarda temsili ruh halini buraya koyalım:</p>
 
 <p><img class="center" src="http://rack.0.mshcdn.com/media/ZgkyMDEzLzA2LzEyL2Y4L0xpenp5TWNHdWlyLmMzYThhLmdpZgpwCXRodW1iCTEyMDB4OTYwMD4/312b02fe/7d8/Lizzy-McGuire.gif"></p>
 
-<p> O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
+<p>O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
+
+<p>Car modelimize status alanını integer olarak ekliyoruz.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -152,7 +154,8 @@
 
 
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -171,31 +174,32 @@
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
 </span><span class='line'>  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{suitable_for_use rented out_of_use}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">status_to_s</span>
-</span><span class='line'>      <span class="no">STATUSES</span><span class="o">[</span><span class="n">status</span><span class="o">]</span>
-</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">status_to_s</span>
+</span><span class='line'>    <span class="no">STATUSES</span><span class="o">[</span><span class="n">status</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">suitable_for_use?</span>
-</span><span class='line'>      <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;suitable_for_use&#39;</span>
-</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">suitable_for_use?</span>
+</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;suitable_for_use&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">rented?</span>
-</span><span class='line'>      <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;rented&#39;</span>
-</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">rented?</span>
+</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;rented&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">out_of_use?</span>
-</span><span class='line'>      <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;out_of_use&#39;</span>
-</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">out_of_use?</span>
+</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;out_of_use&#39;</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>Kullanımına bakalım:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -206,7 +210,7 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status_to_s</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status_to_s</span>
 </span><span class='line'><span class="c1"># =&gt; “suitable_for_use”</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">suitable_for_use?</span>
@@ -241,18 +245,20 @@
 
 <p>Modelimize enum ile status&#8217;larımızı tanımlayalım.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">enum</span> <span class="ss">status</span><span class="p">:</span> <span class="o">[</span><span class="ss">:suitable_for_use</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:out_of_use</span><span class="o">]</span>
-</span><span class='line'><span class="k">end</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>    <span class="n">enum</span> <span class="ss">status</span><span class="p">:</span> <span class="o">[</span><span class="ss">:suitable_for_use</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:out_of_use</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Kullanımına bakalım:</p>
+<p>Hepsi bu kadar. Başka herhangi bir fonksiyon filan tanımlamaya gerek yok. Direk nasıl kullanıldığına bakalım:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -277,7 +283,7 @@
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
 </span><span class='line'><span class="c1"># =&gt; “suitable_for_use”</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">rented?</span>

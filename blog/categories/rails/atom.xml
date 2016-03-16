@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-03-15T16:34:19+02:00</updated>
+  <updated>2016-03-16T09:27:01+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -22,9 +22,9 @@
 
 <p>Şimdi Car adında bir modelimiz olsun ve biz  aracın  kiralanmış (rented), kullanıma uygun (suitable_for_use) veya kullanım dışı (out_of_use) olması gibi bilgilerini tutmak isteyelim.</p>
 
-<h5>Birden fazla kolon mu kullanalım? Neden?</h5>
+<h5>Bunun için birden fazla kolon mu kullanalım? Neden?</h5>
 
-<p>Aşağıdaki gibi tablomuza bu alanları eklediğimizi düşünelim.</p>
+<p>Aşağıdaki gibi bir migration ile tablomuza bu alanları eklediğimizi düşünelim.</p>
 
 <pre><code class="Ruby">class AddStatusesToCars &lt; ActiveRecord::Migration
   def change
@@ -35,13 +35,15 @@
 end
 </code></pre>
 
-<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
+<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birinin değerini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
 
-<p>Böyle durumlarda temsili ruh hali:</p>
+<p>Bu gibi durumlarda temsili ruh halini buraya koyalım:</p>
 
 <p><img class="center <a" src="href="http://rack.0.mshcdn.com/media/ZgkyMDEzLzA2LzEyL2Y4L0xpenp5TWNHdWlyLmMzYThhLmdpZgpwCXRodW1iCTEyMDB4OTYwMD4/312b02fe/7d8/Lizzy-McGuire.gif">http://rack.0.mshcdn.com/media/ZgkyMDEzLzA2LzEyL2Y4L0xpenp5TWNHdWlyLmMzYThhLmdpZgpwCXRodW1iCTEyMDB4OTYwMD4/312b02fe/7d8/Lizzy-McGuire.gif</a>&#8221;></p>
 
-<p> O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
+<p>O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
+
+<p>Car modelimize status alanını integer olarak ekliyoruz.</p>
 
 <pre><code class="Ruby">class AddStatusToCars &lt; ActiveRecord::Migration
   def change
@@ -50,41 +52,89 @@ end
 end
 </code></pre>
 
-<pre><code class="Ruby">class Car &lt; ActiveRecord::Base
-  STATUSES = %w{suitable_for_use rented out_of_use}
-
-    def status_to_s
-      STATUSES[status]
-    end
-
-    def suitable_for_use?
-      status_to_s == 'suitable_for_use'
-    end
-
-    def rented?
-      status_to_s == 'rented'
-    end
-
-    def out_of_use?
-      status_to_s == 'out_of_use'
-    end
-end
-</code></pre>
+<p><figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{suitable_for_use rented out_of_use}</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def status_to_s</span>
+</span><span class='line'><span class="sr">    STATUSES[status]</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">suitable_for_use?</span>
+</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">suitable_for_use</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def rented?</span>
+</span><span class='line'><span class="sr">    status_to_s == &amp;lsquo;rented&amp;rsquo;</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">out_of_use?</span>
+</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">out_of_use</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <p>Kullanımına bakalım:</p>
 
-<pre><code>&gt; Car.first.status_to_s
-# =&gt; “suitable_for_use”
-
-&gt; Car.first.suitable_for_use?
-# =&gt; true
-
-&gt; Car.first.rented?
-# =&gt; false
-
-&gt; Car.first.out_of_use?
-# =&gt; false
-</code></pre>
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;Car.first.status_to_s&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="err">“</span><span class="n">suitable_for_use</span><span class="err">”</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.suitable_for_use?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">true</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.rented?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">false</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.out_of_use?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">false</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p></blockquote>
 
 <p>Üç kolon oluşturmak yerine bu daha tercih edilebilir. Ancak ekstra fonksiyon oluşturma işleri nereye kadar?</p>
 
@@ -101,39 +151,101 @@ end
 
 <p>Modelimize enum ile status&#8217;larımızı tanımlayalım.</p>
 
-<pre><code class="Ruby">class Book &lt; ActiveRecord::Base
-  enum status: [:suitable_for_use, :rented, :out_of_use]
-end
-</code></pre>
+<p><figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">class</span> <span class="nc">Car</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>    <span class="n">enum</span> <span class="ss">status</span><span class="p">:</span> <span class="o">[</span><span class="ss">:suitable_for_use</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:out_of_use</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
-<p>Kullanımına bakalım:</p>
+<p>Hepsi bu kadar. Başka herhangi bir fonksiyon filan tanımlamaya gerek yok. Direk nasıl kullanıldığına bakalım:</p>
 
-<pre><code class="Ruby">&gt; Car.first.status
-# =&gt; “suitable_for_use”
-
-&gt; Car.first.rented?
-# =&gt; false
-
-# Kitap durumunu kiralık olarak değiştirelim
-book.status = :rented
-book.rented! # güncellendi
-book.rented?
-# =&gt; true
-
-# Bütün kiralık arabaları bulmak için (scope metodu)
- &gt; Car.rented
-# =&gt; SELECT "cars".* FROM "cars" WHERE "cars"."status" = ?  [["status", 1]]
-# [#&lt;Car:0x007f41d3eeeeee
-# id: 1,
-# status: 1,
-# ]
-
-
-# Bütün kullanım dışı arabaları bulmak için (scope metodu)
-&gt; Car.out_of_use
-# =&gt; SELECT "cars".* FROM "cars" WHERE "cars"."status" = ?  [["status", 2]]
-# =&gt; []  (Kullanım dışı araç yok)
-</code></pre>
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;Car.first.status&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="err">“</span><span class="n">suitable_for_use</span><span class="err">”</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.rented?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">false</span><span class="o">&lt;</span><span class="sr">/h1&gt;&lt;/</span><span class="n">blockquote</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Kitap</span> <span class="n">durumunu</span> <span class="n">kiral</span><span class="err">ı</span><span class="n">k</span> <span class="n">olarak</span> <span class="n">de</span><span class="err">ğ</span><span class="n">i</span><span class="err">ş</span><span class="n">tirelim</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;book.status = :rented</span>
+</span><span class='line'><span class="sr">book.rented! # güncellendi</span>
+</span><span class='line'><span class="sr">book.rented?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">true</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;Bütün kiralık arabaları bulmak için (scope metodu)&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">blockquote</span><span class="o">&gt;&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Car</span><span class="o">.</span><span class="n">rented</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; SELECT &amp;ldquo;cars&amp;rdquo;.* FROM &amp;ldquo;cars&amp;rdquo; WHERE &amp;ldquo;cars&amp;rdquo;.&amp;ldquo;status&amp;rdquo; = ?  [[&amp;ldquo;status&amp;rdquo;, 1]]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;[</span><span class="c1">#&amp;lt;Car:0x007f41d3eeeeee&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;status: 1,&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;]&lt;</span><span class="sr">/h1&gt;&lt;/</span><span class="n">blockquote</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">B</span><span class="err">ü</span><span class="n">t</span><span class="err">ü</span><span class="n">n</span> <span class="n">kullan</span><span class="err">ı</span><span class="n">m</span> <span class="n">d</span><span class="err">ışı</span> <span class="n">arabalar</span><span class="err">ı</span> <span class="n">bulmak</span> <span class="n">i</span><span class="err">ç</span><span class="k">in</span> <span class="p">(</span><span class="n">scope</span> <span class="n">metodu</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;Car.out_of_use&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="no">SELECT</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cars</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">.</span><span class="n">*</span> <span class="no">FROM</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cars</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="no">WHERE</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cars</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">.</span><span class="n">&amp;ldquo</span><span class="p">;</span><span class="n">status</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=</span> <span class="p">?</span>  <span class="o">[[&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">status</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="mi">2</span><span class="o">]]&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; []  (Kullanım dışı araç yok)&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p></blockquote>
 
 <p>Özetlersek:</p>
 
