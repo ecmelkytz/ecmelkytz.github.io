@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-03-16T10:45:52+02:00</updated>
+  <updated>2016-03-16T10:47:17+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -93,7 +93,7 @@ end
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>Aslında bunu tek fonksiyona indirebilebiliriz. Şöyleki:</p>
+<p>Aslında bunu tek fonksiyona indirebiliriz. Şöyleki:</p>
 
 <p><figure class='code'><figcaption><span>car.rb </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
