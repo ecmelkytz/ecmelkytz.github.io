@@ -199,6 +199,36 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>Aslında bunu tek fonksiyona indirebilebiliriz. Şöyleki:</p>
+
+<figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{suitable_for_use rented out_of_use}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="no">STATUSES</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">define_method</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">?&quot;</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">status</span> <span class="o">==</span> <span class="n">i</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># suitable_for_use? - rented? - out_of_use? fonksiyonlarını oluşturduk.</span>
+</span><span class='line'>  <span class="c1"># Hmmm daha güzel durdu sanki.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <p>Kullanımına bakalım:</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
@@ -1184,7 +1214,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x61;&#110;&#x67;&#117;&#x6c;&#97;&#x72;&#64;&#x67;&#111;&#111;&#103;&#108;&#x65;&#x67;&#x72;&#x6f;&#117;&#x70;&#x73;&#46;&#x63;&#111;&#x6d;">&#97;&#x6e;&#x67;&#117;&#108;&#97;&#x72;&#64;&#103;&#111;&#111;&#103;&#108;&#x65;&#103;&#114;&#x6f;&#117;&#112;&#115;&#x2e;&#x63;&#x6f;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#97;&#110;&#x67;&#117;&#x6c;&#97;&#114;&#x40;&#x67;&#x6f;&#x6f;&#103;&#108;&#101;&#x67;&#x72;&#111;&#117;&#112;&#x73;&#x2e;&#99;&#x6f;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#97;&#x72;&#x40;&#103;&#x6f;&#x6f;&#x67;&#x6c;&#101;&#x67;&#114;&#x6f;&#117;&#x70;&#x73;&#46;&#99;&#x6f;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
