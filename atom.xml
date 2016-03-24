@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-03-18T10:22:06+02:00</updated>
+  <updated>2016-03-24T15:51:00+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -227,8 +227,20 @@
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
-</span><span class='line'><span class="c1"># =&gt; “suitable_for_use”</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span>
+</span><span class='line'><span class="c1"># =&gt; {&quot;suitable_for_use&quot;=&gt;0, &quot;rented&quot;=&gt;1, &quot;out_of_use&quot;=&gt;2}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keywords</span>
+</span><span class='line'><span class="c1"># =&gt; [&quot;suitable_for_use&quot;, &quot;rented&quot;, &quot;out_of_use&quot;]</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;suitable_for_use&quot;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">rented?</span>
 </span><span class='line'><span class="c1"># =&gt; false</span>
@@ -254,6 +266,22 @@
 </span><span class='line'><span class="c1"># =&gt; []  (Kullanım dışı araç yok)</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>View kısmında kullanımı:</p>
+
+<figure class='code'><figcaption><span>views/cars/form.hml.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= f.label :status %&gt;&lt;br&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">select</span> <span class="ss">:status</span><span class="p">,</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keys</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Eğer view kısmında select box&#8217;da gözüken yazılar istediğiniz gibi değil ise <a href="https://github.com/zmbacker/enum_help">enum_help gem&#8217;i</a> işinize yarayacaktır.</p>
 
 <p>Özetlersek:</p>
 
@@ -893,7 +921,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#97;&#x6e;&#103;&#117;&#x6c;&#x61;&#x72;&#x40;&#x67;&#x6f;&#x6f;&#x67;&#108;&#101;&#103;&#114;&#x6f;&#117;&#112;&#x73;&#x2e;&#99;&#111;&#109;">&#97;&#x6e;&#x67;&#x75;&#108;&#x61;&#114;&#64;&#103;&#111;&#111;&#x67;&#108;&#101;&#103;&#x72;&#x6f;&#x75;&#x70;&#x73;&#x2e;&#x63;&#111;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;&#97;&#x6e;&#x67;&#117;&#108;&#x61;&#114;&#64;&#103;&#x6f;&#x6f;&#x67;&#108;&#x65;&#x67;&#x72;&#111;&#117;&#112;&#115;&#x2e;&#99;&#111;&#109;">&#97;&#x6e;&#x67;&#117;&#x6c;&#x61;&#114;&#64;&#103;&#x6f;&#111;&#103;&#108;&#x65;&#x67;&#114;&#111;&#117;&#x70;&#x73;&#x2e;&#x63;&#111;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>

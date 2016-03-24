@@ -313,8 +313,20 @@
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
-</span><span class='line'><span class="c1"># =&gt; “suitable_for_use”</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span>
+</span><span class='line'><span class="c1"># =&gt; {&quot;suitable_for_use&quot;=&gt;0, &quot;rented&quot;=&gt;1, &quot;out_of_use&quot;=&gt;2}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keywords</span>
+</span><span class='line'><span class="c1"># =&gt; [&quot;suitable_for_use&quot;, &quot;rented&quot;, &quot;out_of_use&quot;]</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
+</span><span class='line'><span class="c1"># =&gt; &quot;suitable_for_use&quot;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">rented?</span>
 </span><span class='line'><span class="c1"># =&gt; false</span>
@@ -340,6 +352,22 @@
 </span><span class='line'><span class="c1"># =&gt; []  (Kullanım dışı araç yok)</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>View kısmında kullanımı:</p>
+
+<figure class='code'><figcaption><span>views/cars/form.hml.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= f.label :status %&gt;&lt;br&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">select</span> <span class="ss">:status</span><span class="p">,</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keys</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Eğer view kısmında select box&#8217;da gözüken yazılar istediğiniz gibi değil ise <a href="https://github.com/zmbacker/enum_help">enum_help gem&#8217;i</a> işinize yarayacaktır.</p>
 
 <p>Özetlersek:</p>
 
