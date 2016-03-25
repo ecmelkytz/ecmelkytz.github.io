@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-03-24T16:31:48+02:00</updated>
+  <updated>2016-03-25T08:46:15+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -248,7 +248,7 @@ end
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="p">{</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">suitable_for_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">=&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">rented</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">out_of_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">=&gt;</span><span class="mi">2</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;Car.statuses.keywords&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.statuses.keys&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="o">[&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">suitable_for_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">rented</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">out_of_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
 </span><span class='line'>

@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-03-24T16:31:48+02:00</updated>
+  <updated>2016-03-25T08:46:15+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -237,7 +237,7 @@
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span>
 </span><span class='line'><span class="c1"># =&gt; {&quot;suitable_for_use&quot;=&gt;0, &quot;rented&quot;=&gt;1, &quot;out_of_use&quot;=&gt;2}</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keywords</span>
+</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keys</span>
 </span><span class='line'><span class="c1"># =&gt; [&quot;suitable_for_use&quot;, &quot;rented&quot;, &quot;out_of_use&quot;]</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
@@ -922,7 +922,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#97;&#x6e;&#103;&#x75;&#x6c;&#97;&#114;&#x40;&#x67;&#111;&#111;&#103;&#x6c;&#101;&#x67;&#114;&#x6f;&#117;&#112;&#x73;&#x2e;&#99;&#111;&#x6d;">&#x61;&#110;&#103;&#117;&#108;&#97;&#x72;&#64;&#103;&#x6f;&#x6f;&#x67;&#x6c;&#x65;&#103;&#x72;&#111;&#117;&#x70;&#x73;&#46;&#x63;&#111;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x61;&#110;&#103;&#117;&#x6c;&#x61;&#114;&#x40;&#103;&#111;&#111;&#103;&#x6c;&#x65;&#103;&#x72;&#111;&#117;&#112;&#x73;&#46;&#x63;&#x6f;&#109;">&#97;&#110;&#103;&#x75;&#108;&#97;&#x72;&#x40;&#103;&#x6f;&#x6f;&#103;&#108;&#x65;&#x67;&#114;&#x6f;&#x75;&#112;&#x73;&#46;&#x63;&#111;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
