@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rails: ActiveSupport Concern Kullanımı - Ecmel Kaytazoğlu</title>
+  <meta name="author" content="Ecmel Kaytazoğlu">
+
+  
+  <meta name="description" content="Rails, AngularJS ve bazı teknolojiler hakkındaki hata çözümleri, yenilikler ve açıklamalar yer almaktadır.">
+  <meta name="keywords" content="Ruby on Rails, Rails, AngularJS, Unix">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="atom.xml" rel="alternate" title="Ecmel Kaytazoğlu" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-73221741-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ecmel Kaytazoğlu</a></h1>
+  
+    <h2>$scope.life = ['black', 'white']</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ecmelkytz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Rails: ActiveSupport Concern Kullanımı</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-25T09:22:23+02:00" pubdate data-updated="true">Mar 25<sup>th</sup>, 2016</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Rails 4 ile gelen ActiveSupport&#8217;un concern modülü  DRY ilkesine aykırı durumları idare etmemizi sağlar. Bazı Rails geliştiricileri concern&#8217;i sistemi daha da karmaşık hale getirdiğini söylese de; Rails kendi concern dizinlerini kaldırmadığı sürece kullanıp kullanmama sorunsalı geliştiricinin kendi inisiyatifine kalmış bir durum olarak ele alıyorum ve gerektiği yerlerde bunu kullanıyorum.</p>
+
+<h5>Controller&#8217;da concern kullanımına bir örnek:</h5>
+
+<p>İki farklı controller&#8217;da aynı metodların aşağıdaki gibi kullanılmakta olduğunu düşünelim.</p>
+
+<figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
+</span><span class='line'>    <span class="n">find_similar_questions</span>
+</span><span class='line'>    <span class="n">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
+</span><span class='line'>    <span class="n">find_similar_questions</span>
+</span><span class='line'>    <span class="n">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu metodları controller içinde tanımlayıp fonksiyonları tekrarlamak yerine concern ile bu işin nasıl yapılabileceğine bakalım:</p>
+
+<figure class='code'><figcaption><span>/controllers/concerns/similarity_analysis.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SimilarityAnalysis</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">included</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
+</span><span class='line'>    <span class="n">find_similar_questions</span>
+</span><span class='line'>    <span class="n">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu fonksiyonları kullanabilmek için yapmamız gereken tek şey oluşturduğumuz module&#8217;ı kullanmak istediğimiz controller&#8217;a include etmektir.</p>
+
+<figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bunun gibi DRY durumlarından kurtulmak için concern&#8217;i model&#8217;de de kullanabiliriz. Model&#8217;de kullanımını görmek için şu <a href="http://blog.uzem.omu.edu.tr/articles/rails-activesupport-concern-kullanimi/">yazıma</a> bakabilirsiniz.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ecmel Kaytazoğlu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-25T09:22:23+02:00" pubdate data-updated="true">Mar 25<sup>th</sup>, 2016</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/" title="Previous Post: Rails: ActiveRecord Enum Kullanımı">&laquo; Rails: ActiveRecord Enum Kullanımı</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails - Routes Don't Repeat Yourself (DRY)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  
+  <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQNHm5gbWBpZVGCb9oKzcy_LZ2CEMgdjYNG4qXxq0A3PVRJ4f5ggQ" width="36" height="36">
+  <a href="https://github.com/ecmelkytz">@ecmelkytz</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        // github.showRepos({
+        //     user: 'ecmelkytz',
+        //     count: 0,
+        //     skip_forks: true,
+        //     target: '#gh_repos'
+        // });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/118106468866506746709?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Ecmel Kaytazoğlu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ecmelkytz';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <!-- Adsense -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-2106038268538548"
+       data-ad-slot="6849257310"
+       data-ad-format="auto"></ins>
+  <script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</body>
+</html>

@@ -82,6 +82,187 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/">Ruby: Attr_accessor Kullanımı</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-03T15:45:44+03:00" pubdate data-updated="true">Jul 3<sup>rd</sup>, 2015</time>
+        
+         | <a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Person adında bir sınıfımızın olduğunu farzedelim:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span> <span class="c1"># =&gt; NoMethodError: undefined method &#39;name&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>name</code> adında bir metot tanımlamadığımız sürece yukarıdaki gibi hata alacağız.</p>
+
+<p>O halde metodumuzu tanımlayalım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span>
+</span><span class='line'>    <span class="vi">@name</span> <span class="c1">#  instance variable</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; nil</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span> <span class="c1"># =&gt; NoMethodError: undefined method `name=&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>name</code> metodunu tanımladık ancak görüldüğü gibi sadece okuma yapabiliyoruz, herhangi bir değer atayamıyoruz.</p>
+
+<p>İşte bu iki işlemden biri reader (değişkenin değerine erişilmesi) diğeri ise writer (değişkenin değerinin değiştirilmesi) olarak adlandırılır.</p>
+
+<p>Yukarıda writer metodu oluşturmamıştık şimdi onu da oluşturalım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span> <span class="c1"># reader</span>
+</span><span class='line'>    <span class="vi">@name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span><span class="o">=</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="c1"># writer</span>
+</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="n">str</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Artık reader ve writer metodları kullanarak örnek değişkenin (@name) değerine erişip onu değiştirebiliriz.
+Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
+
+<p><strong>Bu işin kolayına bakalım:</strong></p>
+
+<p>Yukarıdaki gibi iki ayrı fonksiyon tanımlamaya gerek yok.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:name</span>
+</span><span class='line'>  <span class="kp">attr_writer</span> <span class="ss">:name</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Daha kolayına bakalım:</strong></p>
+
+<p>Hem reader hem de writer metodlarının işlevselliğine sahip bir metot:  <code>attr_accessor</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <code>attr_accessor :name</code>  reader ve writer metodlarını oluşturmanın yanı sıra bir de @name (instance variable/örnek değişken) oluşturur.</p>
+
+<p>İnstance variable&#8217;ı kullanalım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">say_hello</span>
+</span><span class='line'>    <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
+</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">say_hello</span> <span class="c1"># =&gt; &quot;Hello Ecmel&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally</p>
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_280,w_346/v1457011914/thatsit.png_m778zf.jpg"></p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/">Html Renklerin Hex Ve RGB Kodlarını Bulan Terminal Uygulaması: Grabc</a></h1>
     
     
@@ -941,6 +1122,10 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a>
       </li>
     
@@ -954,10 +1139,6 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
     
       <li class="post">
         <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/">SOAP Web Servis ile CURL Kullanımını Bash ile Harmanlama</a>
       </li>
     
   </ul>

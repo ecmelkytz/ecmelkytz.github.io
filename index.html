@@ -82,6 +82,206 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-25T09:22:23+02:00" pubdate data-updated="true">Mar 25<sup>th</sup>, 2016</time>
+        
+         | <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Rails 4 ile gelen ActiveSupport&#8217;un concern modülü  DRY ilkesine aykırı durumları idare etmemizi sağlar. Bazı Rails geliştiricileri concern&#8217;i sistemi daha da karmaşık hale getirdiğini söylese de; Rails kendi concern dizinlerini kaldırmadığı sürece kullanıp kullanmama sorunsalı geliştiricinin kendi inisiyatifine kalmış bir durum olarak ele alıyorum ve gerektiği yerlerde bunu kullanıyorum.</p>
+
+<h5>Controller&#8217;da concern kullanımına bir örnek:</h5>
+
+<p>İki farklı controller&#8217;da aynı metodların aşağıdaki gibi kullanılmakta olduğunu düşünelim.</p>
+
+<figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
+</span><span class='line'>    <span class="n">find_similar_questions</span>
+</span><span class='line'>    <span class="n">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
+</span><span class='line'>    <span class="n">find_similar_questions</span>
+</span><span class='line'>    <span class="n">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu metodları controller içinde tanımlayıp fonksiyonları tekrarlamak yerine concern ile bu işin nasıl yapılabileceğine bakalım:</p>
+
+<figure class='code'><figcaption><span>/controllers/concerns/similarity_analysis.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SimilarityAnalysis</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+</span><span class='line'>
+</span><span class='line'> <span class="n">included</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
+</span><span class='line'>    <span class="n">find_similar_questions</span>
+</span><span class='line'>    <span class="n">find_similar_answers</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu fonksiyonları kullanabilmek için yapmamız gereken tek şey oluşturduğumuz module&#8217;ı kullanmak istediğimiz controller&#8217;a include etmektir.</p>
+
+<figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bunun gibi DRY durumlarından kurtulmak için concern&#8217;i model&#8217;de de kullanabiliriz. Model&#8217;de kullanımını görmek için şu <a href="http://blog.uzem.omu.edu.tr/articles/rails-activesupport-concern-kullanimi/">yazıma</a> bakabilirsiniz.</p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a></h1>
     
     
@@ -1243,192 +1443,11 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x61;&#110;&#103;&#117;&#x6c;&#x61;&#114;&#x40;&#103;&#111;&#111;&#103;&#x6c;&#x65;&#103;&#x72;&#111;&#117;&#112;&#x73;&#46;&#x63;&#x6f;&#109;">&#97;&#110;&#103;&#x75;&#108;&#97;&#x72;&#x40;&#103;&#x6f;&#x6f;&#103;&#108;&#x65;&#x67;&#114;&#x6f;&#x75;&#112;&#x73;&#46;&#x63;&#111;&#109;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x61;&#110;&#x67;&#x75;&#x6c;&#x61;&#114;&#64;&#x67;&#111;&#x6f;&#103;&#x6c;&#101;&#103;&#x72;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#x6d;">&#x61;&#x6e;&#x67;&#117;&#x6c;&#97;&#114;&#64;&#103;&#x6f;&#111;&#x67;&#108;&#101;&#x67;&#x72;&#111;&#117;&#x70;&#x73;&#46;&#x63;&#x6f;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
 
-</div>
- 
- 
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/">Ruby: Attr_accessor Kullanımı</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-03T15:45:44+03:00" pubdate data-updated="true">Jul 3<sup>rd</sup>, 2015</time>
-        
-         | <a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Person adında bir sınıfımızın olduğunu farzedelim:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span> <span class="c1"># =&gt; NoMethodError: undefined method &#39;name&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>name</code> adında bir metot tanımlamadığımız sürece yukarıdaki gibi hata alacağız.</p>
-
-<p>O halde metodumuzu tanımlayalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span>
-</span><span class='line'>    <span class="vi">@name</span> <span class="c1">#  instance variable</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; nil</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span> <span class="c1"># =&gt; NoMethodError: undefined method `name=&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>name</code> metodunu tanımladık ancak görüldüğü gibi sadece okuma yapabiliyoruz, herhangi bir değer atayamıyoruz.</p>
-
-<p>İşte bu iki işlemden biri reader (değişkenin değerine erişilmesi) diğeri ise writer (değişkenin değerinin değiştirilmesi) olarak adlandırılır.</p>
-
-<p>Yukarıda writer metodu oluşturmamıştık şimdi onu da oluşturalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span> <span class="c1"># reader</span>
-</span><span class='line'>    <span class="vi">@name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span><span class="o">=</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="c1"># writer</span>
-</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="n">str</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Artık reader ve writer metodları kullanarak örnek değişkenin (@name) değerine erişip onu değiştirebiliriz.
-Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
-
-<p><strong>Bu işin kolayına bakalım:</strong></p>
-
-<p>Yukarıdaki gibi iki ayrı fonksiyon tanımlamaya gerek yok.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:name</span>
-</span><span class='line'>  <span class="kp">attr_writer</span> <span class="ss">:name</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Daha kolayına bakalım:</strong></p>
-
-<p>Hem reader hem de writer metodlarının işlevselliğine sahip bir metot:  <code>attr_accessor</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>attr_accessor :name</code>  reader ve writer metodlarını oluşturmanın yanı sıra bir de @name (instance variable/örnek değişken) oluşturur.</p>
-
-<p>İnstance variable&#8217;ı kullanalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">say_hello</span>
-</span><span class='line'>    <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">say_hello</span> <span class="c1"># =&gt; &quot;Hello Ecmel&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally</p>
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_280,w_346/v1457011914/thatsit.png_m778zf.jpg"></p>
 </div>
  
  
@@ -1451,6 +1470,10 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a>
       </li>
     
@@ -1464,10 +1487,6 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
     
       <li class="post">
         <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/">SOAP Web Servis ile CURL Kullanımını Bash ile Harmanlama</a>
       </li>
     
   </ul>
