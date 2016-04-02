@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-03-25T09:59:24+02:00</updated>
+  <updated>2016-04-02T11:39:05+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -317,6 +317,11 @@ end
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Eğer view kısmında select box&#8217;da gözüken yazılar istediğiniz gibi değil ise <a href="https://github.com/zmbacker/enum_help">enum_help gem&#8217;i</a> işinize yarayacaktır.</p>
+
+<p>Enum&#8217;u keşfeden Rails geliştiricilerinin son hali:</p>
+
+<iframe src="//giphy.com/embed/d86kftzaeizO8" width="480" height="200" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
 
 <p>Özetlersek:</p>
 
