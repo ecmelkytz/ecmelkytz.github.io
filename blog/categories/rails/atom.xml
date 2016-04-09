@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-04-08T09:12:31+03:00</updated>
+  <updated>2016-04-09T16:45:19+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: acts_as_paranoid ile veri silmekten korkmayın]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir/"/>
+    <updated>2016-04-09T13:58:21+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir</id>
+    <content type="html"><![CDATA[<iframe src="//giphy.com/embed/bEVKYB487Lqxy" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<blockquote><p>“Bu veriyi silersem ileride lazım olur mu?”</p>
+
+<p>“Eyvah! Yanlış veriyi sildim şimdi ne yapacağım? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" />”</p></blockquote>
+
+<p>tarzında çeşitlendirilebilen kaygılarınız var ise  ActiveRecord&#8217;un  acts_as_paranoid plugin&#8217;i imdadınıza yetişecektir.</p>
+
+<h3>Peki nedir bu acts_as_paranoid ve nasıl kullanılır?</h3>
+
+<p>Acts_as_paranoid silme işleminde <code>soft delete</code> yapmamıza olanak sağlar.  Yani veriyi sildiğimiz zaman aslında tam anlamıyla veritabanından o veriyi yok etmiş olmuyoruz.</p>
+
+<p>Tabloya type&#8217;ı datetime olacak şekilde ekleyeceğimiz <code>deleted_at</code> alanı sayesinde silme işlemi yaptığımız zaman sadece bu kolonun değeri güncellenecek ve silinme zamanı burada tutulacak.</p>
+
+<p>Bu plugin Active Record&#8217;un sadece destroy metodu üzerinde override yapmaz aynı zamanda find ve count metodları üzerinde de değişiklik yapar. Sql sorgularına deleted_at&#8217;i null olanların getirilmesiyle ilgili eklemeler getirecektir.</p>
+
+<p>Migration ile modelimize <code>deleted_at</code> alanını ekleyelim:</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">rails</span> <span class="n">generate</span> <span class="n">migration</span> <span class="no">AddDeletedAtToUsers</span> <span class="ss">deleted_at</span><span class="p">:</span><span class="ss">datetime</span><span class="p">:</span><span class="n">index</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Migration dosya içeriğimiz:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AddDeletedAtToUsers</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span><span class="p">,</span> <span class="ss">:datetime</span>
+</span><span class='line'>    <span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Şimdi bir user silelim:</p>
+
+<p><figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; 2&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">destroy</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;deleted_at güncellenecektir.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; 1&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Silinen</span> <span class="n">veriler</span> <span class="n">ile</span> <span class="n">birlikte</span> <span class="n">hepsini</span> <span class="n">bulmak</span> <span class="n">i</span><span class="err">ç</span><span class="k">in</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;$ User.with_deleted&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Sadece</span> <span class="n">silinen</span> <span class="n">verileri</span> <span class="n">bulmak</span> <span class="n">i</span><span class="err">ç</span><span class="k">in</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;$ User.only_deleted&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><code>User.count</code> kullandığımızda veya <code>find</code> ile o user&#8217;ı bulmaya çalıştığımızda user silinmiş gibi davranacaktır ancak veritabanında users tablosuna baktığımız zaman bu silinmiş sandığımız kaydın hala orada durduğunu ve <code>deleted_at</code> alanının verinin silindiği zamanı tuttuğunu göreceğiz.</p>
+
+<p>Peki acts_as_paranoid ile hiçbir zaman veritabanından bir veriyi tam anlamıyla silemeyecek miyiz? Bunun da bir çözümü var. Herşeye rağmen kesinlikle silmek istediğimiz kayıtlar var ise:</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">really_destroy!</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Eğer veritabanında tutacağımız kolon adının <code>deleted_at</code> yerine <code>destroyed_at</code> (veya herhangi birşey) olmasını istiyorsak:</p>
+
+<p><figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span> <span class="ss">column</span><span class="p">:</span> <span class="ss">:destroyed_at</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails: ActiveRecord Enum Kullanımı]]></title>
@@ -330,7 +459,7 @@ end
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Rails - Routes Don't Repeat Yourself (DRY)]]></title>
+    <title type="html"><![CDATA[Rails: Routes Don't Repeat Yourself (DRY)]]></title>
     <link href="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/"/>
     <updated>2016-01-27T10:37:13+02:00</updated>
     <id>http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry</id>
@@ -527,26 +656,6 @@ UnicodeUtils.downcase(&ldquo;ÖİLŞÜ&rdquo;)
 &gt; UnicodeUtils.titlecase("önsöz iyi", :tr)
 =&gt; "Önsöz İyi"
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails - Devise(Could not found table) Hatası]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/"/>
-    <updated>2014-09-09T11:51:16+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/09/09/rails-devise-could-not-found-table-hatasi</id>
-    <content type="html"><![CDATA[<p>Oluşturulan devise modelinin <strong>user</strong> olduğunu varsayarak okuyunuz.<br/>
-Şimdi devise&#8217;ı Gemfile&#8217;a eklediniz, install ettiniz, viewleri oluşturdunuz, routes ayarladınız (bu konulara girmiyorum devise hakkında ayrıntılı bilgi için <a href="https://github.com/plataformatec/devise">bakınız</a> ) ve rake db:migrate kodunu çalıştırdığınız zaman herhangi bir geri dönüş almadınız.</p>
-
-<p>Neyse birde serverda deneyelim bu işi dediniz. <code>http://localhost:3000/users/sign_in</code> adresine girmeye çalıştığınız zaman <strong>Could not find table &lsquo;users&rsquo;</strong> tarzında bir hata ile karşılaştınız. Yani users tablosu bulunamıyor .</p>
-
-<p><img src="http://i.imgur.com/8Osy4h4.png" alt="Imgur" /></p>
-
-<p>Zaten rake db:migrate kodunun çalışmamasından bir sorunla karşılaşmayı beklemek mantıklı olacaktır.</p>
-
-<p><strong>Çözüm:</strong><br/>
-Çok basit bir çözümü olmasıyla beraber gereksiz yere vaktimi çaldığı için buraya not düşmeye karar verdim.<br/>
-<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/></p>
 ]]></content>
   </entry>
   

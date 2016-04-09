@@ -82,6 +82,154 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Rails: Acts_as_paranoid Ile Veri Silmekten Korkmayın</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-09T13:58:21+03:00" pubdate data-updated="true">Apr 9<sup>th</sup>, 2016</time>
+        
+         | <a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><iframe src="//giphy.com/embed/bEVKYB487Lqxy" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<blockquote><p>“Bu veriyi silersem ileride lazım olur mu?”</p>
+
+<p>“Eyvah! Yanlış veriyi sildim şimdi ne yapacağım? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" />”</p></blockquote>
+
+<p>tarzında çeşitlendirilebilen kaygılarınız var ise  ActiveRecord&#8217;un  acts_as_paranoid plugin&#8217;i imdadınıza yetişecektir.</p>
+
+<h3>Peki nedir bu acts_as_paranoid ve nasıl kullanılır?</h3>
+
+<p>Acts_as_paranoid silme işleminde <code>soft delete</code> yapmamıza olanak sağlar.  Yani veriyi sildiğimiz zaman aslında tam anlamıyla veritabanından o veriyi yok etmiş olmuyoruz.</p>
+
+<p>Tabloya type&#8217;ı datetime olacak şekilde ekleyeceğimiz <code>deleted_at</code> alanı sayesinde silme işlemi yaptığımız zaman sadece bu kolonun değeri güncellenecek ve silinme zamanı burada tutulacak.</p>
+
+<p>Bu plugin Active Record&#8217;un sadece destroy metodu üzerinde override yapmaz aynı zamanda find ve count metodları üzerinde de değişiklik yapar. Sql sorgularına deleted_at&#8217;i null olanların getirilmesiyle ilgili eklemeler getirecektir.</p>
+
+<p>Migration ile modelimize <code>deleted_at</code> alanını ekleyelim:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">rails</span> <span class="n">generate</span> <span class="n">migration</span> <span class="no">AddDeletedAtToUsers</span> <span class="ss">deleted_at</span><span class="p">:</span><span class="ss">datetime</span><span class="p">:</span><span class="n">index</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Migration dosya içeriğimiz:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AddDeletedAtToUsers</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span><span class="p">,</span> <span class="ss">:datetime</span>
+</span><span class='line'>    <span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Şimdi bir user silelim:</p>
+
+<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="c1"># =&gt; 2</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">destroy</span>
+</span><span class='line'><span class="c1"># deleted_at güncellenecektir.</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="c1"># =&gt; 1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Silinen veriler ile birlikte hepsini bulmak için:</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">with_deleted</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Sadece silinen verileri bulmak için:</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">only_deleted</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>User.count</code> kullandığımızda veya <code>find</code> ile o user&#8217;ı bulmaya çalıştığımızda user silinmiş gibi davranacaktır ancak veritabanında users tablosuna baktığımız zaman bu silinmiş sandığımız kaydın hala orada durduğunu ve <code>deleted_at</code> alanının verinin silindiği zamanı tuttuğunu göreceğiz.</p>
+
+<p>Peki acts_as_paranoid ile hiçbir zaman veritabanından bir veriyi tam anlamıyla silemeyecek miyiz? Bunun da bir çözümü var. Herşeye rağmen kesinlikle silmek istediğimiz kayıtlar var ise:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">really_destroy!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Eğer veritabanında tutacağımız kolon adının <code>deleted_at</code> yerine <code>destroyed_at</code> (veya herhangi birşey) olmasını istiyorsak:</p>
+
+<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span> <span class="ss">column</span><span class="p">:</span> <span class="ss">:destroyed_at</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a></h1>
     
     
@@ -596,7 +744,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails - Routes Don&#8217;t Repeat Yourself (DRY)</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a></h1>
     
     
       <p class="meta">
@@ -1372,97 +1520,6 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">AngularJS Nedir?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-07T22:31:00+03:00" pubdate data-updated="true">Aug 7<sup>th</sup>, 2015</time>
-        
-         | <a href="/blog/2015/08/07/angularjs-nedir/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Google&#8217;da çalışan Misko Hevery&#8217;nin 2009 yılında şahsi bir projesi olarak başlayan AngularJS şuan açık kaynak olarak yayınlanmakta olup; yüzlerce geliştiriciye ve binlerce kullanıcıya sahip devasa bir  frontend geliştirme frameworklerinden biridir. Adındanda anlaşılacağı üzere gelişmiş bir javascript kütüphanesidir.</p>
-
-<p>Aslına bakarsanız AngularJS ile Javascript ve Jquery&#8217;nin yaptığı herşeyi yapabilirsiniz.  Bu noktada Anguları tercih etme meselesine gelirsek; kolaylığı, custom directive özelliği, az kod ile çok iş yapılabilmesi (“Write less do more” her ne kadar Jquery sloganı olsada..), hızlı response sağlaması vs. şeklinde sayılabilecek bir çok güzelliği barındırmaktadır. Angular kullanmak için daha fazla neden arıyorsanız Murat Çorlu&#8217;nun yazdığı <a href="http://muratcorlu.com/post/angularjs-kullanmak-icin-10-neden/">yazıyı</a> okumanızı tavsiye ederim.</p>
-
-<p><img class="center" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRIgkmHJXLPra2-SCPAmtpn6xXWSwcvVOnrLc9hn_wV3ntJH6RZ1g"></p>
-
-<p>Angularjs deyince hepsi olmamakla birlikte akla gelebilecek temel unsurlar yukarıdaki resimde mevcuttur. Hepsinden kabaca söz edip daha detaylı bilgileri başka blog girdilerinde yazmayı düşünüyorum.</p>
-
-<ul>
-<li>Angularda two way binding dediğimiz şey çift yönlü veri bağlama yani Model&#8217;deki değişiklikleri View&#8217;e, View&#8217;deki değişiklikleri Model&#8217;e aktarma işlemidir. Bir de one time binding var. Bunların izahını sonraya bırakıyorum.</li>
-<li>Angularda Template dediğimiz şeyler aslında viewlerimizdir.</li>
-<li>Bir sayfadan başka sayfaya geçildiğinde geri işlemi için eski state&#8217;i tutan bir hafızaya (geçmiş bilgisine) ihtiyaç vardır bunu  History mekanızması sağlar.</li>
-<li>Factories, Services ve yukarıdaki resimde olmayan Provider Angular&#8217;da servis oluşturma komponentleridir.</li>
-<li>Angular bünyesinde Jquery&#8217;nin Lite versiyonu vardır. Bunu jqLite modülü ile sağlar. Eğer projenizde jquery dosyaları yok ise Angular jqlite modülünü kullanacaktır. Aksi takdirde sistemde yüklü olan jquery dosyasını kullanır.</li>
-<li>MVC bir design patterndir. Angular ilk başlarda MVC mantığı ile geliştirilmiş ancak daha sonrasında MVVM design patterni kullanılmıştır.  Buradaki VM(ViewModel) aynı zamanda angulardaki $scope servisine denkttir.</li>
-<li>Angularda Directive&#8217;ler dışında DOM&#8217;a müdahale etmemek gerekiyor. Directive deyince DOM manipülasyonlarının yoğun olarak yapıldığı yer aklımıza gelmeli. Yapısal directiveler anguların kendi bünyesindeki  directivelerdir (ng-controller, ng-if, ng-show vs.). Birde kendimizin oluşturabileceği custom directiveler vardır. Custom directiveler ile kendi Html etiketimizi oluşturup Html&#8217;e yeni özellikler ekleyebiliriz.</li>
-<li>Angular form validasyonlarında benimde severek kullandığım validasyon mekanizmasına sahiptir. Sunucuya gitmeden client tarafında verileri validasyona tabi tutuyoruz.</li>
-<li><p>Dependency Injection ise uygulamanın bağımlılıklarının belirtilmesidir. Mesela bir modulde third party kütüphane kullanma ihtiyacı var ise ya da farklı bir modul ile ilişkili ise bunları dependecy olarak module eklememiz gerekmektedir.</p></li>
-<li><p>Angular ile Single Page Application(SPA) oluşturabilirsiniz. SPA imkanıyla beraber angular route kaynaklı bazı SEO problemleri yaşanabilir. Angularda route yapısında # karakteri kullanılır.</p></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#/users
-</span><span class='line'>#/users/new</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Google # işaretinin gerçek bir adres karakteri olmadığını bildiği için bu karakterden sonra ne yazıldıysa yazılsın onu indexlemiyor. <img alt="pensive" src="/images/emoji/unicode/1f614.png" class="emoji" /></p>
-
-<p>Yukarıdaki bilgiler detaya inmeden kabaca üstünden geçilerek yazılmıştır. Bu sayfadaki bütün bilgilerin ayrıntısını ilerleyen zamanlarda yazmayı düşünmekteyim.</p>
-
-<p>Son olarak;
-Angular hızlı response oluşturur dedik. Peki nasıl?</p>
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222532/browser1_pyrbaa.png"></p>
-
-<p>Bir web sitesine girmeye çalıştığınızı düşünün. İlk olarak browserdan server&#8217;a URL isteğinde bulunuyoruz. Server bize cevap olarak web sayfasını ve assets (Javascript vs.)&lsquo;i döndürüyor. Daha sonra kullanıcı herhangi bir linke tıkladığında, server&#8217;a yine bir istek gidiyor ve dönen cevap ilk dönen cevap ile aynı oluyor. Yani tekrar sayfanın tamamı ve assets yükleniyor.</p>
-
-<p>Birde AngularJS ile bu iş nasıl oluyor ona bakalım.</p>
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222636/browser2_fqhyc3.png"></p>
-
-<p>Sayfa ilk yüklendiğinde geleneksel senaryo ile aynı responsu alacağız. Ancak kullanıcı bir linke tıkladığında veya başka bir yeni istekte bulunduğunda diğerinde olduğu gibi bütün bir sayfayı ve assets&#8217;i yüklemiyor. Önceden oluşturduğu veriden istenilen veriyi JSON data olarak çekiyor. Dolayısıyla istemci-sunucu trafiğini azaltmış olup hızlı bir cevap elde etmiş oluyoruz.</p>
-
-<h3>Faydalı olabilecek linkler</h3>
-
-<ul>
-<li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#97;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#x40;&#x67;&#111;&#111;&#103;&#108;&#101;&#x67;&#114;&#111;&#117;&#x70;&#x73;&#x2e;&#x63;&#x6f;&#x6d;">&#97;&#x6e;&#x67;&#117;&#x6c;&#97;&#114;&#64;&#103;&#x6f;&#x6f;&#103;&#x6c;&#x65;&#x67;&#x72;&#x6f;&#x75;&#x70;&#115;&#x2e;&#99;&#111;&#109;</a></li>
-<li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
-<li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
-</ul>
-
-</div>
- 
- 
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1478,6 +1535,10 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Rails: acts_as_paranoid ile veri silmekten korkmayın</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
       </li>
     
@@ -1486,15 +1547,11 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails - Routes Don&#8217;t Repeat Yourself (DRY)</a>
+        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a>
       </li>
     
       <li class="post">
         <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
       </li>
     
   </ul>

@@ -82,6 +82,97 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">AngularJS Nedir?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-07T22:31:00+03:00" pubdate data-updated="true">Aug 7<sup>th</sup>, 2015</time>
+        
+         | <a href="/blog/2015/08/07/angularjs-nedir/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Google&#8217;da çalışan Misko Hevery&#8217;nin 2009 yılında şahsi bir projesi olarak başlayan AngularJS şuan açık kaynak olarak yayınlanmakta olup; yüzlerce geliştiriciye ve binlerce kullanıcıya sahip devasa bir  frontend geliştirme frameworklerinden biridir. Adındanda anlaşılacağı üzere gelişmiş bir javascript kütüphanesidir.</p>
+
+<p>Aslına bakarsanız AngularJS ile Javascript ve Jquery&#8217;nin yaptığı herşeyi yapabilirsiniz.  Bu noktada Anguları tercih etme meselesine gelirsek; kolaylığı, custom directive özelliği, az kod ile çok iş yapılabilmesi (“Write less do more” her ne kadar Jquery sloganı olsada..), hızlı response sağlaması vs. şeklinde sayılabilecek bir çok güzelliği barındırmaktadır. Angular kullanmak için daha fazla neden arıyorsanız Murat Çorlu&#8217;nun yazdığı <a href="http://muratcorlu.com/post/angularjs-kullanmak-icin-10-neden/">yazıyı</a> okumanızı tavsiye ederim.</p>
+
+<p><img class="center" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRIgkmHJXLPra2-SCPAmtpn6xXWSwcvVOnrLc9hn_wV3ntJH6RZ1g"></p>
+
+<p>Angularjs deyince hepsi olmamakla birlikte akla gelebilecek temel unsurlar yukarıdaki resimde mevcuttur. Hepsinden kabaca söz edip daha detaylı bilgileri başka blog girdilerinde yazmayı düşünüyorum.</p>
+
+<ul>
+<li>Angularda two way binding dediğimiz şey çift yönlü veri bağlama yani Model&#8217;deki değişiklikleri View&#8217;e, View&#8217;deki değişiklikleri Model&#8217;e aktarma işlemidir. Bir de one time binding var. Bunların izahını sonraya bırakıyorum.</li>
+<li>Angularda Template dediğimiz şeyler aslında viewlerimizdir.</li>
+<li>Bir sayfadan başka sayfaya geçildiğinde geri işlemi için eski state&#8217;i tutan bir hafızaya (geçmiş bilgisine) ihtiyaç vardır bunu  History mekanızması sağlar.</li>
+<li>Factories, Services ve yukarıdaki resimde olmayan Provider Angular&#8217;da servis oluşturma komponentleridir.</li>
+<li>Angular bünyesinde Jquery&#8217;nin Lite versiyonu vardır. Bunu jqLite modülü ile sağlar. Eğer projenizde jquery dosyaları yok ise Angular jqlite modülünü kullanacaktır. Aksi takdirde sistemde yüklü olan jquery dosyasını kullanır.</li>
+<li>MVC bir design patterndir. Angular ilk başlarda MVC mantığı ile geliştirilmiş ancak daha sonrasında MVVM design patterni kullanılmıştır.  Buradaki VM(ViewModel) aynı zamanda angulardaki $scope servisine denkttir.</li>
+<li>Angularda Directive&#8217;ler dışında DOM&#8217;a müdahale etmemek gerekiyor. Directive deyince DOM manipülasyonlarının yoğun olarak yapıldığı yer aklımıza gelmeli. Yapısal directiveler anguların kendi bünyesindeki  directivelerdir (ng-controller, ng-if, ng-show vs.). Birde kendimizin oluşturabileceği custom directiveler vardır. Custom directiveler ile kendi Html etiketimizi oluşturup Html&#8217;e yeni özellikler ekleyebiliriz.</li>
+<li>Angular form validasyonlarında benimde severek kullandığım validasyon mekanizmasına sahiptir. Sunucuya gitmeden client tarafında verileri validasyona tabi tutuyoruz.</li>
+<li><p>Dependency Injection ise uygulamanın bağımlılıklarının belirtilmesidir. Mesela bir modulde third party kütüphane kullanma ihtiyacı var ise ya da farklı bir modul ile ilişkili ise bunları dependecy olarak module eklememiz gerekmektedir.</p></li>
+<li><p>Angular ile Single Page Application(SPA) oluşturabilirsiniz. SPA imkanıyla beraber angular route kaynaklı bazı SEO problemleri yaşanabilir. Angularda route yapısında # karakteri kullanılır.</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#/users
+</span><span class='line'>#/users/new</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Google # işaretinin gerçek bir adres karakteri olmadığını bildiği için bu karakterden sonra ne yazıldıysa yazılsın onu indexlemiyor. <img alt="pensive" src="/images/emoji/unicode/1f614.png" class="emoji" /></p>
+
+<p>Yukarıdaki bilgiler detaya inmeden kabaca üstünden geçilerek yazılmıştır. Bu sayfadaki bütün bilgilerin ayrıntısını ilerleyen zamanlarda yazmayı düşünmekteyim.</p>
+
+<p>Son olarak;
+Angular hızlı response oluşturur dedik. Peki nasıl?</p>
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222532/browser1_pyrbaa.png"></p>
+
+<p>Bir web sitesine girmeye çalıştığınızı düşünün. İlk olarak browserdan server&#8217;a URL isteğinde bulunuyoruz. Server bize cevap olarak web sayfasını ve assets (Javascript vs.)&lsquo;i döndürüyor. Daha sonra kullanıcı herhangi bir linke tıkladığında, server&#8217;a yine bir istek gidiyor ve dönen cevap ilk dönen cevap ile aynı oluyor. Yani tekrar sayfanın tamamı ve assets yükleniyor.</p>
+
+<p>Birde AngularJS ile bu iş nasıl oluyor ona bakalım.</p>
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222636/browser2_fqhyc3.png"></p>
+
+<p>Sayfa ilk yüklendiğinde geleneksel senaryo ile aynı responsu alacağız. Ancak kullanıcı bir linke tıkladığında veya başka bir yeni istekte bulunduğunda diğerinde olduğu gibi bütün bir sayfayı ve assets&#8217;i yüklemiyor. Önceden oluşturduğu veriden istenilen veriyi JSON data olarak çekiyor. Dolayısıyla istemci-sunucu trafiğini azaltmış olup hızlı bir cevap elde etmiş oluyoruz.</p>
+
+<h3>Faydalı olabilecek linkler</h3>
+
+<ul>
+<li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
+<li>Mail listesi: <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x61;&#x6e;&#x67;&#117;&#108;&#97;&#114;&#x40;&#x67;&#x6f;&#111;&#103;&#x6c;&#101;&#x67;&#x72;&#111;&#x75;&#112;&#x73;&#x2e;&#x63;&#111;&#x6d;">&#x61;&#110;&#103;&#117;&#x6c;&#97;&#114;&#x40;&#x67;&#111;&#x6f;&#x67;&#108;&#x65;&#x67;&#x72;&#111;&#x75;&#112;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
+<li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
+</ul>
+
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/">Ruby: Attr_accessor Kullanımı</a></h1>
     
     
@@ -1011,103 +1102,9 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/29/chroma-key-nedir/">Chroma Key Nedir?</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-29T21:46:50+02:00" pubdate data-updated="true">Jan 29<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/01/29/chroma-key-nedir/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Film çekim setlerinde arkaplanın sadece mavi ya da sadece yeşil renkte olduğunu gördüyseniz ne amaçla bu şekilde yapıldığını merak etmiş olabilirsiniz. Filmlerin böyle bir ortamda çekilmesi Chroma Key tekniğini uygulayabilmek içindir.</p>
-
-<p><img class="center" src="http://upload.wikimedia.org/wikipedia/en/0/0d/300_comparison.JPG"></p>
-
-<h3>Teknik olarak chroma key nasıl uygulanır?</h3>
-
-<p>Chroma Key eşit şekilde aydınlatılmış mavi veya yeşil (tek renk) bir arka plan önünde bulunan bir kişi veya nesnenin, başka bir video görüntüsü veya resim üzerine bindirilmesi esasına dayanır.</p>
-
-<ul>
-<li>Blue Screen, Green Screen, Chroma Key, greenbox, bluebox ve CSO (Color Seperation Overlay) terimleri ortak kullanılan terimlerdir ve temelleri aynı esaslara dayanır.</li>
-<li>Chroma key bir program değil tamamen bir tekniktir.</li>
-</ul>
-
-
-<p>Öncelikle düz yeşil renkli (veya mavi renkli) arkaplanda çekilmesi gereken sahneler çekiliyor ardından post-prodüksiyon(çekimler bittikten sonra çekim üzerinde yapılan düzenlemeler) aşamasında özel bilgisayar programları aracılığıyla bu tek renk arkaplan anahtar renk olarak seçilip siliniyor (transparan yapılıyor) ve yerine konulması istenen görüntü giydiriliyor.
-Görüntüdeki renkli arkaplanı (greenscreen, bluescreen) silme işlemine “key”lemek denir.</p>
-
-<h3>Chroma Key Tarihi</h3>
-
-<ul>
-<li>Chroma key ilk olarak Larry Butler tarafından 1940 yılında çekilmiş Bağdat Hırsızı (The Thief of Bagdad) filminde kullanılmış ve daha sonra bu tekniği geliştiren Petro Vlahos&#8217;a Oscar ödülü kazandırmıştır.</li>
-<li>Aynı zamanda 1940 yılından beri chroma key tekniği için yeşil ve mavi renkler standart olarak kullanılmaktadır.</li>
-</ul>
-
-
-<h3>Neden Genellikle Mavi ya da Yeşil Renk Kullanılır?</h3>
-
-<p>Aslında arkaplan rengi olarak yeşil ve mavi renkler dışında başka renklerde kullanılabilir. Ancak buradaki amaç insan tenine en uzak renklerin seçilmesidir. Eğer siyah renk, anahtar renk olarak seçilirse ve bu renk üzerine görüntü bindirilirse kişinin veya nesnenin üzerinde bulunan siyah renkli yerler üzerine de görüntü binecektir. Böylece kişiler ve nesneler üzerinde görüntü bozuklukları yaşanacaktır. Bu yüzden chroma key tekniğinde anahtar renk seçerken nesneler üzerinde fazla kullanılmayan renk seçilmeli ve ekran önündeki insan veya nesnenin seçilen anahtar renk ile aynı renkte bir şey barındırmaması gerekmektedir.</p>
-
-<p><img class="center" src="http://www.virtualstudio.tv/assets/media/blog-images/what_is_chroma_keying_green_screen.jpg">
-Croma key çekim bittikten sonra (post-production) uygulanabileceği gibi çekim ile eş zamanlı(real-time) olarakta uygulanabilen bir tekniktir.
-Günlük olarak hepimizin şahit olabileceği bir örnek vermek gerekirse hava tahmin programlarını ele alabiliriz. Spiker hava tahminini sunarken genelde önünde hava durumunun bulunduğu bir coğrafi bölge haritası bulunur ve kendisi bu harita üzerinde belirli bölgeleri göstererek sunumunu yapar. Bu çekim eğer canlı olarak yapılıyorsa chroma key real-time olarak uygulanır. Aksi takdirde spiker greenscreen önünde sunumunu bitirdikten sonra chroma key uygulanacaktır.</p>
-
-<h3>Chroma Key Gelişme Aşamaları</h3>
-
-<p>Chroma key tekniği günümüzdeki kullanılan hale gelene kadar çok aşamadan geçmiştir. İlk başlarda bu teknik ile hareketli görüntüler çekilemiyordu.
-Yani greenscreen teknolojisinin kullanıldığı sahnelerde kamera sabitti. Bunun sebebi ise arkaplanı ve önde duran aktörü saptamada sorun yaşanmasıydı.
-<img class="center" src="http://ibxk.com.br/2012/6/materias/14572694012135422.jpg"></p>
-
-<p>Ancak günümüzde arkaplana “+”, “x” işaretleriyle yada düzgün aralıklı noktalarla referans noktaları konulmakta ve bu yardımcı noktalar aracılığıyla bilgisayarlar, arkaplanı ve öndeki aktörü çok daha rahat bir şekilde saptayabilmektedir.
-Yukarıdaki resimde siyah noktalar aşağı veya yukarı doğru biraz meyilli yerleştirilmiştir. Bu sebeple kamera hareketinin de o yönde olacağını söyleyebiliriz. Dolayısıyla çekim kapsamına giren bu arkaplanlar öndeki aktörden daha kolay ayırt edilmektedir.<br/>
-Bu yöntemle kamera hareketli dahi olsa bu noktalar bilgisayar tarafından takip edilebilmekte ve kamera açısı kaybedilmemektedir.</p>
-
-<h3>Croma Key Tekniğinde Dikkat Edilmesi Gerekenler</h3>
-
-<ul>
-<li><p>Çekilen görüntülerde arkaplan rengi olarak yeşil kullanılıyorsa oyuncunuzun yeşil tonlarında bir şey giymemesi gereklidir. Bu özellik tüm renkler için geçerlidir.</p></li>
-<li><p>Cilalı yüzeyler ve cam gibi yansıtıcılığı yüksek nesneler arkaplanı yansıtabilirler. Bu yüzden parlak mücevherler, cilalı ayakkabılar ve yansıtıcı dekorlardan kaçınmak gerekmektedir.</p></li>
-<li><p>Çekimlerde, arkaplan perdesinin eşit olarak aydınlatılması önemli olduğu için çok sayıda ışık kullanmak gerekli olabilir. Bu yüzden dar alanlarda çekim yapmaktan kaçınılmalıdır. Oyuncunun perdeden mümkün olduğu kadar uzakta durması da kenarlarda oluşacak renk akmalarını önleyecektir. Bu yüzden profesyonel stüdyolarda çekim yapmak tercih edilmelidir.</p></li>
-<li><p>Çok ince detaylar &ldquo;key&#8221;leme esnasında kaybolabilir. Bu nedenle mümkünse oyuncunun saçlarının toplu olması, bol ve saçaklı kıyafetlerden kaçınılması, hızlı hareketler yapılmaması ve sahnede aynı anda az kişi ve obje olması bu problemleri minimize eder.</p></li>
-</ul>
-
-
-<h3>Chroma Key Reflect Media Teknolojisi</h3>
-
-<p><img class="center" src="http://www.lighthouse.ae/galorg/21022013020832ledring.jpg/21022013020832ledring.jpg"></p>
-
-<p>Son olarak Chroma key yeni teknolojisi olan Reflect Media teknolojisinden bahsedeceğim.
-Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide kullanılmasına gerek yoktur. Bu teknoloji ile arkaplan fonunun yeşil veya mavi olmasına da gerek yoktur. Yeşil veya mavi LED&#8217;lerin halka oluşturacak şekilde dizilmesiyle oluşturulan alete LiteRing denilmektedir.  Bu alet kameranın merceğinin önüne takılmaktadır. Resimde görüldüğü gibi arkadaki perde gri olmasına rağmen LiteRing sayesinde elde edilen arkaplan rengi yeşil olmaktadır.</p>
-</div>
- 
- 
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/3">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1122,6 +1119,10 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Rails: acts_as_paranoid ile veri silmekten korkmayın</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
       </li>
     
@@ -1130,15 +1131,11 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
       </li>
     
       <li class="post">
-        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails - Routes Don&#8217;t Repeat Yourself (DRY)</a>
+        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a>
       </li>
     
       <li class="post">
         <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
       </li>
     
   </ul>

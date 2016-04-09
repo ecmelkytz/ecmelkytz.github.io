@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-04-08T09:12:31+03:00</updated>
+  <updated>2016-04-09T16:45:19+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: acts_as_paranoid ile veri silmekten korkmayın]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir/"/>
+    <updated>2016-04-09T13:58:21+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir</id>
+    <content type="html"><![CDATA[<iframe src="//giphy.com/embed/bEVKYB487Lqxy" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<blockquote><p>“Bu veriyi silersem ileride lazım olur mu?”</p>
+
+<p>“Eyvah! Yanlış veriyi sildim şimdi ne yapacağım? <img alt="scream" src="http://ecmelkytz.github.com/images/emoji/unicode/1f631.png" class="emoji" />”</p></blockquote>
+
+<p>tarzında çeşitlendirilebilen kaygılarınız var ise  ActiveRecord&#8217;un  acts_as_paranoid plugin&#8217;i imdadınıza yetişecektir.</p>
+
+<h3>Peki nedir bu acts_as_paranoid ve nasıl kullanılır?</h3>
+
+<p>Acts_as_paranoid silme işleminde <code>soft delete</code> yapmamıza olanak sağlar.  Yani veriyi sildiğimiz zaman aslında tam anlamıyla veritabanından o veriyi yok etmiş olmuyoruz.</p>
+
+<p>Tabloya type&#8217;ı datetime olacak şekilde ekleyeceğimiz <code>deleted_at</code> alanı sayesinde silme işlemi yaptığımız zaman sadece bu kolonun değeri güncellenecek ve silinme zamanı burada tutulacak.</p>
+
+<p>Bu plugin Active Record&#8217;un sadece destroy metodu üzerinde override yapmaz aynı zamanda find ve count metodları üzerinde de değişiklik yapar. Sql sorgularına deleted_at&#8217;i null olanların getirilmesiyle ilgili eklemeler getirecektir.</p>
+
+<p>Migration ile modelimize <code>deleted_at</code> alanını ekleyelim:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">rails</span> <span class="n">generate</span> <span class="n">migration</span> <span class="no">AddDeletedAtToUsers</span> <span class="ss">deleted_at</span><span class="p">:</span><span class="ss">datetime</span><span class="p">:</span><span class="n">index</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Migration dosya içeriğimiz:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AddDeletedAtToUsers</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span><span class="p">,</span> <span class="ss">:datetime</span>
+</span><span class='line'>    <span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Şimdi bir user silelim:</p>
+
+<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="c1"># =&gt; 2</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">destroy</span>
+</span><span class='line'><span class="c1"># deleted_at güncellenecektir.</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span>
+</span><span class='line'><span class="c1"># =&gt; 1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Silinen veriler ile birlikte hepsini bulmak için:</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">with_deleted</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Sadece silinen verileri bulmak için:</span>
+</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">only_deleted</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>User.count</code> kullandığımızda veya <code>find</code> ile o user&#8217;ı bulmaya çalıştığımızda user silinmiş gibi davranacaktır ancak veritabanında users tablosuna baktığımız zaman bu silinmiş sandığımız kaydın hala orada durduğunu ve <code>deleted_at</code> alanının verinin silindiği zamanı tuttuğunu göreceğiz.</p>
+
+<p>Peki acts_as_paranoid ile hiçbir zaman veritabanından bir veriyi tam anlamıyla silemeyecek miyiz? Bunun da bir çözümü var. Herşeye rağmen kesinlikle silmek istediğimiz kayıtlar var ise:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">really_destroy!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Eğer veritabanında tutacağımız kolon adının <code>deleted_at</code> yerine <code>destroyed_at</code> (veya herhangi birşey) olmasını istiyorsak:</p>
+
+<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span> <span class="ss">column</span><span class="p">:</span> <span class="ss">:destroyed_at</span>
+</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails: ActiveSupport Concern Kullanımı]]></title>
@@ -470,7 +589,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Rails - Routes Don't Repeat Yourself (DRY)]]></title>
+    <title type="html"><![CDATA[Rails: Routes Don't Repeat Yourself (DRY)]]></title>
     <link href="http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/"/>
     <updated>2016-01-27T10:37:13+02:00</updated>
     <id>http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry</id>
@@ -1101,7 +1220,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#97;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#x40;&#x67;&#111;&#111;&#103;&#108;&#101;&#x67;&#114;&#111;&#117;&#x70;&#x73;&#x2e;&#x63;&#x6f;&#x6d;">&#97;&#x6e;&#x67;&#117;&#x6c;&#97;&#114;&#64;&#103;&#x6f;&#x6f;&#103;&#x6c;&#x65;&#x67;&#x72;&#x6f;&#x75;&#x70;&#115;&#x2e;&#99;&#111;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x61;&#x6e;&#x67;&#117;&#108;&#97;&#114;&#x40;&#x67;&#x6f;&#111;&#103;&#x6c;&#101;&#x67;&#x72;&#111;&#x75;&#112;&#x73;&#x2e;&#x63;&#111;&#x6d;">&#x61;&#110;&#103;&#117;&#x6c;&#97;&#114;&#x40;&#x67;&#111;&#x6f;&#x67;&#108;&#x65;&#x67;&#x72;&#111;&#x75;&#112;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -1779,73 +1898,6 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
 <p><strong><em>Not:</em></strong>  Gist sayfasındaki ilk kod içerisinde bulunan botid kısmını kendi oluşturduğunuz Bot’un id numarası ile değiştirin.</p>
 
 <p>Bu işlemlerden sonra Second Life&#8217;da istediğiniz herhangi bir nesle ile oluşturmuş olduğunuz chatbot vasıtasıyla konuşabilirsiniz.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Chroma Key Nedir?]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir/"/>
-    <updated>2014-01-29T21:46:50+02:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir</id>
-    <content type="html"><![CDATA[<p>Film çekim setlerinde arkaplanın sadece mavi ya da sadece yeşil renkte olduğunu gördüyseniz ne amaçla bu şekilde yapıldığını merak etmiş olabilirsiniz. Filmlerin böyle bir ortamda çekilmesi Chroma Key tekniğini uygulayabilmek içindir.</p>
-
-<p><img class="center" src="http://upload.wikimedia.org/wikipedia/en/0/0d/300_comparison.JPG"></p>
-
-<h3>Teknik olarak chroma key nasıl uygulanır?</h3>
-
-<p>Chroma Key eşit şekilde aydınlatılmış mavi veya yeşil (tek renk) bir arka plan önünde bulunan bir kişi veya nesnenin, başka bir video görüntüsü veya resim üzerine bindirilmesi esasına dayanır.</p>
-
-<ul>
-<li>Blue Screen, Green Screen, Chroma Key, greenbox, bluebox ve CSO (Color Seperation Overlay) terimleri ortak kullanılan terimlerdir ve temelleri aynı esaslara dayanır.</li>
-<li>Chroma key bir program değil tamamen bir tekniktir.</li>
-</ul>
-
-
-<p>Öncelikle düz yeşil renkli (veya mavi renkli) arkaplanda çekilmesi gereken sahneler çekiliyor ardından post-prodüksiyon(çekimler bittikten sonra çekim üzerinde yapılan düzenlemeler) aşamasında özel bilgisayar programları aracılığıyla bu tek renk arkaplan anahtar renk olarak seçilip siliniyor (transparan yapılıyor) ve yerine konulması istenen görüntü giydiriliyor.
-Görüntüdeki renkli arkaplanı (greenscreen, bluescreen) silme işlemine “key”lemek denir.</p>
-
-<h3>Chroma Key Tarihi</h3>
-
-<ul>
-<li>Chroma key ilk olarak Larry Butler tarafından 1940 yılında çekilmiş Bağdat Hırsızı (The Thief of Bagdad) filminde kullanılmış ve daha sonra bu tekniği geliştiren Petro Vlahos&#8217;a Oscar ödülü kazandırmıştır.</li>
-<li>Aynı zamanda 1940 yılından beri chroma key tekniği için yeşil ve mavi renkler standart olarak kullanılmaktadır.</li>
-</ul>
-
-
-<h3>Neden Genellikle Mavi ya da Yeşil Renk Kullanılır?</h3>
-
-<p>Aslında arkaplan rengi olarak yeşil ve mavi renkler dışında başka renklerde kullanılabilir. Ancak buradaki amaç insan tenine en uzak renklerin seçilmesidir. Eğer siyah renk, anahtar renk olarak seçilirse ve bu renk üzerine görüntü bindirilirse kişinin veya nesnenin üzerinde bulunan siyah renkli yerler üzerine de görüntü binecektir. Böylece kişiler ve nesneler üzerinde görüntü bozuklukları yaşanacaktır. Bu yüzden chroma key tekniğinde anahtar renk seçerken nesneler üzerinde fazla kullanılmayan renk seçilmeli ve ekran önündeki insan veya nesnenin seçilen anahtar renk ile aynı renkte bir şey barındırmaması gerekmektedir.</p>
-
-<p><img class="center" src="http://www.virtualstudio.tv/assets/media/blog-images/what_is_chroma_keying_green_screen.jpg">
-Croma key çekim bittikten sonra (post-production) uygulanabileceği gibi çekim ile eş zamanlı(real-time) olarakta uygulanabilen bir tekniktir.
-Günlük olarak hepimizin şahit olabileceği bir örnek vermek gerekirse hava tahmin programlarını ele alabiliriz. Spiker hava tahminini sunarken genelde önünde hava durumunun bulunduğu bir coğrafi bölge haritası bulunur ve kendisi bu harita üzerinde belirli bölgeleri göstererek sunumunu yapar. Bu çekim eğer canlı olarak yapılıyorsa chroma key real-time olarak uygulanır. Aksi takdirde spiker greenscreen önünde sunumunu bitirdikten sonra chroma key uygulanacaktır.</p>
-
-<h3>Chroma Key Gelişme Aşamaları</h3>
-
-<p>Chroma key tekniği günümüzdeki kullanılan hale gelene kadar çok aşamadan geçmiştir. İlk başlarda bu teknik ile hareketli görüntüler çekilemiyordu.
-Yani greenscreen teknolojisinin kullanıldığı sahnelerde kamera sabitti. Bunun sebebi ise arkaplanı ve önde duran aktörü saptamada sorun yaşanmasıydı.
-<img class="center" src="http://ibxk.com.br/2012/6/materias/14572694012135422.jpg"></p>
-
-<p>Ancak günümüzde arkaplana “+”, “x” işaretleriyle yada düzgün aralıklı noktalarla referans noktaları konulmakta ve bu yardımcı noktalar aracılığıyla bilgisayarlar, arkaplanı ve öndeki aktörü çok daha rahat bir şekilde saptayabilmektedir.
-Yukarıdaki resimde siyah noktalar aşağı veya yukarı doğru biraz meyilli yerleştirilmiştir. Bu sebeple kamera hareketinin de o yönde olacağını söyleyebiliriz. Dolayısıyla çekim kapsamına giren bu arkaplanlar öndeki aktörden daha kolay ayırt edilmektedir.<br/>
-Bu yöntemle kamera hareketli dahi olsa bu noktalar bilgisayar tarafından takip edilebilmekte ve kamera açısı kaybedilmemektedir.</p>
-
-<h3>Croma Key Tekniğinde Dikkat Edilmesi Gerekenler</h3>
-
-<ul>
-<li><p>Çekilen görüntülerde arkaplan rengi olarak yeşil kullanılıyorsa oyuncunuzun yeşil tonlarında bir şey giymemesi gereklidir. Bu özellik tüm renkler için geçerlidir.</p></li>
-<li><p>Cilalı yüzeyler ve cam gibi yansıtıcılığı yüksek nesneler arkaplanı yansıtabilirler. Bu yüzden parlak mücevherler, cilalı ayakkabılar ve yansıtıcı dekorlardan kaçınmak gerekmektedir.</p></li>
-<li><p>Çekimlerde, arkaplan perdesinin eşit olarak aydınlatılması önemli olduğu için çok sayıda ışık kullanmak gerekli olabilir. Bu yüzden dar alanlarda çekim yapmaktan kaçınılmalıdır. Oyuncunun perdeden mümkün olduğu kadar uzakta durması da kenarlarda oluşacak renk akmalarını önleyecektir. Bu yüzden profesyonel stüdyolarda çekim yapmak tercih edilmelidir.</p></li>
-<li><p>Çok ince detaylar &ldquo;key&#8221;leme esnasında kaybolabilir. Bu nedenle mümkünse oyuncunun saçlarının toplu olması, bol ve saçaklı kıyafetlerden kaçınılması, hızlı hareketler yapılmaması ve sahnede aynı anda az kişi ve obje olması bu problemleri minimize eder.</p></li>
-</ul>
-
-
-<h3>Chroma Key Reflect Media Teknolojisi</h3>
-
-<p><img class="center" src="http://www.lighthouse.ae/galorg/21022013020832ledring.jpg/21022013020832ledring.jpg"></p>
-
-<p>Son olarak Chroma key yeni teknolojisi olan Reflect Media teknolojisinden bahsedeceğim.
-Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide kullanılmasına gerek yoktur. Bu teknoloji ile arkaplan fonunun yeşil veya mavi olmasına da gerek yoktur. Yeşil veya mavi LED&#8217;lerin halka oluşturacak şekilde dizilmesiyle oluşturulan alete LiteRing denilmektedir.  Bu alet kameranın merceğinin önüne takılmaktadır. Resimde görüldüğü gibi arkadaki perde gri olmasına rağmen LiteRing sayesinde elde edilen arkaplan rengi yeşil olmaktadır.</p>
 ]]></content>
   </entry>
   
