@@ -82,6 +82,325 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-15T23:04:08+03:00" pubdate data-updated="true">Aug 15<sup>th</sup>, 2015</time>
+        
+         | <a href="/blog/2015/08/15/angularjs-single-page-application/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
+
+<p>Angularjs ile bir single page application nasıl oluşturuluyor. Angular bunun için nasıl bir route mekanizması kullanıyor ona bakalım.</p>
+
+<figure class='code'><figcaption><span>app.js </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;myApp&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;ngRoute&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">config</span><span class="p">([</span><span class="s1">&#39;$routeProvider&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$routeProvider</span><span class="p">.</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/home&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;home.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/services&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;services.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/clients&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;clients.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">otherwise</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uygulamamızın modul&#8217;une ngRoute modul&#8217;unu dependency olarak belirtiyoruz. Yani modulun bağımlılıklarını belirtiyoruz. Bu sayede ngRoute içindeki her fonksiyonu/servisi kendi uygulamamızda da kullanabiliyoruz.</p>
+
+<p>Config sadece Provider&#8217;lar için kullanılır. Provider&#8217;lar Angularjs&#8217;de en gelişmiş servis oluşturma kompanentidir. Buradaki <code>$routeProvider</code> servisi uygulama başlamadan Routing konfigürasyonunu sağlar.</p>
+
+<p><code>$routeProvider</code> sayesinde eğer url isteği /home olursa template olarak <code>home.html</code> kullanılmasını, eğer istek /services olursa template olarak <code>services.html</code> kullanılmasını sağlıyoruz. <code>.otherwise</code> ise olmayan herhangi farklı bir istekte bulunulursa /home url&#8217;e yönlendirmek için kullanılmaktadır.</p>
+
+<figure class='code'><figcaption><span>services.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h1&gt;</span>Services Page<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>Nobody can give you freedom. If you&#39;re a man, you take it.<span class="nt">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Angular route yapısı için daha çok <a href="https://github.com/angular-ui/ui-router">ui-router</a> kullanılması tavsiye edilir.</p>
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">&quot;myApp&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;style.css&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular-route.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;script.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/home&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/services&quot;</span><span class="nt">&gt;</span>Services<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/clients&quot;</span><span class="nt">&gt;</span>Clients<span class="nt">&lt;/a&gt;&lt;/li&gt;&lt;br&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">ng-view</span><span class="nt">&gt;&lt;/div&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Angularjs route yapısında <code>#</code> karakteri kullanılır. O yüzden linklerdeki url&#8217;lerde <code>#</code> karakteri kullanılmıştır. <code>ng-view</code> aslında Rails&#8217;de ki <code>yield</code> ile aynı işlevi görür. Angularda eğer bunu eklemezsek sayfada görüntü oluşmayacaktır.</p>
+
+<p>Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a></p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/11/angularjs-calisma-mantigi/">AngularJS Çalışma Mantığı</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-11T00:26:37+03:00" pubdate data-updated="true">Aug 11<sup>th</sup>, 2015</time>
+        
+         | <a href="/blog/2015/08/11/angularjs-calisma-mantigi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Angularjs ile ilgili beni en çok uğraştıran konu kesinlikle angularjs&#8217;in çalışma mantığını anlatmak olacak. Çünkü Angularjs ng-app directive&#8217;i gibi basit bir söz dizilimi ile çalışmaya başlayıp, mekanizmayı tam anlamıyla anlamak için içerisine dallandıkça <strong>digest cycle</strong>,  <strong>$watch list</strong>, <strong>two way binding</strong>, <strong>dirty cheking</strong> mekanizmasının birbiri ile alakasının anlatılması gereken bir konu haline geliyor.</p>
+
+<p>Eğer bir Angularjs uygulaması oluşturmak istiyorsanız elbetteki ilk yapacağınız iş anguların kütüphanesini projenize eklemek olacaktır. Angularjs&#8217;nin sayfanın başına veya sonuna eklenmesinin bir önemi yok çünkü Angularjs uygulaması DomReady olmadan yani tüm scriptler yüklenmeden boot etmiyor.</p>
+
+<p>Angularjs uygulamasını başlatmak için <code>ng-app</code> yapısal directive ihtiyacımız vardır. Angularjs yüklendikten sonra uygulamanın başlaması için aranan ilk directive <code>ng-app</code>&lsquo;dir. <code>ng-app</code>&#8216;ın bulunduğu etiketin sarmaladığı alanlar arasında Angular uygulaması başlar.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span><span class='line'><span class="nt">&lt;html</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yukarıdaki kodda <code>ng-app</code> html etiketine eklendiği için bu taglar arasında kalan yer Angularjs uygulaması olarak çalışacaktır. <code>ng-app</code> direktive&#8217;i aynı zamanda uygulamanın global scope&#8217;u olan <code>$rootScope</code> nesnesini oluşturmaktadır.
+Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C standartlarına uymadığı için <code>data-ng-app</code> kullanımı tavsiye edilmektedir.</p>
+
+<p><code>ng-app</code> directive&#8217;inden sonra sayfa içerisindeki diğer directiveler aranmaya başlanır. Bulunan direktiveler uygulamaya bind edilir.  Bind edilenler <code>$wacth list</code>&lsquo;e eklenir. Daha sonrasında digest cycle kullanıcı etkileşimlerini dinlemeye başlar.</p>
+
+<h4>Digest Cycle</h4>
+
+<p>Digest Cycle uygulamanın view katmanını yani kullanıcının gördüğü ekrandaki verileri güncel tutmakla görevlidir. Kullanıcı tarafından yapılan en ufak bir etkileşimde view&#8217;in otomatik güncellenmesini sağlar.</p>
+
+<p>Özetle; Digest Cycle kullanıcı etkileşimlerini dinliyor, bir değişiklik var ise view kısmını güncel tutuyor vs. tamam ama bunun sağlanmasında arkada nasıl bir mekanizma çalışıyor asıl buna değinmek ve biraz daha derine inmek istiyorum. Bu olayı two way binding üzerinden anlatacağım.</p>
+
+<h4>Two Way Binding denilen şey ne, nasıl işler?</h4>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1449136639/desktop-animation2_av1hak.gif" alt="" /></p>
+
+<p>Yukarıdaki gif görsel olarak two way binding dediğimiz şeydir. Görüldüğü üzere model içerisinde yaptığım her değişiklik bind ettiğim view kısmına anında aktarılıyor. <a href="http://plnkr.co/edit/ayo5ZxwxmKeptLTSxElu?p=preview">Plunker Code</a></p>
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;body</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;</span> Merhaba {{ name }} <span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>{{ }} işareti angular&#8217;da expression olarak adlandırılır ve scope nesnesini view&#8217;e bind (bağlamaya) etmeye yarar.</p>
+
+<p>Şimdi elimizde bir <code>$watch list</code>  adında bir listemizin olduğunu hayal edelim. Biz UI&#8217;ye her bind ettiklerimizi bu <code>$watch list</code>&lsquo;e  <code>$watch</code> nesnesi olarak eklediğimizi düşünelim. Digest cycle kullanıcı etkileşimlerini dinlerken her defasında bu  <code>$watch list</code>&#8216;e bakar.  Eğer bu <code>$watch</code>&#8216;lardan birinde herhangi bir değişiklik var ise model-view senkronizasyonunu sağlar (Two way binding&#8217;de olduğu gibi). Bu senkronizasyonu dirty cheking mekanizması ile yapar.</p>
+
+<p><strong>Dirty Cheking Mekanizmasi:</strong> Bir değerin eski değeri ile yeni değerinin karşılaştırılmasıdır.</p>
+
+<p><strong>$watch list oluşturma örneği 1:</strong></p>
+
+<figure class='code'><figcaption><span>controller.js </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;MainController&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="s2">&quot;Foo&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s2">&quot;Bar&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>  Hello {{ bar }}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlenecek ve view&#8217;e aktarılacak.</p>
+
+<p><strong>$watch list oluşturma örneği 2:</strong></p>
+
+<figure class='code'><figcaption><span>index.html </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>  Name: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;name&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>  Password: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;password&quot;</span> <span class="nt">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>ng-model</code> directivenin özelliklerinden birisi input nesnesini scope’a bağlamaktır. Yani $scope.name ve $scope.password&#8217;un ikiside bind edildiği için <code>$watch list</code>&lsquo;e 2 tane $watch nesnesi eklenecek ve digest cycle bu iki inputtaki değişiklikleri dinleyecek.</p>
+
+<p><strong>Ufak bilgi:</strong> Digest çevirimi tetiklendikten sonra minimum 2 maximum 10 kez çalışır. (Angular 1.4’de 20 kez)</p>
+
+<p><strong>Digest Loop <code>$watch list</code> gezerken nasıl bir senaryo izliyor biraz daha bakalım:</strong></p>
+
+<blockquote><ul>
+<li>Hey $watch, senin değerin ne?
+
+<ul>
+<li>9</li>
+</ul>
+</li>
+<li>Pekala, bir değişiklik var mı? (Dirty Checking)
+
+<ul>
+<li>Hayır yok.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>(Herhangi bir değişiklik olmadığı için diğer $watch’a geçer.)</p>
+
+<ul>
+<li>Hey sen, senin değerin ne?
+
+<ul>
+<li>Foo</li>
+</ul>
+</li>
+<li>Bir değişiklik var mı?  (Dirty Checking)
+
+<ul>
+<li>Evet, önceden Bar’dım.</li>
+</ul>
+</li>
+<li>Güzel, o halde DOM’u güncelleyelim.</li>
+</ul>
+</blockquote>
+
+<p><code>$watch</code>’lar bitene kadar bu çevirim devam eder. $digest loop bittiğinde değişiklik var ise DOM&#8217;da değişiklik yapılır.</p>
+
+<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım.</p>
+
+<p>O halde şu söz de burada dursun:</p>
+
+<blockquote><p>“Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.”</p></blockquote>
+
+<p>Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">AngularJS Nedir?</a></h1>
     
     
@@ -156,7 +475,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x61;&#x6e;&#x67;&#117;&#108;&#97;&#114;&#x40;&#x67;&#x6f;&#111;&#103;&#x6c;&#101;&#x67;&#x72;&#111;&#x75;&#112;&#x73;&#x2e;&#x63;&#111;&#x6d;">&#x61;&#110;&#103;&#117;&#x6c;&#97;&#114;&#x40;&#x67;&#111;&#x6f;&#x67;&#108;&#x65;&#x67;&#x72;&#111;&#x75;&#112;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x61;&#110;&#x67;&#117;&#108;&#97;&#114;&#x40;&#103;&#111;&#x6f;&#x67;&#x6c;&#101;&#x67;&#x72;&#111;&#117;&#112;&#x73;&#x2e;&#x63;&#x6f;&#x6d;">&#97;&#x6e;&#103;&#x75;&#108;&#x61;&#x72;&#x40;&#x67;&#111;&#x6f;&#x67;&#108;&#101;&#103;&#x72;&#111;&#117;&#112;&#x73;&#46;&#x63;&#111;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -752,356 +1071,6 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/28/rails-plus-ckeditor/">Rails - Ckeditor</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-28T16:13:22+03:00" pubdate data-updated="true">Aug 28<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/08/28/rails-plus-ckeditor/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Rails uygulamalarınıza aşağıdaki resimde görülen tarzda bir text editörü eklemek istiyorsanız ckeditor
-kullanmak bu iş için uygun olacaktır.</p>
-
-<p><img class="center" src="http://i.imgur.com/PlrBDC6.png"></p>
-
-<p>Öncelikle uygulamamızdaki Gemfile içerisine gerekli gem&#8217;leri ekleyelim.</p>
-
-<figure class='code'><figcaption><span>Gemfile </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">gem</span> <span class="s1">&#39;paperclip&#39;</span>
-</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;ckeditor&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ve Bundle ediyoruz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">bundle</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Gemleri install ettik. Peki yüklenecek dosyalar için nasıl model oluşturacağız? Active_record orm&#8217;si paperclip gemini default olarak kullanır. Mongoid, Carrierwave ile nasıl kullanılacağını merak ediyorsanız daha ayrıntılı bilgi için <a href="https://github.com/galetahub/ckeditor">README</a> kaynağına göz atabilirsiniz. <br/>
-ActiveRecord + Paperclip kullanımı:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">rails</span> <span class="n">generate</span> <span class="ss">ckeditor</span><span class="p">:</span><span class="n">install</span> <span class="o">--</span><span class="n">orm</span><span class="o">=</span><span class="n">active_record</span> <span class="o">--</span><span class="n">backend</span><span class="o">=</span><span class="n">paperclip</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bir sorunla karşılaşmadıysanız terminalden hangi dosyaların oluşturulduğunu görebilirsiniz.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'> <span class="n">create</span>  <span class="n">config</span><span class="o">/</span><span class="n">initializers</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'> <span class="n">route</span>  <span class="n">mount</span> <span class="no">Ckeditor</span><span class="o">::</span><span class="no">Engine</span> <span class="o">=&gt;</span> <span class="s1">&#39;/ckeditor&#39;</span>
-</span><span class='line'> <span class="n">create</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">/</span><span class="n">asset</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'> <span class="n">create</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">/</span><span class="n">picture</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'> <span class="n">create</span>  <span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">ckeditor</span><span class="o">/</span><span class="n">attachment_file</span><span class="o">.</span><span class="n">rb</span>
-</span><span class='line'> <span class="n">create</span>  <span class="n">db</span><span class="o">/</span><span class="n">migrate</span><span class="o">/</span><span class="mi">20140829114657</span><span class="n">_create_ckeditor_assets</span><span class="o">.</span><span class="n">rb</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Tabloların oluşmasını tetikleyelim o halde:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">migrate</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Şimdide javascript kodunu <code>/views/layouts/application.html.erb</code> içerisine include ediyoruz.  Ayrıca <a href="http://ckeditor.com/download">ckeditor-download</a> adresinden ckeditor&#8217;u indirip dosyalara erişebilirsiniz.</p>
-
-<figure class='code'><figcaption><span>application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s1">&#39;ckeditor/ckeditor.js&#39;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Sonra <code>body</code> içerisine javascript kodunu ekliyoruz:</p>
-
-<figure class='code'><figcaption><span>application.html.erb </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='Javascript'><span class='line'> <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;textarea.ckeditor&#39;</span><span class="p">).</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;textarea.ckeditor&#39;</span><span class="p">);</span>
-</span><span class='line'>          <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">CKEDITOR</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>          <span class="p">});</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ckeditor&#8217;u nerede göstermek istiyorsanız onunla ilgili sayfaya form içeriği ekliyoruz. Bu uygulama için ben <a href="https://github.com/plataformatec/simple_form">simple_form</a> gemini kullanıyorum. İstediğiniz görüntüyü elde etmek için form içeriği şöyle olacaktır:</p>
-
-<figure class='code'><figcaption><span>_form.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= simple_form_for(@yourmodel) do |f| %&gt;</span>
-</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">form</span><span class="o">.</span><span class="n">input</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:ckeditor</span><span class="p">,</span> <span class="ss">:input_html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:ckeditor</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="ss">:toolbar</span> <span class="o">=&gt;</span> <span class="s1">&#39;Full&#39;</span><span class="p">}</span> <span class="p">}</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">&lt;%end%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Artık ckeditor&#8217;u kullanabilirsiniz.
-Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/galetahub/ckeditor">Githubda ckeditor gem</a>, <a href="http://ckeditor.com/download">Ckeditor&#8217;un resmi sayfası</a> adreslerinden ulaşabilirsiniz.</p>
-</div>
- 
- 
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/">Rails - &#8216;the Json Native Gem Requires Installed Build Tools&#8217; Hatası</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-10T10:41:35+03:00" pubdate data-updated="true">Aug 10<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Rails kurulumunu gerçekleştirirken oluşabilecek hatalardan bir tanesidir. Bu hata bazı kütüphanelerin sistemde eksik olmasından kaynaklanmaktadır. Hatanın çözümü için ise aşağıdaki gibi bir yol izlenebilir.</p>
-
-<p>Ruby 1.9.3 veya üzeri bir ruby sürümünün sisteme yüklü olduğunu ve ruby sürümüne uygun bir development kit’in de sisteminizde kurulu olduğunu farzediyorum. Bunları indirmek için bkz: <a href="http://rubyinstaller.org/downloads">Ruby Installer</a></p>
-
-<figure class='code'><figcaption><span>Terminal(Hata Kodu)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="ss">ERROR</span><span class="p">:</span> <span class="no">Error</span> <span class="n">installing</span> <span class="ss">json</span><span class="p">:</span> <span class="no">The</span> <span class="s1">&#39;json&#39;</span> <span class="n">native</span> <span class="n">gem</span> <span class="n">requires</span> <span class="n">installed</span> <span class="n">build</span> <span class="n">tools</span><span class="o">.</span>
-</span><span class='line'><span class="no">Please</span> <span class="n">update</span> <span class="n">your</span> <span class="no">PATH</span> <span class="n">to</span> <span class="kp">include</span> <span class="n">build</span> <span class="n">tools</span> <span class="ow">or</span> <span class="n">download</span> <span class="n">the</span> <span class="no">DevKit</span> <span class="n">from</span>
-</span><span class='line'><span class="s1">&#39;http://rubyinstaller.org/downloads&#39;</span> <span class="ow">and</span> <span class="n">follow</span> <span class="n">the</span> <span class="n">instructions</span> <span class="n">at</span>
-</span><span class='line'><span class="s1">&#39;http://github.com/oneclick/rubyinstaller/wiki/Development-Kit&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Daha sonra Ruby193 dosyası(versiyona göre sizde farklı olabilir) içerisine kurduğumuz DevKit&#8217;in bulunduğu dizine geçiyoruz ve gerekli işlemleri sırasıyla yapıyoruz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">cd</span> <span class="ss">C</span><span class="p">:\</span><span class="n">ruby193</span><span class="p">\</span><span class="no">DevKit</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">init</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">review</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Şimdide json kurmayı deneyelim.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">json</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Json başarılı bir şekilde kurulmuş olmalı. Hepsi bu kadar artık rails kurulumunu gerçekleştirebiliriz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rails</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
- 
- 
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/05/tekno-girisim/">Teknogirişim</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-05T14:57:18+03:00" pubdate data-updated="true">Jun 5<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/06/05/tekno-girisim/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Teknogirişim Sermayesi Desteği Programını merak ediyorsanız veya başvuru yaptıysanız hangi aşamaların sizi beklediğini bu yazı içerisinde bulabilirsiniz. Kendim 2014 yılı için TGSD programına başvurmuştum. Dolayısıyla daha sonraki yıllarda, sizden istenecek belgeler ve geçerli işlem süreleri büyük ihtimal farklılık gösterecektir bunu dikkate alarak okuyunuz.</p>
-
-<h3>Teknogirişim Programı Nedir?</h3>
-
-<p>Bilim, Sanayi ve Teknoloji Bakanlığı tarafından 500 genç girişimciye, şirket kurmaya teşvik etmek amacıyla 100 bin TL hibe para veren bir destek programıdır. 2009 yılından bu yana program devam etmektedir. Daha ayrıntılı bilgi için <a href="http://sagm.sanayi.gov.tr/ServiceDetails.aspx?dataID=217">bakınız</a>.</p>
-
-<h3>Teknogirişim Süreci</h3>
-
-<p>Teknogirişim 3 aşamadan oluşmaktadır. Şimdi bu aşamalara ve süreçlerine değineceğim.</p>
-
-<h2>Birinci Aşama</h2>
-
-<p>İlki öndeğerlendirme aşamasıdır. Bu aşama için sizden projeniz hakkında genel bir bilgi istenmektedir. Oluşturmuş olduğunuz proje raporunu belirtilen süre içerisinde <a href="https://biltek.sanayi.gov.tr/Sayfalar/default.aspx">biltek</a> adresinden sisteme yüklemeniz gerekmektedir. Aynı zamanda kargoyla da ilgili adrese belgeleri göndermeniz gerekmektedir. Biltek sitesine kayıt olmanız için e-devlet şifrenize ihtiyaç vardır. Bunun içinde en yakın bir ptt şubesine başvurabilirsiniz. Gerekli belgeleri hazırlayıp zamanında sisteme yüklerseniz ilk aşamayı %90 geçersiniz. Ben öndeğerlendirme raporunu 09.11.2013 itibari ile sisteme yüklemiştim ve 08.01.2014 tarihinde öndeğerlendirme sonucu tarafıma hem e-mail hemde mesaj ile bildirilmişti.
-<br/><br/></p>
-
-<h2>İkinci Aşama</h2>
-
-<p>İkinci aşama olan işplanı belgesini hazırlamak ilkine göre biraz daha meşakkatli. Çünkü sizden tam anlamıyla bütçe gereksinimlerini izah etmeniz istenmekte. Nereye ne kadar para harcanacak, ne için harcanacak vs. hepsinin izahını yapmanız gerekmektedir. Yani bir nevi şirketi tamam kurmak istiyorsun ama nasıl kuracaksın, nerede kuracaksın, nasıl idare edeceksin vs. sorularına cevap vermeniz gerekmektedir. Ben bu belgeyi 22.01.2014 itibari ile gönderdim. İlk belgenin açıklanmasıyla bu belgeyi göndermem arasında yaklışık 15-20 günlük bir zaman dilimi vardı. İş planı belgesini hazırlamak diğerine göre daha uzun sürdüğü için daha sonrasında 1 hafta daha süresi uzatılmıştı. Sonucu ise 31.01.2014 tarihi itibari ile tarafıma bildirildi.
-<br/>
-Bu zaman dilimlerini yazıyorum çünkü sonuçları beklerken ne zaman ne olacak insan bilemiyor ve beklemek biraz sıkıntılı bir süreç. Yani üç aşağı beş yukarı süreçler hakkında fikriniz olması hasebiyle yazıyorum.
-<br/><br/></p>
-
-<h2>Üçüncü Aşama</h2>
-
-<p>Geldik üçüncü aşamaya. İkinci aşamanın sonuçlandığı gün üçüncü aşama için panel tarihini bildiren bir mail gönderildi. Paneller 10 Şubat - 7 Mart tarihleri arasında Bilkent Cyberpark’ta yapıldı. Sizede belirli tarihler arasında bir günü belirleyip bildireceklerdir. Üçüncü aşama için sizden heyet önünde projenizi anlatmanız için 10 dakikalık bir görsel sunum hazırlamanız isteniyor. Bir tavsiye olarak Guy Kawasaki&#8217;nin 10 20 30 kuralını uygulamanızı öneririm. Önceleri her ne kadar mantıklı bulmasamda bazı tecrübelerime dayanarak artık çok mantıklı buluyorum. Yani kıcaca 10 sayfa, 20 dakika ve 30 punto kuralıdır. 10 sayfaya anlatacaklarım sığmaz diyebilirsiniz zaten anlatacaklarınız büyük ihtimal 30 sayfayada sığmaz çünkü genelde içerik çok yoğun oluyor. Ama siz projenin sadece temel yerlerinden bahsedin geresini bırakın heyet merak ediyorsa sorsun. Zaten siz sunum yaptıktan sonra soru cevap kısmı daha uzun sürüyor.
-<br/><br/>
-Sunum günü Bilkent Cyberpark&#8217;a kalkıp gidiyorsunuz. Tabi Ankara&#8217;yı çok bilmeyen birisiyseniz biraz sıkıntı çekmeden olmuyor bu işler. Sunum yaptığımız heyetler belirli kategorilere göre ayrılmıştı. Benim sunum yaptığım heyet için günde 4 sunum belirlenmişti yani günde 4 kişinin sunumunu dinliyorlardı. Sabah ve öğleden sonra anlatacaklar olmak üzere bir plan yapılmıştı. Heyet 5 kişiden oluşuyordu. Heyettekilerden birinin teknogirişim sürecinde bizi bilgilendiren kişi olduğunu çok sonradan öğrendim. Diğerleri ise sizin anlatacağınız konu hakkında bilgi sahibi olan kişilerden oluşuyor.
-Edindiğim bilgi ve deneyime göre heyetin dikkat ettiği en önemli konu sizin bu iş fikrini pazarlayıp pazarlayamayacağınız. Bu konu üzerinde çok duruluyor. Tabi her iş fikri için farklı hassasiyetlerin olması olasıdır. 17.03.2014 tarihinde de teknogirişim sermayesi desteği almaya hak kazananlar belli oldu. <a href="http://www.sanayi.gov.tr/AnnouncementDetails.aspx?annID=6474&amp;lng=tr">2014 yılı kazananların listesi</a>.
-<br/>
-İş fikrinize inanıyor ve güveniyorsanız bu iş fikri üzerine birde şirket kurmak istiyorsanız Teknogirişim programını değerlendirmenizi tavsiye ederim.
-Kolay gelsin.</p>
-</div>
- 
- 
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/15/second-life-pandorabots/">Second Life - Pandorabots</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-15T09:56:37+02:00" pubdate data-updated="true">Feb 15<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/02/15/second-life-pandorabots/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Pandorabots web siteniz için chatbot oluşturmanızı, geliştirmenizi ve yayınlamanızı sağlayan açık kaynak tabanlı bir platformdur. Pandorabots aynı zamanda internetteki en büyük chatbot platformudur. <a href="http://pandorabots.com/static/html/">Pandorabots hakkında daha ayrıntılı bilgi</a>. Bu yazıda Pandorabots ile oluşturduğunuz chatbot&#8217;un Second Life içerisinde nasıl kullanılacağı ile ilgili bilgiler bulabilirsiniz.</p>
-
-<p>Pandorabots&#8217;da  AIML programlama kullanılır ve &ldquo;Standart AIML&rdquo;, &ldquo;Dr.Wallace&rsquo;s A.L.I.C.E&rdquo;, &ldquo;Annotated A.L.I.C.E AIML&rdquo; gibi bazı botlar ile öntanımlı olarak gelir. Pandorabots da oluşturulan her Bot’un kendine ait bir Bot_ID numarası mevcuttur. Bu Bot_ID kullanılarak oluşturduğunuz Bot’un Second Life ortamında kullanımını sağlayabilirsiniz.</p>
-
-<h3>Pandorabots’da Kişisel Bot Oluşturma</h3>
-
-<p>Yeni kayıt olmak için <a href="http://pandorabots.com/botmaster/en/new-account">http://pandorabots.com/botmaster/en/new-account</a> adresini ziyaret ediniz.
-Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüsüne basarak yeni Bot’unuzu oluşturabilirsiniz.</p>
-
-<p><img class="center" src="http://i.imgur.com/NzdaQ5U.png"></p>
-
-<p>Bot oluştururken halihazırda oluşturulmuş 5 tane chatbottan birisini seçebilirsiniz. Eğer bu Bot’un AIML dosyalarını kullanmak istemiyor ve sıfırdan yeni bir bot oluşturmak istiyorsanız Bot oluştururken <code>No initial content, the pandorabot starts with no knowledge</code> seçeneğini seçmelisiniz.</p>
-
-<p><img class="center" src="http://i.imgur.com/cfhS23E.png"></p>
-
-<p>Eğer Bot’unuzu oluşturduysanız ve içersinde AIML dosyaları mevcutsa deneme yapmak için <code>Train</code> e basarak oluşturduğunuz bot ile konuşmaya başlayabilirsiniz. Yeni AIML dosyası eklemek istiyorsanız AIML menüsünden <code>Create a new AIML file</code> a basmalısınız.
-<code>Properties</code> menüsü ile Bot’unuzun özelliklerini belirleyebilirsiniz.</p>
-
-<p><strong><em>Önemli:</em></strong> Bot’unuzda yaptığınız değişikliklerin kullanılabilir hale gelmesi için Bot’un ana sayfasında republish tuşuna basmalısınız.</p>
-
-<h3>Pandorabots ile Second Life Bağlantısı</h3>
-
-<p>Second Life&#8217;da oluşturduğunuz herhangi bir nesne içerisine aşağıdaki script kodlarını ekleyin.</p>
-
-<p>Kodlarım <a href="https://gist.github.com/ecmelkytz/9003889">burada!</a></p>
-
-<p><strong><em>Not:</em></strong>  Gist sayfasındaki ilk kod içerisinde bulunan botid kısmını kendi oluşturduğunuz Bot’un id numarası ile değiştirin.</p>
-
-<p>Bu işlemlerden sonra Second Life&#8217;da istediğiniz herhangi bir nesle ile oluşturmuş olduğunuz chatbot vasıtasıyla konuşabilirsiniz.</p>
-</div>
- 
- 
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1136,6 +1105,26 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
     
       <li class="post">
         <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/">SOAP Web Servis ile CURL Kullanımını Bash ile Harmanlama</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/11/angularjs-calisma-mantigi/">AngularJS Çalışma Mantığı</a>
       </li>
     
   </ul>
