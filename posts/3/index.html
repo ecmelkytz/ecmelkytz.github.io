@@ -82,6 +82,55 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/">Rails - Devise(Could Not Found Table) Hatası</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-09T11:51:16+03:00" pubdate data-updated="true">Sep 9<sup>th</sup>, 2014</time>
+        
+         | <a href="/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Oluşturulan devise modelinin <strong>user</strong> olduğunu varsayarak okuyunuz.<br/>
+Şimdi devise&#8217;ı Gemfile&#8217;a eklediniz, install ettiniz, viewleri oluşturdunuz, routes ayarladınız (bu konulara girmiyorum devise hakkında ayrıntılı bilgi için <a href="https://github.com/plataformatec/devise">bakınız</a> ) ve rake db:migrate kodunu çalıştırdığınız zaman herhangi bir geri dönüş almadınız.</p>
+
+<p>Neyse birde serverda deneyelim bu işi dediniz. <code>http://localhost:3000/users/sign_in</code> adresine girmeye çalıştığınız zaman <strong>Could not find table &lsquo;users&rsquo;</strong> tarzında bir hata ile karşılaştınız. Yani users tablosu bulunamıyor .</p>
+
+<p><img src="http://i.imgur.com/8Osy4h4.png" alt="Imgur" /></p>
+
+<p>Zaten rake db:migrate kodunun çalışmamasından bir sorunla karşılaşmayı beklemek mantıklı olacaktır.</p>
+
+<p><strong>Çözüm:</strong><br/>
+Çok basit bir çözümü olmasıyla beraber gereksiz yere vaktimi çaldığı için buraya not düşmeye karar verdim.<br/>
+<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/></p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/08/28/rails-plus-ckeditor/">Rails - Ckeditor</a></h1>
     
     
@@ -542,6 +591,10 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
       </li>
     
       <li class="post">
+        <a href="/blog/2016/03/27/bir-developerin-hayatini-kolaylastiracak-3-prensip-kiss-yagni-dry/">Bir Developer&#8217;ın hayatını kolaylaştıracak 3 prensip: KISS, YAGNI, DRY</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
       </li>
     
@@ -571,10 +624,6 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
     
       <li class="post">
         <a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/11/angularjs-calisma-mantigi/">AngularJS Çalışma Mantığı</a>
       </li>
     
   </ul>
