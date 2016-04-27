@@ -82,6 +82,114 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/">How to Change a Particular Column Background Color in Jquery of Datatable</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-26T23:13:32+03:00" pubdate data-updated="true">Sep 26<sup>th</sup>, 2014</time>
+        
+         | <a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Datatable kullanarak bazı verilerinizi listeliyor ve bazı değerlere göre satırların veya kolonların renklerini değiştirmek istiyorsanız aşağıdaki gibi bir yöntem kullanabilirsiniz.</p>
+
+<p>Aşağıdaki Datatable&#8217;da <code>Durum</code> kolonuna göre satırların arkaplan renginin nasıl değiştirileceğine bakalım.</p>
+
+<p><img src="http://i.imgur.com/dZbtEg4.png" alt="Imgur" /></p>
+
+<p><code>Durum</code> kolonundaki değer eğer &ldquo;Onaylanmış&rdquo; ise arkaplan rengini yeşil, diğer durumlar için arkaplan rengini kırmızı yapalım.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#datatable&#39;</span><span class="p">).</span><span class="nx">dataTable</span><span class="p">({</span>
+</span><span class='line'>    <span class="s2">&quot;fnRowCallback&quot;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">nRow</span><span class="p">,</span> <span class="nx">aData</span><span class="p">,</span> <span class="nx">iDisplayIndex</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="nx">aData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Onaylanmış&quot;</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#dff0d8&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#f2dede&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">nRow</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Eğer aşağıdaki Datatable&#8217;da ki gibi sadece bir kolon için arkaplan renginin değişmesini istiyorsanız:</p>
+
+<p><img src="http://i.imgur.com/kLMGeX9.png" alt="Imgur" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#datatable&#39;</span><span class="p">).</span><span class="nx">dataTable</span><span class="p">({</span>
+</span><span class='line'>    <span class="s2">&quot;fnRowCallback&quot;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">nRow</span><span class="p">,</span> <span class="nx">aData</span><span class="p">,</span> <span class="nx">iDisplayIndex</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="nx">aData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Onaylanmış&quot;</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td:eq(5)&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#dff0d8&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td:eq(5)&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#f2dede&#39;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">nRow</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/">Rails - Devise(Could Not Found Table) Hatası</a></h1>
     
     
@@ -611,6 +719,10 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
       </li>
     
       <li class="post">
+        <a href="/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/">Rails: AngularJS ile CRUD İşlemleri</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
       </li>
     
@@ -620,10 +732,6 @@ Standart chroma key de gerekli olan fon aydınlatma sistemleri bu teknolojide ku
     
       <li class="post">
         <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a>
       </li>
     
   </ul>

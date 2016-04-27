@@ -82,6 +82,159 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/">SOAP Web Servis Ile CURL Kullanımını Bash Ile Harmanlama</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-02T12:37:26+03:00" pubdate data-updated="true">Sep 2<sup>nd</sup>, 2015</time>
+        
+         | <a href="/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Terminalden ip öğrenme ve ip adresi sorgulamak (x ip kullanılıyor mu, hangi ülke tarafından kullanıyor vs.) için yazılmış basit bir bash kodudur. Curl ile web servis kullanımını bash ile harmanlar. Can sıkıntısı ürünüdür.</p>
+
+<h5>Özetle: Atla (<img alt="horse" src="/images/emoji/unicode/1f434.png" class="emoji" />) deve (<img alt="dromedary_camel" src="/images/emoji/unicode/1f42a.png" class="emoji" />) değildir.</h5>
+
+<p>Dosya içeriği:</p>
+
+<figure class='code'><figcaption><span>geoip </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">GETGEOIPCONTEXT</span><span class="o">=</span><span class="s2">&quot;http://www.webservicex.net/geoipservice.asmx/GetGeoIPContext&quot;</span>
+</span><span class='line'><span class="nv">GETGEOIP</span><span class="o">=</span><span class="s2">&quot;http://www.webservicex.net/geoipservice.asmx/GetGeoIP&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>get_ip<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  curl -H <span class="s2">&quot;Accept: application/soap+xml&quot;</span> -d <span class="s2">&quot;IPAddress=$1&quot;</span> <span class="k">${</span><span class="nv">GETGEOIP</span><span class="k">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>my_ip<span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>  curl -H <span class="s2">&quot;Accept: application/soap+xml&quot;</span> -d <span class="s2">&quot;IPAddress=$1&quot;</span> <span class="k">${</span><span class="nv">GETGEOIPCONTEXT</span><span class="k">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$@</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Terminal&#8217;de kullanım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>geoip my_ip
+</span><span class='line'><span class="c"># Ekran çıktısı</span>
+</span><span class='line'>  &lt;ReturnCode&gt;1&lt;/ReturnCode&gt;
+</span><span class='line'>  &lt;IP&gt;193.xxx.xx.xx&lt;/IP&gt;
+</span><span class='line'>  &lt;ReturnCodeDetails&gt;Success&lt;/ReturnCodeDetails&gt;
+</span><span class='line'>  &lt;CountryName&gt;Turkey&lt;/CountryName&gt;
+</span><span class='line'>  &lt;CountryCode&gt;TUR&lt;/CountryCode&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>geoip get_ip 195.xxx.xx.xx
+</span><span class='line'><span class="c"># Ekran çıktısı</span>
+</span><span class='line'>  &lt;ReturnCode&gt;1&lt;/ReturnCode&gt;
+</span><span class='line'>  &lt;IP&gt;195.xxx.xx.xx&lt;/IP&gt;
+</span><span class='line'>  &lt;ReturnCodeDetails&gt;Success&lt;/ReturnCodeDetails&gt;
+</span><span class='line'>  &lt;CountryName&gt;Germany&lt;/CountryName&gt;
+</span><span class='line'>  &lt;CountryCode&gt;DEU&lt;/CountryCode&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/v1457516071/bigdeal_bpnp2u.jpg"></p>
+
+<p>Yazdığımız bash kodunu konsoldan çalışır duruma getirme işine bakalım:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>chmod <span class="m">755</span> geoip
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Artık scriptin bulunduğu dizinde şu şekilde çalıştırabiliriz.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>./geoip my_ip
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sadece dosya ismiyle çalıştırmak istiyorum. Bundan dolayı sudo ile mc (Midnight Commander) aracılığıyla bash script&#8217;i /bin dizinine attım. Aynı işlemi yapabileceğimiz bir çok yol elbette mevcut.</p>
+
+<p>Misal:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="c"># Taşımak için</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sudo mv path/geoip bin
+</span><span class='line'>
+</span><span class='line'><span class="c"># Kopyalamak için</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sudo cp path/geoip bin
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>[Terminal&#8217;de kullanım] kısmında gözüktüğü gibi scriptimiz çalışır hale gelecektir.</p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a></h1>
     
     
@@ -541,7 +694,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x61;&#110;&#x67;&#x75;&#x6c;&#97;&#114;&#64;&#x67;&#111;&#x6f;&#103;&#x6c;&#x65;&#103;&#114;&#111;&#x75;&#x70;&#115;&#46;&#99;&#111;&#x6d;">&#x61;&#x6e;&#103;&#x75;&#x6c;&#97;&#114;&#64;&#103;&#111;&#x6f;&#x67;&#108;&#x65;&#x67;&#114;&#x6f;&#117;&#112;&#x73;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#97;&#x6e;&#x67;&#117;&#x6c;&#97;&#114;&#64;&#103;&#x6f;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#x75;&#112;&#115;&#46;&#x63;&#x6f;&#109;">&#97;&#x6e;&#x67;&#x75;&#x6c;&#x61;&#x72;&#x40;&#x67;&#111;&#x6f;&#103;&#x6c;&#x65;&#103;&#x72;&#111;&#117;&#x70;&#x73;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -980,114 +1133,6 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/">How to Change a Particular Column Background Color in Jquery of Datatable</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-09-26T23:13:32+03:00" pubdate data-updated="true">Sep 26<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Datatable kullanarak bazı verilerinizi listeliyor ve bazı değerlere göre satırların veya kolonların renklerini değiştirmek istiyorsanız aşağıdaki gibi bir yöntem kullanabilirsiniz.</p>
-
-<p>Aşağıdaki Datatable&#8217;da <code>Durum</code> kolonuna göre satırların arkaplan renginin nasıl değiştirileceğine bakalım.</p>
-
-<p><img src="http://i.imgur.com/dZbtEg4.png" alt="Imgur" /></p>
-
-<p><code>Durum</code> kolonundaki değer eğer &ldquo;Onaylanmış&rdquo; ise arkaplan rengini yeşil, diğer durumlar için arkaplan rengini kırmızı yapalım.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#datatable&#39;</span><span class="p">).</span><span class="nx">dataTable</span><span class="p">({</span>
-</span><span class='line'>    <span class="s2">&quot;fnRowCallback&quot;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">nRow</span><span class="p">,</span> <span class="nx">aData</span><span class="p">,</span> <span class="nx">iDisplayIndex</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="nx">aData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Onaylanmış&quot;</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#dff0d8&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#f2dede&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">nRow</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Eğer aşağıdaki Datatable&#8217;da ki gibi sadece bir kolon için arkaplan renginin değişmesini istiyorsanız:</p>
-
-<p><img src="http://i.imgur.com/kLMGeX9.png" alt="Imgur" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#datatable&#39;</span><span class="p">).</span><span class="nx">dataTable</span><span class="p">({</span>
-</span><span class='line'>    <span class="s2">&quot;fnRowCallback&quot;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">nRow</span><span class="p">,</span> <span class="nx">aData</span><span class="p">,</span> <span class="nx">iDisplayIndex</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="nx">aData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Onaylanmış&quot;</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td:eq(5)&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#dff0d8&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;td:eq(5)&#39;</span><span class="p">,</span> <span class="nx">nRow</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background-color&#39;</span><span class="p">,</span> <span class="s1">&#39;#f2dede&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>      <span class="k">return</span> <span class="nx">nRow</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="p">});</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-</div>
- 
- 
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1129,6 +1174,10 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
       </li>
     
       <li class="post">
+        <a href="/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/">Rails: AngularJS ile CRUD İşlemleri</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
       </li>
     
@@ -1138,10 +1187,6 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
     
       <li class="post">
         <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a>
       </li>
     
   </ul>
