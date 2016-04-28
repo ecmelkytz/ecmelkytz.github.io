@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-04-27T13:42:26+03:00</updated>
+  <updated>2016-04-28T13:25:39+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -1587,7 +1587,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#97;&#x6e;&#x67;&#117;&#x6c;&#97;&#114;&#64;&#103;&#x6f;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#x75;&#112;&#115;&#46;&#x63;&#x6f;&#109;">&#97;&#x6e;&#x67;&#x75;&#x6c;&#x61;&#x72;&#x40;&#x67;&#111;&#x6f;&#103;&#x6c;&#x65;&#103;&#x72;&#111;&#117;&#x70;&#x73;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#97;&#110;&#x67;&#x75;&#108;&#97;&#x72;&#x40;&#x67;&#x6f;&#111;&#x67;&#x6c;&#x65;&#x67;&#x72;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#x6d;">&#x61;&#110;&#x67;&#117;&#x6c;&#97;&#114;&#x40;&#103;&#x6f;&#111;&#103;&#x6c;&#101;&#x67;&#x72;&#x6f;&#x75;&#112;&#115;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -2015,26 +2015,6 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Rails - Devise(Could not found table) Hatası]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/"/>
-    <updated>2014-09-09T11:51:16+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/09/09/rails-devise-could-not-found-table-hatasi</id>
-    <content type="html"><![CDATA[<p>Oluşturulan devise modelinin <strong>user</strong> olduğunu varsayarak okuyunuz.<br/>
-Şimdi devise&#8217;ı Gemfile&#8217;a eklediniz, install ettiniz, viewleri oluşturdunuz, routes ayarladınız (bu konulara girmiyorum devise hakkında ayrıntılı bilgi için <a href="https://github.com/plataformatec/devise">bakınız</a> ) ve rake db:migrate kodunu çalıştırdığınız zaman herhangi bir geri dönüş almadınız.</p>
-
-<p>Neyse birde serverda deneyelim bu işi dediniz. <code>http://localhost:3000/users/sign_in</code> adresine girmeye çalıştığınız zaman <strong>Could not find table &lsquo;users&rsquo;</strong> tarzında bir hata ile karşılaştınız. Yani users tablosu bulunamıyor .</p>
-
-<p><img src="http://i.imgur.com/8Osy4h4.png" alt="Imgur" /></p>
-
-<p>Zaten rake db:migrate kodunun çalışmamasından bir sorunla karşılaşmayı beklemek mantıklı olacaktır.</p>
-
-<p><strong>Çözüm:</strong><br/>
-Çok basit bir çözümü olmasıyla beraber gereksiz yere vaktimi çaldığı için buraya not düşmeye karar verdim.<br/>
-<strong>db -> migrate</strong> altında <strong>devise_create_users</strong> dosyasının uzantısını <strong>.rb</strong> yapın sonrasında rake db:migrate çalıştırın tablolarınız sorunsuz bir şekilde oluşacaktır. <br/></p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Rails - Ckeditor]]></title>
     <link href="http://ecmelkytz.github.com/blog/2014/08/28/rails-plus-ckeditor/"/>
     <updated>2014-08-28T16:13:22+03:00</updated>
@@ -2189,6 +2169,45 @@ Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/gal
 
 
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Teknogirişim]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2014/06/05/tekno-girisim/"/>
+    <updated>2014-06-05T14:57:18+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/06/05/tekno-girisim</id>
+    <content type="html"><![CDATA[<p>Teknogirişim Sermayesi Desteği Programını merak ediyorsanız veya başvuru yaptıysanız hangi aşamaların sizi beklediğini bu yazı içerisinde bulabilirsiniz. Kendim 2014 yılı için TGSD programına başvurmuştum. Dolayısıyla daha sonraki yıllarda, sizden istenecek belgeler ve geçerli işlem süreleri büyük ihtimal farklılık gösterecektir bunu dikkate alarak okuyunuz.</p>
+
+<h3>Teknogirişim Programı Nedir?</h3>
+
+<p>Bilim, Sanayi ve Teknoloji Bakanlığı tarafından 500 genç girişimciye, şirket kurmaya teşvik etmek amacıyla 100 bin TL hibe para veren bir destek programıdır. 2009 yılından bu yana program devam etmektedir. Daha ayrıntılı bilgi için <a href="http://sagm.sanayi.gov.tr/ServiceDetails.aspx?dataID=217">bakınız</a>.</p>
+
+<h3>Teknogirişim Süreci</h3>
+
+<p>Teknogirişim 3 aşamadan oluşmaktadır. Şimdi bu aşamalara ve süreçlerine değineceğim.</p>
+
+<h2>Birinci Aşama</h2>
+
+<p>İlki öndeğerlendirme aşamasıdır. Bu aşama için sizden projeniz hakkında genel bir bilgi istenmektedir. Oluşturmuş olduğunuz proje raporunu belirtilen süre içerisinde <a href="https://biltek.sanayi.gov.tr/Sayfalar/default.aspx">biltek</a> adresinden sisteme yüklemeniz gerekmektedir. Aynı zamanda kargoyla da ilgili adrese belgeleri göndermeniz gerekmektedir. Biltek sitesine kayıt olmanız için e-devlet şifrenize ihtiyaç vardır. Bunun içinde en yakın bir ptt şubesine başvurabilirsiniz. Gerekli belgeleri hazırlayıp zamanında sisteme yüklerseniz ilk aşamayı %90 geçersiniz. Ben öndeğerlendirme raporunu 09.11.2013 itibari ile sisteme yüklemiştim ve 08.01.2014 tarihinde öndeğerlendirme sonucu tarafıma hem e-mail hemde mesaj ile bildirilmişti.
+<br/><br/></p>
+
+<h2>İkinci Aşama</h2>
+
+<p>İkinci aşama olan işplanı belgesini hazırlamak ilkine göre biraz daha meşakkatli. Çünkü sizden tam anlamıyla bütçe gereksinimlerini izah etmeniz istenmekte. Nereye ne kadar para harcanacak, ne için harcanacak vs. hepsinin izahını yapmanız gerekmektedir. Yani bir nevi şirketi tamam kurmak istiyorsun ama nasıl kuracaksın, nerede kuracaksın, nasıl idare edeceksin vs. sorularına cevap vermeniz gerekmektedir. Ben bu belgeyi 22.01.2014 itibari ile gönderdim. İlk belgenin açıklanmasıyla bu belgeyi göndermem arasında yaklışık 15-20 günlük bir zaman dilimi vardı. İş planı belgesini hazırlamak diğerine göre daha uzun sürdüğü için daha sonrasında 1 hafta daha süresi uzatılmıştı. Sonucu ise 31.01.2014 tarihi itibari ile tarafıma bildirildi.
+<br/>
+Bu zaman dilimlerini yazıyorum çünkü sonuçları beklerken ne zaman ne olacak insan bilemiyor ve beklemek biraz sıkıntılı bir süreç. Yani üç aşağı beş yukarı süreçler hakkında fikriniz olması hasebiyle yazıyorum.
+<br/><br/></p>
+
+<h2>Üçüncü Aşama</h2>
+
+<p>Geldik üçüncü aşamaya. İkinci aşamanın sonuçlandığı gün üçüncü aşama için panel tarihini bildiren bir mail gönderildi. Paneller 10 Şubat - 7 Mart tarihleri arasında Bilkent Cyberpark’ta yapıldı. Sizede belirli tarihler arasında bir günü belirleyip bildireceklerdir. Üçüncü aşama için sizden heyet önünde projenizi anlatmanız için 10 dakikalık bir görsel sunum hazırlamanız isteniyor. Bir tavsiye olarak Guy Kawasaki&#8217;nin 10 20 30 kuralını uygulamanızı öneririm. Önceleri her ne kadar mantıklı bulmasamda bazı tecrübelerime dayanarak artık çok mantıklı buluyorum. Yani kıcaca 10 sayfa, 20 dakika ve 30 punto kuralıdır. 10 sayfaya anlatacaklarım sığmaz diyebilirsiniz zaten anlatacaklarınız büyük ihtimal 30 sayfayada sığmaz çünkü genelde içerik çok yoğun oluyor. Ama siz projenin sadece temel yerlerinden bahsedin geresini bırakın heyet merak ediyorsa sorsun. Zaten siz sunum yaptıktan sonra soru cevap kısmı daha uzun sürüyor.
+<br/><br/>
+Sunum günü Bilkent Cyberpark&#8217;a kalkıp gidiyorsunuz. Tabi Ankara&#8217;yı çok bilmeyen birisiyseniz biraz sıkıntı çekmeden olmuyor bu işler. Sunum yaptığımız heyetler belirli kategorilere göre ayrılmıştı. Benim sunum yaptığım heyet için günde 4 sunum belirlenmişti yani günde 4 kişinin sunumunu dinliyorlardı. Sabah ve öğleden sonra anlatacaklar olmak üzere bir plan yapılmıştı. Heyet 5 kişiden oluşuyordu. Heyettekilerden birinin teknogirişim sürecinde bizi bilgilendiren kişi olduğunu çok sonradan öğrendim. Diğerleri ise sizin anlatacağınız konu hakkında bilgi sahibi olan kişilerden oluşuyor.
+Edindiğim bilgi ve deneyime göre heyetin dikkat ettiği en önemli konu sizin bu iş fikrini pazarlayıp pazarlayamayacağınız. Bu konu üzerinde çok duruluyor. Tabi her iş fikri için farklı hassasiyetlerin olması olasıdır. 17.03.2014 tarihinde de teknogirişim sermayesi desteği almaya hak kazananlar belli oldu. <a href="http://www.sanayi.gov.tr/AnnouncementDetails.aspx?annID=6474&amp;lng=tr">2014 yılı kazananların listesi</a>.
+<br/>
+İş fikrinize inanıyor ve güveniyorsanız bu iş fikri üzerine birde şirket kurmak istiyorsanız Teknogirişim programını değerlendirmenizi tavsiye ederim.
+Kolay gelsin.</p>
 ]]></content>
   </entry>
   

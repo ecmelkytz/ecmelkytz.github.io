@@ -105,12 +105,6 @@
   </url>
   
   <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/09/09/rails-devise-could-not-found-table-hatasi/</loc>
-    <lastmod>2014-09-09T11:51:16+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
     <loc>http://ecmelkytz.github.com/blog/2014/08/28/rails-plus-ckeditor/</loc>
     <lastmod>2014-08-28T16:13:22+03:00</lastmod>
     <priority>0.8</priority>
@@ -143,14 +137,14 @@
   
   <url>
     <loc>http://ecmelkytz.github.com/blog/archives/</loc>
-    <lastmod>2016-04-27T13:42:26+03:00</lastmod>
+    <lastmod>2016-04-28T13:25:39+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ecmelkytz.github.com/</loc>
-    <lastmod>2016-04-27T13:42:26+03:00</lastmod>
+    <lastmod>2016-04-28T13:25:39+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
