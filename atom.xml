@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-05-02T10:50:03+03:00</updated>
+  <updated>2016-06-10T16:31:46+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,89 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: Select ve Pluck metodları arasındaki fark nedir?]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/"/>
+    <updated>2016-05-01T15:53:59+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark</id>
+    <content type="html"><![CDATA[<p>Bu yazımda select ve pluck metodlarının performans açısından farklarının neler olduğuna değineceğim.</p>
+
+<p><strong>Select</strong></p>
+
+<p>Select metodu User nesnelerini array olarak döndürecektir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [#&lt;User id: 38&gt;, #&lt;User id: 50&gt;, #&lt;User id: 53&gt;, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ayrıca sadece id&#8217;leri elde etmek için aşağıdaki gibi ek kod yazmamız gerekecek.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [38,50, 53, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Pluck</strong></p>
+
+<p>Pluck metodu herhangi bir ActiveRecord nesnesini oluşturmadan veritabanı sonucunu doğrudan bir array içinde döndürür. Sadece ilgili alanı sorgular.  Bu ise büyük bir sorgu yaptığımız zaman performans anlamında daha iyi bir sonuç elde edeceğimiz anlamına gelmektedir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [38, 50, 53, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Terminal&#8217;deki geçen sürelere baktığımızda select sorgusunun 1.2ms, pluck sorgusunun 1.0ms sürdüğünü göreceğiz. Hatta bazen bu değerler aynı bile çıkabilir.  O zaman performans anlamında farktan nasıl bahsedeceğiz? <a href="http://localhost:4000/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">ActiveRecord ile ilgili ufak bir sır</a> başlıklı blog girdimde bu farkın nasıl oluşacağını bulabilirsiniz.</p>
+
+<p>Benchmark kullanarak select ve pluck metodunun gerçek maliyetini bulalım.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">110000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">110000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">111221</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mo">010000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">010000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mo">014544</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>13000 user kaydı arasında yapılan bu sorgulamalarda select&#8217;in pluck&#8217;a göre %90&#8217;dan fazla daha yavaş olduğu görülmektedir.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails: acts_as_paranoid ile veri silmekten korkmayın]]></title>
@@ -129,6 +212,55 @@
 
 
 <p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: ActiveRecord ile ilgili ufak bir sır]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/"/>
+    <updated>2016-04-05T11:06:13+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir</id>
+    <content type="html"><![CDATA[<p>Bu yazımda ActiveRecord&#8217;un bizden sakladığı ufak bir sırra ve bunun performans olarak yansımalarının neler olduğuna değineceğim.</p>
+
+<p>Bu sır, ActiverRecord&#8217;un bize sorguların(queries) ne kadar sürede tamamlandığını tam anlamıyla söylememesidir.</p>
+
+<p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim. (<code>all</code> mı? <img alt="scream" src="http://ecmelkytz.github.com/images/emoji/unicode/1f631.png" class="emoji" /> pratikte <code>find_each</code> kullan <img alt="exclamation" src="http://ecmelkytz.github.com/images/emoji/unicode/2757.png" class="emoji" />)</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span>
+</span><span class='line'><span class="c1"># =&gt; User Load (32.0ms)  SELECT `users`.* FROM `users`</span>
+</span><span class='line'><span class="c1"># =&gt; [#&lt;User id: 5, ... &gt;, #&lt;User id: 6, ... &gt;, #&lt;User id: 7, ... &gt;, ... ]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ActiveRecord&#8217;un bu hinliğini bilmeyen biri yukarıdaki query için geçen sürenin 32.0ms olduğunu düşünür. Ancak ActiveRecord burada bize tam anlamıyla doğruyu söylemiyor. Çünkü bu süre bizim object&#8217;lerimizin ne kadar sürede oluşturulduğunu içermiyor. O halde Benchmark ile bu query&#8217;nin gerçekte ne kadar maliyeti olduğunu bulalım.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">310000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">060000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">370000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">387782</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Toplam(total) süreye bakarsak bu query&#8217;nin harcadığı gerçek süre 370.0ms. Bu süre ise bize diğer süre ile arasındaki farkın 10 kattan daha fazla olduğunu göstermektedir. Geçen sürenin çoğunluğu ActiveRecord nesnelerinin oluşturulmasında kullanılır.</p>
+
+<p>ActiveRecord query sürelerini daha yakından inceleyerek performans konusunda biraz iyileştirme yapabilmemiz mümkün.</p>
+
+<p>Aşağıdaki response&#8217;un görünenden daha uzun sürede tamamlanacağını artık söyleyebiliriz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Completed</span> <span class="mi">200</span> <span class="no">OK</span> <span class="k">in</span> <span class="mi">669</span><span class="n">ms</span> <span class="p">(</span><span class="ss">Views</span><span class="p">:</span> <span class="mi">608</span><span class="o">.</span><span class="mi">3</span><span class="n">ms</span> <span class="o">|</span> <span class="ss">ActiveRecord</span><span class="p">:</span> <span class="mi">43</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu request süresini yarı yarıya düşürebilmek için ise request&#8217;te kullandığımız pluck ve select metodlarının kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/06/10/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
 ]]></content>
   </entry>
   
@@ -1587,7 +1719,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x61;&#x6e;&#x67;&#x75;&#108;&#97;&#x72;&#64;&#x67;&#111;&#111;&#103;&#108;&#101;&#x67;&#114;&#x6f;&#x75;&#x70;&#115;&#46;&#99;&#x6f;&#x6d;">&#97;&#110;&#x67;&#117;&#x6c;&#97;&#114;&#64;&#x67;&#x6f;&#x6f;&#103;&#x6c;&#101;&#103;&#114;&#x6f;&#x75;&#112;&#x73;&#x2e;&#x63;&#x6f;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x61;&#110;&#x67;&#x75;&#x6c;&#97;&#x72;&#64;&#103;&#111;&#x6f;&#103;&#108;&#101;&#x67;&#x72;&#111;&#x75;&#112;&#x73;&#x2e;&#99;&#111;&#x6d;">&#97;&#110;&#x67;&#117;&#108;&#x61;&#114;&#x40;&#x67;&#111;&#111;&#x67;&#108;&#x65;&#x67;&#x72;&#x6f;&#117;&#x70;&#x73;&#46;&#x63;&#111;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -2118,96 +2250,6 @@ ActiveRecord + Paperclip kullanımı:</p>
 
 <p>Artık ckeditor&#8217;u kullanabilirsiniz.
 Bütün bunların yanında daha detaylı bilgiye <a href="https://github.com/galetahub/ckeditor">Githubda ckeditor gem</a>, <a href="http://ckeditor.com/download">Ckeditor&#8217;un resmi sayfası</a> adreslerinden ulaşabilirsiniz.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails - 'The json native gem requires installed build tools' hatası]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/"/>
-    <updated>2014-08-10T10:41:35+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi</id>
-    <content type="html"><![CDATA[<p>Rails kurulumunu gerçekleştirirken oluşabilecek hatalardan bir tanesidir. Bu hata bazı kütüphanelerin sistemde eksik olmasından kaynaklanmaktadır. Hatanın çözümü için ise aşağıdaki gibi bir yol izlenebilir.</p>
-
-<p>Ruby 1.9.3 veya üzeri bir ruby sürümünün sisteme yüklü olduğunu ve ruby sürümüne uygun bir development kit’in de sisteminizde kurulu olduğunu farzediyorum. Bunları indirmek için bkz: <a href="http://rubyinstaller.org/downloads">Ruby Installer</a></p>
-
-<figure class='code'><figcaption><span>Terminal(Hata Kodu)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="ss">ERROR</span><span class="p">:</span> <span class="no">Error</span> <span class="n">installing</span> <span class="ss">json</span><span class="p">:</span> <span class="no">The</span> <span class="s1">&#39;json&#39;</span> <span class="n">native</span> <span class="n">gem</span> <span class="n">requires</span> <span class="n">installed</span> <span class="n">build</span> <span class="n">tools</span><span class="o">.</span>
-</span><span class='line'><span class="no">Please</span> <span class="n">update</span> <span class="n">your</span> <span class="no">PATH</span> <span class="n">to</span> <span class="kp">include</span> <span class="n">build</span> <span class="n">tools</span> <span class="ow">or</span> <span class="n">download</span> <span class="n">the</span> <span class="no">DevKit</span> <span class="n">from</span>
-</span><span class='line'><span class="s1">&#39;http://rubyinstaller.org/downloads&#39;</span> <span class="ow">and</span> <span class="n">follow</span> <span class="n">the</span> <span class="n">instructions</span> <span class="n">at</span>
-</span><span class='line'><span class="s1">&#39;http://github.com/oneclick/rubyinstaller/wiki/Development-Kit&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Daha sonra Ruby193 dosyası(versiyona göre sizde farklı olabilir) içerisine kurduğumuz DevKit&#8217;in bulunduğu dizine geçiyoruz ve gerekli işlemleri sırasıyla yapıyoruz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">cd</span> <span class="ss">C</span><span class="p">:\</span><span class="n">ruby193</span><span class="p">\</span><span class="no">DevKit</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">init</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">review</span>
-</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Şimdide json kurmayı deneyelim.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">json</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Json başarılı bir şekilde kurulmuş olmalı. Hepsi bu kadar artık rails kurulumunu gerçekleştirebiliriz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rails</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Teknogirişim]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/06/05/tekno-girisim/"/>
-    <updated>2014-06-05T14:57:18+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/06/05/tekno-girisim</id>
-    <content type="html"><![CDATA[<p>Teknogirişim Sermayesi Desteği Programını merak ediyorsanız veya başvuru yaptıysanız hangi aşamaların sizi beklediğini bu yazı içerisinde bulabilirsiniz. Kendim 2014 yılı için TGSD programına başvurmuştum. Dolayısıyla daha sonraki yıllarda, sizden istenecek belgeler ve geçerli işlem süreleri büyük ihtimal farklılık gösterecektir bunu dikkate alarak okuyunuz.</p>
-
-<h3>Teknogirişim Programı Nedir?</h3>
-
-<p>Bilim, Sanayi ve Teknoloji Bakanlığı tarafından 500 genç girişimciye, şirket kurmaya teşvik etmek amacıyla 100 bin TL hibe para veren bir destek programıdır. 2009 yılından bu yana program devam etmektedir. Daha ayrıntılı bilgi için <a href="http://sagm.sanayi.gov.tr/ServiceDetails.aspx?dataID=217">bakınız</a>.</p>
-
-<h3>Teknogirişim Süreci</h3>
-
-<p>Teknogirişim 3 aşamadan oluşmaktadır. Şimdi bu aşamalara ve süreçlerine değineceğim.</p>
-
-<h2>Birinci Aşama</h2>
-
-<p>İlki öndeğerlendirme aşamasıdır. Bu aşama için sizden projeniz hakkında genel bir bilgi istenmektedir. Oluşturmuş olduğunuz proje raporunu belirtilen süre içerisinde <a href="https://biltek.sanayi.gov.tr/Sayfalar/default.aspx">biltek</a> adresinden sisteme yüklemeniz gerekmektedir. Aynı zamanda kargoyla da ilgili adrese belgeleri göndermeniz gerekmektedir. Biltek sitesine kayıt olmanız için e-devlet şifrenize ihtiyaç vardır. Bunun içinde en yakın bir ptt şubesine başvurabilirsiniz. Gerekli belgeleri hazırlayıp zamanında sisteme yüklerseniz ilk aşamayı %90 geçersiniz. Ben öndeğerlendirme raporunu 09.11.2013 itibari ile sisteme yüklemiştim ve 08.01.2014 tarihinde öndeğerlendirme sonucu tarafıma hem e-mail hemde mesaj ile bildirilmişti.
-<br/><br/></p>
-
-<h2>İkinci Aşama</h2>
-
-<p>İkinci aşama olan işplanı belgesini hazırlamak ilkine göre biraz daha meşakkatli. Çünkü sizden tam anlamıyla bütçe gereksinimlerini izah etmeniz istenmekte. Nereye ne kadar para harcanacak, ne için harcanacak vs. hepsinin izahını yapmanız gerekmektedir. Yani bir nevi şirketi tamam kurmak istiyorsun ama nasıl kuracaksın, nerede kuracaksın, nasıl idare edeceksin vs. sorularına cevap vermeniz gerekmektedir. Ben bu belgeyi 22.01.2014 itibari ile gönderdim. İlk belgenin açıklanmasıyla bu belgeyi göndermem arasında yaklışık 15-20 günlük bir zaman dilimi vardı. İş planı belgesini hazırlamak diğerine göre daha uzun sürdüğü için daha sonrasında 1 hafta daha süresi uzatılmıştı. Sonucu ise 31.01.2014 tarihi itibari ile tarafıma bildirildi.
-<br/>
-Bu zaman dilimlerini yazıyorum çünkü sonuçları beklerken ne zaman ne olacak insan bilemiyor ve beklemek biraz sıkıntılı bir süreç. Yani üç aşağı beş yukarı süreçler hakkında fikriniz olması hasebiyle yazıyorum.
-<br/><br/></p>
-
-<h2>Üçüncü Aşama</h2>
-
-<p>Geldik üçüncü aşamaya. İkinci aşamanın sonuçlandığı gün üçüncü aşama için panel tarihini bildiren bir mail gönderildi. Paneller 10 Şubat - 7 Mart tarihleri arasında Bilkent Cyberpark’ta yapıldı. Sizede belirli tarihler arasında bir günü belirleyip bildireceklerdir. Üçüncü aşama için sizden heyet önünde projenizi anlatmanız için 10 dakikalık bir görsel sunum hazırlamanız isteniyor. Bir tavsiye olarak Guy Kawasaki&#8217;nin 10 20 30 kuralını uygulamanızı öneririm. Önceleri her ne kadar mantıklı bulmasamda bazı tecrübelerime dayanarak artık çok mantıklı buluyorum. Yani kıcaca 10 sayfa, 20 dakika ve 30 punto kuralıdır. 10 sayfaya anlatacaklarım sığmaz diyebilirsiniz zaten anlatacaklarınız büyük ihtimal 30 sayfayada sığmaz çünkü genelde içerik çok yoğun oluyor. Ama siz projenin sadece temel yerlerinden bahsedin geresini bırakın heyet merak ediyorsa sorsun. Zaten siz sunum yaptıktan sonra soru cevap kısmı daha uzun sürüyor.
-<br/><br/>
-Sunum günü Bilkent Cyberpark&#8217;a kalkıp gidiyorsunuz. Tabi Ankara&#8217;yı çok bilmeyen birisiyseniz biraz sıkıntı çekmeden olmuyor bu işler. Sunum yaptığımız heyetler belirli kategorilere göre ayrılmıştı. Benim sunum yaptığım heyet için günde 4 sunum belirlenmişti yani günde 4 kişinin sunumunu dinliyorlardı. Sabah ve öğleden sonra anlatacaklar olmak üzere bir plan yapılmıştı. Heyet 5 kişiden oluşuyordu. Heyettekilerden birinin teknogirişim sürecinde bizi bilgilendiren kişi olduğunu çok sonradan öğrendim. Diğerleri ise sizin anlatacağınız konu hakkında bilgi sahibi olan kişilerden oluşuyor.
-Edindiğim bilgi ve deneyime göre heyetin dikkat ettiği en önemli konu sizin bu iş fikrini pazarlayıp pazarlayamayacağınız. Bu konu üzerinde çok duruluyor. Tabi her iş fikri için farklı hassasiyetlerin olması olasıdır. 17.03.2014 tarihinde de teknogirişim sermayesi desteği almaya hak kazananlar belli oldu. <a href="http://www.sanayi.gov.tr/AnnouncementDetails.aspx?annID=6474&amp;lng=tr">2014 yılı kazananların listesi</a>.
-<br/>
-İş fikrinize inanıyor ve güveniyorsanız bu iş fikri üzerine birde şirket kurmak istiyorsanız Teknogirişim programını değerlendirmenizi tavsiye ederim.
-Kolay gelsin.</p>
 ]]></content>
   </entry>
   

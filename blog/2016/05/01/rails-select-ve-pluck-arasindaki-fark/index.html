@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Html Renklerin Hex ve RGB Kodlarını Bulan Terminal Uygulaması: Grabc - Ecmel Kaytazoğlu</title>
+  <title>Rails: Select ve Pluck metodları arasındaki fark nedir? - Ecmel Kaytazoğlu</title>
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/">
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">Html Renklerin Hex Ve RGB Kodlarını Bulan Terminal Uygulaması: Grabc</h1>
+      <h1 class="entry-title">Rails: Select Ve Pluck Metodları Arasındaki Fark Nedir?</h1>
     
     
       <p class="meta">
@@ -95,7 +95,7 @@
   
 
 
-<time datetime="2015-06-14T12:44:17+03:00" pubdate data-updated="true">Jun 14<sup>th</sup>, 2015</time>
+<time datetime="2016-05-01T15:53:59+03:00" pubdate data-updated="true">May 1<sup>st</sup>, 2016</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -104,31 +104,81 @@
   </header>
 
 
-<div class="entry-content"><p>Zamanında, ekranda gördüğüm herhangi bir rengin html kodunu anında nasıl bulabilirim diye araştırma yaparken <strong>grabc</strong> diye bir terminal uygulamasına denk gelmiştim. Uzun zamandan beri de severek kullanmaktayım.</p>
+<div class="entry-content"><p>Bu yazımda select ve pluck metodlarının performans açısından farklarının neler olduğuna değineceğim.</p>
 
-<p>Özellikle front-end geliştirenler için çok güzel bir kolaylık sağlayacağını söyleyebilirim.</p>
+<p><strong>Select</strong></p>
 
-<h3>Kurulum:</h3>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install grabc</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Kullanım:</h3>
-
-<p>Terminale <strong>grabc</strong> yazdığınız zaman cursor(imleç) <code>+</code> şekline benzer bir hal alacaktır ve siz nereye tıklarsanız oranın renginin hex ve rgb kodunu ekrana basacaktır.</p>
+<p>Select metodu User nesnelerini array olarak döndürecektir.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ grabc
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
 </span><span class='line'>
-</span><span class='line'>#f55567
-</span><span class='line'>245,85,103</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="sb">=&gt; [#&lt;User id: 38&gt;, #&lt;User id: 50&gt;, #&lt;User id: 53&gt;, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
 
+
+<p>Ayrıca sadece id&#8217;leri elde etmek için aşağıdaki gibi ek kod yazmamız gerekecek.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [38,50, 53, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Pluck</strong></p>
+
+<p>Pluck metodu herhangi bir ActiveRecord nesnesini oluşturmadan veritabanı sonucunu doğrudan bir array içinde döndürür. Sadece ilgili alanı sorgular.  Bu ise büyük bir sorgu yaptığımız zaman performans anlamında daha iyi bir sonuç elde edeceğimiz anlamına gelmektedir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [38, 50, 53, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Terminal&#8217;deki geçen sürelere baktığımızda select sorgusunun 1.2ms, pluck sorgusunun 1.0ms sürdüğünü göreceğiz. Hatta bazen bu değerler aynı bile çıkabilir.  O zaman performans anlamında farktan nasıl bahsedeceğiz? <a href="http://localhost:4000/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">ActiveRecord ile ilgili ufak bir sır</a> başlıklı blog girdimde bu farkın nasıl oluşacağını bulabilirsiniz.</p>
+
+<p>Benchmark kullanarak select ve pluck metodunun gerçek maliyetini bulalım.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">110000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">110000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">111221</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mo">010000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">010000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mo">014544</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>13000 user kaydı arasında yapılan bu sorgulamalarda select&#8217;in pluck&#8217;a göre %90&#8217;dan fazla daha yavaş olduğu görülmektedir.</p>
 </div>
 
 
@@ -151,15 +201,21 @@
   
 
 
-<time datetime="2015-06-14T12:44:17+03:00" pubdate data-updated="true">Jun 14<sup>th</sup>, 2015</time>
+<time datetime="2016-05-01T15:53:59+03:00" pubdate data-updated="true">May 1<sup>st</sup>, 2016</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -170,10 +226,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/11/17/rails-upcase/" title="Previous Post: Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)">&laquo; Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)</a>
+        <a class="basic-alignment left" href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/" title="Previous Post: Rails: acts_as_paranoid ile veri silmekten korkmayın">&laquo; Rails: acts_as_paranoid ile veri silmekten korkmayın</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/" title="Next Post: Ruby: attr_accessor Kullanımı">Ruby: attr_accessor Kullanımı &raquo;</a>
       
     </p>
   </footer>
@@ -294,8 +348,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/';
-        var disqus_url = 'http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/';
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/';
         var disqus_script = 'embed.js';
       
     (function () {

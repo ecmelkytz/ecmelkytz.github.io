@@ -3,8 +3,20 @@
   
   
   <url>
+    <loc>http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/</loc>
+    <lastmod>2016-05-01T15:53:59+03:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir/</loc>
     <lastmod>2016-04-09T13:58:21+03:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/</loc>
+    <lastmod>2016-04-05T11:06:13+03:00</lastmod>
     <priority>0.8</priority>
   </url>
   
@@ -137,14 +149,14 @@
   
   <url>
     <loc>http://ecmelkytz.github.com/blog/archives/</loc>
-    <lastmod>2016-05-02T10:50:03+03:00</lastmod>
+    <lastmod>2016-06-10T16:31:46+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ecmelkytz.github.com/</loc>
-    <lastmod>2016-05-02T10:50:03+03:00</lastmod>
+    <lastmod>2016-06-10T16:31:46+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

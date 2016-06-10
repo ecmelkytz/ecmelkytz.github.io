@@ -82,6 +82,118 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Rails: Select Ve Pluck Metodları Arasındaki Fark Nedir?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-01T15:53:59+03:00" pubdate data-updated="true">May 1<sup>st</sup>, 2016</time>
+        
+         | <a href="/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Bu yazımda select ve pluck metodlarının performans açısından farklarının neler olduğuna değineceğim.</p>
+
+<p><strong>Select</strong></p>
+
+<p>Select metodu User nesnelerini array olarak döndürecektir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [#&lt;User id: 38&gt;, #&lt;User id: 50&gt;, #&lt;User id: 53&gt;, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ayrıca sadece id&#8217;leri elde etmek için aşağıdaki gibi ek kod yazmamız gerekecek.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [38,50, 53, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Pluck</strong></p>
+
+<p>Pluck metodu herhangi bir ActiveRecord nesnesini oluşturmadan veritabanı sonucunu doğrudan bir array içinde döndürür. Sadece ilgili alanı sorgular.  Bu ise büyük bir sorgu yaptığımız zaman performans anlamında daha iyi bir sonuç elde edeceğimiz anlamına gelmektedir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="sb">=&gt; [38, 50, 53, ...]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Terminal&#8217;deki geçen sürelere baktığımızda select sorgusunun 1.2ms, pluck sorgusunun 1.0ms sürdüğünü göreceğiz. Hatta bazen bu değerler aynı bile çıkabilir.  O zaman performans anlamında farktan nasıl bahsedeceğiz? <a href="http://localhost:4000/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">ActiveRecord ile ilgili ufak bir sır</a> başlıklı blog girdimde bu farkın nasıl oluşacağını bulabilirsiniz.</p>
+
+<p>Benchmark kullanarak select ve pluck metodunun gerçek maliyetini bulalım.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">110000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">110000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">111221</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mo">010000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">010000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mo">014544</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>13000 user kaydı arasında yapılan bu sorgulamalarda select&#8217;in pluck&#8217;a göre %90&#8217;dan fazla daha yavaş olduğu görülmektedir.</p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Rails: Acts_as_paranoid Ile Veri Silmekten Korkmayın</a></h1>
     
     
@@ -218,6 +330,84 @@
 
 
 <p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">Rails: ActiveRecord Ile Ilgili Ufak Bir Sır</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-05T11:06:13+03:00" pubdate data-updated="true">Apr 5<sup>th</sup>, 2016</time>
+        
+         | <a href="/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Bu yazımda ActiveRecord&#8217;un bizden sakladığı ufak bir sırra ve bunun performans olarak yansımalarının neler olduğuna değineceğim.</p>
+
+<p>Bu sır, ActiverRecord&#8217;un bize sorguların(queries) ne kadar sürede tamamlandığını tam anlamıyla söylememesidir.</p>
+
+<p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim. (<code>all</code> mı? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" /> pratikte <code>find_each</code> kullan <img alt="exclamation" src="/images/emoji/unicode/2757.png" class="emoji" />)</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span>
+</span><span class='line'><span class="c1"># =&gt; User Load (32.0ms)  SELECT `users`.* FROM `users`</span>
+</span><span class='line'><span class="c1"># =&gt; [#&lt;User id: 5, ... &gt;, #&lt;User id: 6, ... &gt;, #&lt;User id: 7, ... &gt;, ... ]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ActiveRecord&#8217;un bu hinliğini bilmeyen biri yukarıdaki query için geçen sürenin 32.0ms olduğunu düşünür. Ancak ActiveRecord burada bize tam anlamıyla doğruyu söylemiyor. Çünkü bu süre bizim object&#8217;lerimizin ne kadar sürede oluşturulduğunu içermiyor. O halde Benchmark ile bu query&#8217;nin gerçekte ne kadar maliyeti olduğunu bulalım.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">310000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">060000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">370000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">387782</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Toplam(total) süreye bakarsak bu query&#8217;nin harcadığı gerçek süre 370.0ms. Bu süre ise bize diğer süre ile arasındaki farkın 10 kattan daha fazla olduğunu göstermektedir. Geçen sürenin çoğunluğu ActiveRecord nesnelerinin oluşturulmasında kullanılır.</p>
+
+<p>ActiveRecord query sürelerini daha yakından inceleyerek performans konusunda biraz iyileştirme yapabilmemiz mümkün.</p>
+
+<p>Aşağıdaki response&#8217;un görünenden daha uzun sürede tamamlanacağını artık söyleyebiliriz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Completed</span> <span class="mi">200</span> <span class="no">OK</span> <span class="k">in</span> <span class="mi">669</span><span class="n">ms</span> <span class="p">(</span><span class="ss">Views</span><span class="p">:</span> <span class="mi">608</span><span class="o">.</span><span class="mi">3</span><span class="n">ms</span> <span class="o">|</span> <span class="ss">ActiveRecord</span><span class="p">:</span> <span class="mi">43</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu request süresini yarı yarıya düşürebilmek için ise request&#8217;te kullandığımız pluck ve select metodlarının kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/06/10/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
 </div>
  
  
@@ -1003,410 +1193,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/">Rails: AngularJS Ile CRUD İşlemleri</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-19T15:40:24+03:00" pubdate data-updated="true">Sep 19<sup>th</sup>, 2015</time>
-        
-         | <a href="/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Bu yazı Rails&#8217;de CRUD (Create, Read, Update, Delete) işlemlerinin AngularJS ile nasıl yapılabileceğini açıklamaktadır.</p>
-
-<p>AngularJS&#8217;nin ngResource modülü kullanılmıştır. ngResurce modülü $resource servisi üzerinden RESTful servislerle etkileşimde bulunabilmeyi sağlar.</p>
-
-<p>Book adında bir model oluşturalım, <code>angularjs-rails</code> gem&#8217;ini ekleyelim ve routes&#8217;u ayarlayalım.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">rails</span> <span class="n">g</span> <span class="n">scaffold</span> <span class="no">Book</span> <span class="n">title</span> <span class="ss">like</span><span class="p">:</span><span class="n">integer</span>
-</span><span class='line'><span class="err">$</span> <span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">migrate</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Gemfile </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;angularjs-rails&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>assets/javascripts/application.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="c1">//= require angular</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>routes.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:books</span><span class="p">,</span> <span class="ss">defaults</span><span class="p">:</span> <span class="p">{</span><span class="nb">format</span><span class="p">:</span> <span class="ss">:json</span><span class="p">}</span>
-</span><span class='line'><span class="n">root</span> <span class="s2">&quot;books#index&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Gelelim işin Angular kısmına:</p>
-
-<p><strong>Hatırlatma:</strong> Herşeyden önce <a href="https://code.angularjs.org/1.3.9/angular-resource.js">angular-resource.js</a> dosyasını projemize eklemeliyiz. İster cdn olarak isterseniz de assets dizinine ekleyebilirsiniz.</p>
-
-<figure class='code'><figcaption><span>layouts/application.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-resource.min.js&quot;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>javascripts/angular/app.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;bookApp&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;ngResource&quot;</span><span class="p">]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>bookApp</code> adında bir module tanımladık ve ngResource modülünü dependency olarak belirttik.</p>
-
-<p>Angular uygulaması başlaması için <code>ng-app</code> directive&#8217;ini layout&#8217;a ekleyelim.</p>
-
-<figure class='code'><figcaption><span>views/layout/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">&quot;bookApp&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    ...
-</span><span class='line'>  <span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Şimdi de Book verileri üzerinde crud işlemleri yapabilmek için Angularjs&#8217;in servis oluşturma komponentlerinden biri olan factory ile bir servis oluşturalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/app.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s2">&quot;Book&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$resource</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">$resource</span><span class="p">(</span><span class="s2">&quot;/books/:id.json&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;@id&quot;</span> <span class="p">},</span>
-</span><span class='line'>      <span class="p">{</span>
-</span><span class='line'>        <span class="nx">create</span><span class="o">:</span>  <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">index</span><span class="o">:</span>   <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nx">isArray</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">get</span><span class="o">:</span>    <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nx">isArray</span><span class="o">:</span> <span class="kc">false</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">update</span><span class="o">:</span>  <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;PUT&#39;</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">destroy</span><span class="o">:</span> <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;DELETE&#39;</span> <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Book</code> adında bir servis oluşturduk. Bu servisi kullanacağımız controller&#8217;a dependency olarak aşağıdaki gibi belirteceğiz.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yukarıdaki kodun açılımı şudur: <code>bookApp</code> modülüne (app) <code>BookCtrl</code> adında bir controller tanımladık ve bu controller&#8217;a oluşturduğumuz <code>Book</code> servisini dependency olarak belirttik. Yani servisimizde tanımladığımız fonksiyonları bu controller içerisinde artık kullanabileceğiz.</p>
-
-<p>Oluşturduğumuz controller&#8217;ı hangi directive kapsamında çalışmasını istiyorsak orada tanımlıyoruz. İster <code>body</code>&lsquo;de tanımlayın, isterseniz kapsamını azaltmak için başka bir directive&#8217;e tanımlayın. Ben bu örnekte ilgili sayfanın index&#8217;ine tanımlayacağım.</p>
-
-<figure class='code'><figcaption><span>views/books/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span> <span class="na">ng-controller=</span><span class="s">&quot;BookCtrl&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-md-6 col-md-offset-3&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;center&gt;&lt;h1&gt;</span>Books<span class="nt">&lt;/h1&gt;&lt;/center&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">&quot;form-horizontal&quot;</span> <span class="na">ng-submit=</span><span class="s">&quot;addBook()&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;input-group&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;book_title&quot;</span> <span class="na">required</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;input-group-btn&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>              <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">class=</span><span class="s">&quot;btn btn-default&quot;</span> <span class="na">value=</span><span class="s">&quot;Ekle&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;/span&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/form&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;table</span> <span class="na">class=</span><span class="s">&quot;table table-striped table-condensed&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;thead&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;tr&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;th&gt;</span>Başlık<span class="nt">&lt;/th&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;th&gt;</span>Like<span class="nt">&lt;/th&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;th</span> <span class="na">colspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>İşlemler<span class="nt">&lt;/th&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;/tr&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/thead&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;tbody&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;tr</span> <span class="na">ng-repeat=</span><span class="s">&quot;book in books&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;td&gt;</span><span class="err">&lt;</span>%= link_to &quot;&quot;, book_path(&quot;&quot;) %&gt;<span class="nt">&lt;/td&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;td&gt;</span>
-</span><span class='line'>            <span class="err">&lt;</span>%= link_to &quot;Like&quot;, &#39;&#39;, &#39;ng-click&#39; =&gt; &quot;likeBook($index)&quot;, value:&quot;like&quot;, class:&quot;btn btn-success btn-xs&quot; %&gt;
-</span><span class='line'>            <span class="err">&lt;</span>%= link_to &quot;Dislike&quot;, &#39;&#39;, &#39;ng-click&#39; =&gt; &quot;dislikeBook($index)&quot;, value:&quot;dislike&quot;, class:&quot;btn btn-danger btn-xs&quot; %&gt;
-</span><span class='line'>            <span class="err">&lt;</span>%= link_to &quot;Remove&quot;, &#39;&#39;,&#39;ng-click&#39; =&gt; &quot;deleteBook($index)&quot;, value:&quot;remove&quot;, class:&quot;btn btn-warning btn-xs&quot; %&gt;
-</span><span class='line'>          <span class="nt">&lt;/td&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/tr&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/tbody&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/table&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Görüldüğü gibi <code>BookCtrl</code> controller en baştaki tag&#8217;da tanımlı ve ben bu tag&#8217;lar arasında controller içerisinde tanımladığım bütün fonksiyonları kullanabileceğim.</p>
-
-<h4>Read İşlemi</h4>
-
-<p>Tanımlı book nesnelerini elde etmek için <code>Book</code> servisimizdeki <em>index</em> metodundan yararlanacağız.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">index</span><span class="p">();</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Create İşlemi</h4>
-
-<p>İndex sayfası içerisindeki <code>ng-submit="addBook()"</code> ve <code>ng-model="book_title"</code> yeni bir book nesnesi oluşturmakta bize yardımcı olacak.
-İnput&#8217;a tanımlanan ng-model&#8217;in <code>book_title</code> değişkeni $scope&#8217;a bağlanacaktır. Submit ederken <code>addBook()</code> fonksiyonu çalışacaktır. Şimdi bu fonksiyonu controller&#8217;ımıza tanımlayalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">addBook</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">attr</span> <span class="o">=</span> <span class="p">{};</span>
-</span><span class='line'>    <span class="nx">attr</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">book_title</span><span class="p">;</span> <span class="c1">// ng-model&#39;deki veri</span>
-</span><span class='line'>    <span class="nx">attr</span><span class="p">.</span><span class="nx">like</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Yeni oluşturulan verinin like değeri</span>
-</span><span class='line'>    <span class="nx">newBook</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">attr</span><span class="p">);</span> <span class="c1">// Create işlemi burada</span>
-</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">newBook</span><span class="p">);</span> <span class="c1">// View kısmını refresh etmeden verileri göstermek için books değişkenine veriyi ekliyoruz</span>
-</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">book_title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="c1">// Nesneyi ekledikten sonra input&#39;taki veriyi siler</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Update İşlemi</h4>
-
-<p>Güncelleme işlemi için kullanılacak satır:</p>
-
-<figure class='code'><figcaption><span>views/books/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= link_to &quot;Like&quot;, &#39;&#39;, &#39;ng-click&#39; =</span><span class="o">&gt;</span> <span class="s2">&quot;likeBook($index)&quot;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span><span class="s2">&quot;like&quot;</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span><span class="s2">&quot;btn btn-success btn-xs&quot;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Butona basılınca <code>likeBook()</code> fonksiyonu çalışacak. O halde <code>likeBook()</code> fonksiyonunu tanımlayalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">likeBook</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">book</span> <span class="o">=</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
-</span><span class='line'>    <span class="nx">book</span><span class="p">.</span><span class="nx">like</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">Book</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">book</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">like</span><span class="o">:</span> <span class="nx">book</span><span class="p">.</span><span class="nx">like</span><span class="p">});</span> <span class="c1">// Update işlemi burada</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Delete İşlemi</h4>
-
-<p>Silme işlemi için kullanılacak satır:</p>
-
-<figure class='code'><figcaption><span>views/books/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= link_to &quot;Remove&quot;, &#39;&#39;,&#39;ng-click&#39; =</span><span class="o">&gt;</span> <span class="s2">&quot;deleteBook($index)&quot;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span><span class="s2">&quot;remove&quot;</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span><span class="s2">&quot;btn btn-warning btn-xs&quot;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>deleteBook()</code> fonksiyonunu tanımlayalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">deleteBook</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">book</span> <span class="o">=</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
-</span><span class='line'>    <span class="nx">Book</span><span class="p">.</span><span class="nx">destroy</span><span class="p">(</span><span class="nx">book</span><span class="p">);</span> <span class="c1">// Delete işlemi burada</span>
-</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// View kısmını güncellemek için belirtilen indexten itibaren 1 nesne siler.</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>422 (Unprocessable Entity) hatasından kurtulmak için:</h4>
-
-<figure class='code'><figcaption><span>controllers/application_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">skip_before_action</span> <span class="ss">:verify_authenticity_token</span><span class="p">,</span> <span class="k">if</span><span class="p">:</span> <span class="ss">:json_request?</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">protected</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">json_request?</span>
-</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">json?</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p style="text-align:center;"><strong>TL;DR</strong></p>
-
-<p>Look at the my github repo => <a href="https://github.com/ecmelkytz/rails-angular-resource">https://github.com/ecmelkytz/rails-angular-resource</a></p>
-</div>
- 
- 
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown Provider: tProvider) Hatası</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-12T23:49:27+03:00" pubdate data-updated="true">Sep 12<sup>th</sup>, 2015</time>
-        
-         | <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Zamanında bu hata ile karşılaştığımda çözümü bulana kadar projede ilerlememi durdurduğu için kendi adıma buraya not etmekte fayda görüyorum.</p>
-
-<p>Diyelimki Rails ile yazdığınız bir projede Angularjs kullandınız. Uygulamanız local&#8217;de sıkıntısız bir şekilde çalışıyor. Gelin görün ki production ortamında assets ile alakalı bir hata ile karşılaştınız.
-Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="no">RAILS_ENV</span><span class="o">=</span><span class="n">production</span> <span class="n">rake</span> <span class="ss">assets</span><span class="p">:</span><span class="n">precompile</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ancak console&#8217;da aldığınız hata  <code>Error: Unknown provider: tProvider</code> ise precompile işlemi ile sorun çözülmeyecektir.</p>
-
-<h4>Çözüm:</h4>
-
-<p><code>/config/environments/production.rb</code>&lsquo;e aşağıdaki kodu eklemelisiniz.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">js_compressor</span> <span class="o">=</span> <span class="no">Uglifier</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">mangle</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
- 
- 
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1422,7 +1208,15 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Rails: Select ve Pluck metodları arasındaki fark nedir?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Rails: acts_as_paranoid ile veri silmekten korkmayın</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">Rails: ActiveRecord ile ilgili ufak bir sır</a>
       </li>
     
       <li class="post">
@@ -1451,14 +1245,6 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
     
       <li class="post">
         <a href="/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/">Rails-AngularJS (Unknown provider: tProvider) Hatası</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/">SOAP Web Servis ile CURL Kullanımını Bash ile Harmanlama</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">AngularJS Two Way Binding - One Time Binding</a>
       </li>
     
   </ul>
