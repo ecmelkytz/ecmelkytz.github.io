@@ -155,7 +155,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Terminal&#8217;deki geçen sürelere baktığımızda select sorgusunun 1.2ms, pluck sorgusunun 1.0ms sürdüğünü göreceğiz. Hatta bazen bu değerler aynı bile çıkabilir.  O zaman performans anlamında farktan nasıl bahsedeceğiz? <a href="http://localhost:4000/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">ActiveRecord ile ilgili ufak bir sır</a> başlıklı blog girdimde bu farkın nasıl oluşacağını bulabilirsiniz.</p>
+<p>Terminal&#8217;deki geçen sürelere baktığımızda select sorgusunun 1.2ms, pluck sorgusunun 1.0ms sürdüğünü göreceğiz. Hatta bazen bu değerler aynı bile çıkabilir.  O zaman performans anlamında farktan nasıl bahsedeceğiz? <a href="http://ecmelkytz.github.io/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">ActiveRecord ile ilgili ufak bir sır</a> başlıklı blog girdimde bu farkın nasıl oluşacağını bulabilirsiniz.</p>
 
 <p>Benchmark kullanarak select ve pluck metodunun gerçek maliyetini bulalım.</p>
 
@@ -383,7 +383,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>ActiveRecord&#8217;un bu hinliğini bilmeyen biri yukarıdaki query için geçen sürenin 32.0ms olduğunu düşünür. Ancak ActiveRecord burada bize tam anlamıyla doğruyu söylemiyor. Çünkü bu süre bizim object&#8217;lerimizin ne kadar sürede oluşturulduğunu içermiyor. O halde Benchmark ile bu query&#8217;nin gerçekte ne kadar maliyeti olduğunu bulalım.</p>
+<p>ActiveRecord&#8217;un bu hinliğini bilmeyen biri yukarıdaki query için geçen sürenin 32.0ms olduğunu düşünecektir. Ancak ActiveRecord burada bize tam anlamıyla doğruyu söylemiyor. Çünkü bu süre bizim object&#8217;lerimizin ne kadar sürede oluşturulduğunu içermiyor. O halde Benchmark ile bu query&#8217;nin gerçekte ne kadar maliyeti olduğunu bulalım.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -407,7 +407,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Bu request süresini yarı yarıya düşürebilmek için ise request&#8217;te kullandığımız pluck ve select metodlarının kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/06/10/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
+<p>Eğer request&#8217;te pluck ve select metodlarını kullandıysak ve bu request süresini yarı yarıya düşürmek istiyorsak bu metodların kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
 </div>
  
  
