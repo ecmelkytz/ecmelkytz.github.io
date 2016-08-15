@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-08-15T12:02:56+03:00</updated>
+  <updated>2016-08-15T14:35:00+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, .gitignore]]></title>
+    <title type="html"><![CDATA[Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore]]></title>
     <link href="http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2/"/>
     <updated>2016-08-12T15:04:05+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2</id>
@@ -153,6 +153,29 @@
 
 
 <p>Bu komutu kullanırken dikkatli olmak gerek zira referans aldığınız commit numarasından önceki bütün commitleri silersiniz. Yani sistemi, referans aldığınız commit durumuna almış olursunuz ve ondan önceki bütün commitleri silersiniz. Silinen commitler ile yapılan değişiklikler sizin yerelinizde gözükür ve tek commit ile tekrar <code>push</code> edebilirsiniz. Çok gerekmediği takdirde birden fazla commiti geri alıp tek commit ile tekrar göndermek projenin gelişim aşaması için anlaşılmazlıklara sebebiyet verebilir. Bu sebeple ben genel itibariyle son attığım commiti değiştirmek için kullanıyorum bu komutu.</p>
+
+<h4>git stash</h4>
+
+<p>En sevdiğim kodlardan bir tanesi <img alt="sparkles" src="http://ecmelkytz.github.com/images/emoji/unicode/2728.png" class="emoji" />. Kısacası yaptığımız değişiklikleri geçici olarak depolamamızı sağlar.
+Şöyle bir senaryo düşünelim: Uygulamamızdaki bir çok dosyada değişiklik yaptık, yeni dosyalar ekledik vs. ve aniden bir iş çıktı, o işi yapıp biran önce commit etmemiz gerekti. İşte bu tarz durumlarda hangi dosyaları göndereceğinizi eliyip seçmek yerine <code>git stash</code> komutu ile önceden yaptığımız değişiklikleri kaydedip(artık <code>git status</code> ile gözükmeyecekler) acil yapmamız gereken işi yapıp commitleyip eski işimize tekrar dönebiliriz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git stash
+</span><span class='line'>Saved working directory and index state WIP on master: 898de0b Hava durumuna yeni açıklama ekle
+</span><span class='line'>HEAD is now at 898de0b Hava durumuna yeni açıklama ekle
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Acil durum düzenlemelerini yaptıktan sonra yedeklediğimiz diğer işimize şu şekilde dönüyoruz:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git stash pop
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h4>.gitignore</h4>
 
@@ -2192,7 +2215,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#97;&#110;&#103;&#x75;&#108;&#97;&#x72;&#x40;&#x67;&#x6f;&#111;&#x67;&#108;&#x65;&#x67;&#114;&#111;&#x75;&#112;&#115;&#46;&#x63;&#111;&#x6d;">&#x61;&#110;&#103;&#x75;&#108;&#97;&#x72;&#64;&#x67;&#x6f;&#x6f;&#x67;&#x6c;&#x65;&#103;&#114;&#111;&#x75;&#112;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#97;&#x6e;&#x67;&#117;&#108;&#x61;&#114;&#64;&#x67;&#111;&#x6f;&#x67;&#x6c;&#101;&#x67;&#x72;&#111;&#x75;&#x70;&#115;&#46;&#99;&#x6f;&#109;">&#97;&#x6e;&#103;&#x75;&#x6c;&#97;&#114;&#x40;&#x67;&#x6f;&#x6f;&#103;&#108;&#x65;&#103;&#114;&#x6f;&#x75;&#x70;&#115;&#x2e;&#99;&#111;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>

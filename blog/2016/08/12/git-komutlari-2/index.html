@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, .gitignore - Ecmel Kaytazoğlu</title>
+  <title>Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore - Ecmel Kaytazoğlu</title>
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">Git Komutları 2: Git Diff, Git Blame, Git Checkout, Git Clean, Git Reset, .gitignore</h1>
+      <h1 class="entry-title">Git Komutları 2: Git Diff, Git Blame, Git Checkout, Git Clean, Git Reset, Git Stash, .gitignore</h1>
     
     
       <p class="meta">
@@ -240,6 +240,29 @@
 
 <p>Bu komutu kullanırken dikkatli olmak gerek zira referans aldığınız commit numarasından önceki bütün commitleri silersiniz. Yani sistemi, referans aldığınız commit durumuna almış olursunuz ve ondan önceki bütün commitleri silersiniz. Silinen commitler ile yapılan değişiklikler sizin yerelinizde gözükür ve tek commit ile tekrar <code>push</code> edebilirsiniz. Çok gerekmediği takdirde birden fazla commiti geri alıp tek commit ile tekrar göndermek projenin gelişim aşaması için anlaşılmazlıklara sebebiyet verebilir. Bu sebeple ben genel itibariyle son attığım commiti değiştirmek için kullanıyorum bu komutu.</p>
 
+<h4>git stash</h4>
+
+<p>En sevdiğim kodlardan bir tanesi <img alt="sparkles" src="/images/emoji/unicode/2728.png" class="emoji" />. Kısacası yaptığımız değişiklikleri geçici olarak depolamamızı sağlar.
+Şöyle bir senaryo düşünelim: Uygulamamızdaki bir çok dosyada değişiklik yaptık, yeni dosyalar ekledik vs. ve aniden bir iş çıktı, o işi yapıp biran önce commit etmemiz gerekti. İşte bu tarz durumlarda hangi dosyaları göndereceğinizi eliyip seçmek yerine <code>git stash</code> komutu ile önceden yaptığımız değişiklikleri kaydedip(artık <code>git status</code> ile gözükmeyecekler) acil yapmamız gereken işi yapıp commitleyip eski işimize tekrar dönebiliriz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git stash
+</span><span class='line'>Saved working directory and index state WIP on master: 898de0b Hava durumuna yeni açıklama ekle
+</span><span class='line'>HEAD is now at 898de0b Hava durumuna yeni açıklama ekle
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Acil durum düzenlemelerini yaptıktan sonra yedeklediğimiz diğer işimize şu şekilde dönüyoruz:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git stash pop
+</span></code></pre></td></tr></table></div></figure>
+
+
 <h4>.gitignore</h4>
 
 <p>Yapılan değişikliklerin takip edilmesini istemediğimiz dosyaları/dosya yollarını <code>.gitignore</code>&lsquo;un içerisine ekliyoruz. Ancak <code>.gitignore</code>&#8216;a sonradan eklenen dosya yolları <code>git status</code> ile değişiklik yapılanlar arasında gösterilir. Bu durumu düzeltmek için şu yol izlenir:</p>
@@ -324,7 +347,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, .gitignore</a>
+        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore</a>
       </li>
     
       <li class="post">
