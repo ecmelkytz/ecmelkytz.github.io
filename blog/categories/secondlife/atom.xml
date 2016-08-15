@@ -4,7 +4,7 @@
   <title><![CDATA[Category: secondlife | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/secondlife/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-08-15T10:07:03+03:00</updated>
+  <updated>2016-08-15T10:25:36+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -28,6 +28,9 @@
 Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüsüne basarak yeni Bot’unuzu oluşturabilirsiniz.</p>
 
 <p><img class="center <a" src="href="http://i.imgur.com/NzdaQ5U.png">http://i.imgur.com/NzdaQ5U.png</a>&#8221;></p>
+
+<!--more-->
+
 
 <p>Bot oluştururken halihazırda oluşturulmuş 5 tane chatbottan birisini seçebilirsiniz. Eğer bu Bot’un AIML dosyalarını kullanmak istemiyor ve sıfırdan yeni bir bot oluşturmak istiyorsanız Bot oluştururken <code>No initial content, the pandorabot starts with no knowledge</code> seçeneğini seçmelisiniz.</p>
 

@@ -139,236 +139,12 @@
 
 <p>.git dosyasını terminalden değil de dizinin içinde görmek için <code>Ctrl + h</code> komutunu kullanmamız gerek.</p>
 
-<h4>git remote</h4>
-
-<p>Git depomuzu yerelde oluşturduk. Peki internet üzerinde istediğimiz bir depoyla bağlantıyı nasıl sağlayacağız?
-Bunun için github, bitbucket veya diğer git deposu için web hosting sağlayan servisleri kullanmamız gerekmektedir. Ben örnekleri github üzerinden göstereceğim.</p>
-
-<p>Github&#8217;da yerelimdeki dizinle aynı isimde bir depo oluşturuyorum.</p>
-
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470901707/git1_dqsb5u.png" alt="" /></p>
-
-<p><code>git@github.com:ecmelkytz/examp-git.git</code> depomuzu yönlendireceğimiz github&#8217;daki reponun url&#8217;i.</p>
-
-<p>Depomuzu github reposuna yönlendirmek/bağlamak için:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git remote add origin git@github.com:ecmelkytz/examp-git.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>remote -v</code> komutu ile url&#8217;lerin doğru bir şekilde oluşup oluşmadığını kontrol edebiliriz.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git remote -v
-</span><span class='line'>origin    git@github.com:ecmelkytz/examp-git.git <span class="o">(</span>fetch<span class="o">)</span>
-</span><span class='line'>origin    git@github.com:ecmelkytz/examp-git.git <span class="o">(</span>push<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>git clone</h4>
-
-<p>Github&#8217;daki herhangi bir depoyu klonlamak için kullanılır. Bu sayede repo&#8217;daki bütün dosyaları yerelimize kopyalamış oluruz.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~<span class="nv">$ </span>git clone git@github.com:ecmelkytz/ionic-prayer-time.git
-</span><span class='line'>~<span class="nv">$ </span><span class="nb">cd </span>ionic-prayer-time
-</span><span class='line'>~<span class="nv">$ </span>ls -a
-</span><span class='line'>.  ..  bower.json  .bowerrc  config.xml  .editorconfig    .git  .gitignore  gulpfile.js  hooks  ionic.project  package.json  README.md  resources  scss  www
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>git status</h4>
-
-<p>Depoda yaptığımız değişiklikleri gösterir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git status
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470907001/git-status_iv3jry.png" alt="" /></p>
-
-<p><code>git status -s</code> ile çıktının kısa haline bakalım:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git status -s
-</span><span class='line'> M bower.json <span class="c">#Modified</span>
-</span><span class='line'> D config.xml <span class="c">#Deleted</span>
-</span><span class='line'>?? new-file.txt <span class="c">#Added</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>git add/commit/push</h4>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git add -A  <span class="c">#-A komutu bütün değişiklikleri eklememizi sağlar.</span>
-</span><span class='line'>~/examp-git<span class="nv">$ </span>git commit -m <span class="s2">&quot;Some descriptions&quot;</span>
-</span><span class='line'><span class="c">#Yapılan değişiklikle ilgili mesaj diğer grup elemanlarının kolay anlayabileceği bir şekilde oluşturulmalı.</span>
-</span><span class='line'>~/examp-git<span class="nv">$ </span>git push <span class="c">#Yapılan değişiklikler yazılan commit mesajı ile github deposuna gönderilir.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>git clean</h4>
-
-<p>Yeni eklenen dosyaları (izlenmeyen dosyalar/untracked) <code>git add</code> komutunu çalıştırmadan önce silmemizi sağlar.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git clean -f -d new_file.txt
-</span><span class='line'>~/examp-git<span class="nv">$ </span>git clean -f -d . <span class="c">#Yeni eklenen tüm dosyaları siler</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>git pull</h4>
-
-<p>Bir projede birden fazla kişi ile çalışıyorsanız yapılan değişiklikleri kendi yerelinize çekmek için bu komutu fazlasıyla kullanacaksınız demektir. Kolları sıvayıp köklü bir değişiklik yapmadan önce sizden önce herhangi bir değişiklik yapılmış olma ihtimalina karşı <code>git pull</code> komutunu kullanın ve deponun son hali üzerinden kendi değişikliklerinizi yapmaya başlayın. Aksi takdirde olası aynı dosyalarda yapılan değişiklikler sayesinde <a href="https://help.github.com/articles/resolving-a-merge-conflict-from-the-command-line/">conflict</a> olabilirsiniz ve bana kalırsa bu işin en can sıkıcı yanı burasıdır.
-Tam da şöyle hissedersiniz:</p>
-
-<iframe src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470906693/git_cpkiww.gif" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
-
-
-<h4>git log</h4>
-
-<p>Commit geçmişini görmemizi sağlar. Son committen önceki commitlere doğru sıralı şekilde çıktı verecektir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/prayer<span class="nv">$ </span>git log
-</span><span class='line'>commit 9bbd06c8b39221a5ca5b33b0c01e4ce72110309e
-</span><span class='line'>Author: Ecmel Kaytazoğlu &lt;ecmel.kytz@gmail.com&gt;
-</span><span class='line'>Date:   Wed Aug <span class="m">10</span> 16:44:05 <span class="m">2016</span> +0300
-</span><span class='line'>
-</span><span class='line'>    change to icons
-</span><span class='line'>
-</span><span class='line'>commit a8ea41f801b5258bc759a8bf5901ecf7700f1459
-</span><span class='line'>Author: Ecmel Kaytazoğlu &lt;ecmel.kytz@gmail.com&gt;
-</span><span class='line'>Date:   Wed Aug <span class="m">10</span> 15:10:56 <span class="m">2016</span> +0300
-</span><span class='line'>
-</span><span class='line'>    config file changed
-</span><span class='line'>
-</span><span class='line'>commit 4e0618a0ab1d52cc06c141839858bd7e46215b0f
-</span><span class='line'>Author: Ecmel Kaytazoğlu &lt;ecmel.kytz@gmail.com&gt;
-</span><span class='line'>Date:   Wed Aug <span class="m">10</span> 15:05:58 <span class="m">2016</span> +0300
-</span><span class='line'>:
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Çıktının en son satırında <code>:</code> var ve yön tuşlarıyla aşağıya veya enter&#8217;a bastıkça önceki commitler gözükecektir. Commitlerde kelime aratmak için en son satırda <code>:</code> varken <code>/</code> tuşuna basıp istediğimiz kelimeyi yazabiliriz. Eğer aranan kelime birden fazla yerde geçiyorsa diğer kelimenin olduğu yere <code>n</code> tuşuna basarak gidebiliriz. <code>git log</code> komutunun terminal çıktısını sonlandırmak için <code>q</code> ya basmamız gerek. Bu arama işlemi için daha spesifik komutlar var. Bu nedenle <code>git log</code> komutunun alabileceği bazı parametrelere burada değinmek istiyorum.</p>
-
-<p><code>git log --oneline</code> sadece commit id ve commit mesajını tek bir satırda gösterir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git log --oneline
-</span><span class='line'>9bbd06c change to icons
-</span><span class='line'>a8ea41f config file changed
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>git log --graph</code> hangi branch ile commit yapıldığı ve nerede merge edildiği bilgilerini gösterir.</p>
-
-<p><code>git log -p</code> commitlerle yapılan değişiklikleri gösterir. Hangi satırı sildiğin hangi satırı eklediğin vs.</p>
-
-<p><code>git log --stat</code> commitlerdeki değişiklik olan dosyalarda kaç satırın eklendiğinin ve kaç satırın silindiğinin sayısını gösterir.</p>
-
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470916423/git-log-stat_pczax0.png" alt="" /></p>
-
-<p>Bu parametreleri birlikte kullanmak mümkün. Söz gelimi commitlerde hangi branchların kullanıldığı bilgisini tek satırda göstermek istiyoruz. O halde <code>git log --oneline --graph</code> işimizi görecektir.</p>
-
-<h5><code>git log</code> ile filtreleme işlemleri:</h5>
-
-<p><code>git log -number</code></p>
-
-<p>Son iki commite bakmak için: <code>git log -2</code></p>
-
-<hr />
-
-<p><code>git log --after=""</code></p>
-
-<p>Sadece dün ve şuan arasındaki commitlere bakmak için: <code>git log --after="yesterday"</code></p>
-
-<p>&ldquo;yesterday&rdquo; yerine &ldquo;30 minutes ago&rdquo;, &ldquo;last monday&rdquo;, &ldquo;last week&rdquo;, &ldquo;2 weeks ago&rdquo;, &ldquo;10-06-2016&rdquo;, &ldquo;10/06/2016&rdquo; vb. parametreler yazabiliriz.</p>
-
-<hr />
-
-<p><code>git log --after="" --before=""</code></p>
-
-<p>Belirli tarih aralığındaki commitlere bakmak için: <code>git log --after="8/08/2016" --before="10/08/2016"</code> veya <code>git log --since="8/08/2016" --until="10/08/2016"</code></p>
-
-<hr />
-
-<p><code>git log --author=""</code> ve <code>git log -i</code></p>
-
-<p>Sadece istediğimiz kişinin commitlerini görmek için:  <code>git log --author="ecmel"</code> Kişinin hem isminden hemde email&#8217;inden filtreleme yapılır. Ancak büyük-küçük harf ayrımı yapmadan aradığımızı bulmak için <code>-i</code>(ignore) parametresini kullanmamız gerek.  <code>git log -i --author="ecmel"</code></p>
-
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470981736/aouthor_a9bucu.png" alt="" /></p>
-
-<p>Filter işleminde regular expression kullanımına da izin var. İstediğiniz bir kaç kişinin commitlerini görmek için: <code>git log --author="Ecmel\|Merve"</code></p>
-
-<hr />
-
-<p><code>git log --grep=""</code></p>
-
-<p> Commit mesajındaki aradığımız bir kelimeye göre commitleri göstermek için: <code>git log --grep="change"</code> Yani commit mesajında &ldquo;change&rdquo; kelimesi geçen bütün commitler gösterilecektir.</p>
-
-<hr />
-
-<p><code>git log -p -S""</code></p>
-
-<p><code>git log -p -S"strftime"</code> strftime kullanarak yaptığım bütün değişikliklerin commitlerini gösterir.
-Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> yerine <code>-G</code> kullanmamız gerek.
-<code>git log -p -Gstrftime\|random</code> strftime ve random ile yaptığım değikliklerin commitlerini gösterir.</p>
-
-<hr />
-
-<p><code>git log file_name</code></p>
-
-<p>Sadece istediğimiz dosya için yapılan commitleri görmek için: <code>git log README.md</code></p>
-
-<p>Son olarak bir tane çoklu parametreli filter örneğini gösterip log ile ilgili yazmayı sonlandıralım.</p>
-
-<p><code>git log -3 -i --author="merve" README.md</code> Merve kişisinin README.md dosyası ile ilgili attığı son 3 commit mesajı gösterilir.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/08/11/git-komutlari-1/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -436,51 +212,14 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><strong>Pluck</strong></p>
-
-<p>Pluck metodu herhangi bir ActiveRecord nesnesini oluşturmadan veritabanı sonucunu doğrudan bir array içinde döndürür. Sadece ilgili alanı sorgular.  Bu ise büyük bir sorgu yaptığımız zaman performans anlamında daha iyi bir sonuç elde edeceğimiz anlamına gelmektedir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`users`</span><span class="o">.</span><span class="n">`</span><span class="nb">id</span><span class="sb">` FROM `</span><span class="n">users</span><span class="sb">`</span>
-</span><span class='line'>
-</span><span class='line'><span class="sb">=&gt; [38, 50, 53, ...]</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Terminal&#8217;deki geçen sürelere baktığımızda select sorgusunun 1.2ms, pluck sorgusunun 1.0ms sürdüğünü göreceğiz. Hatta bazen bu değerler aynı bile çıkabilir.  O zaman performans anlamında farktan nasıl bahsedeceğiz? <a href="http://ecmelkytz.github.io/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">ActiveRecord ile ilgili ufak bir sır</a> başlıklı blog girdimde bu farkın nasıl oluşacağını bulabilirsiniz.</p>
-
-<p>Benchmark kullanarak select ve pluck metodunun gerçek maliyetini bulalım.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
-</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">110000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">110000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">111221</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
-</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mo">010000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">010000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mo">014544</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>13000 user kaydı arasında yapılan bu sorgulamalarda select&#8217;in pluck&#8217;a göre %90&#8217;dan fazla daha yavaş olduğu görülmektedir.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -533,102 +272,12 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 
 <p>Bu plugin Active Record&#8217;un sadece destroy metodu üzerinde override yapmaz aynı zamanda find ve count metodları üzerinde de değişiklik yapar. Sql sorgularına deleted_at&#8217;i null olanların getirilmesiyle ilgili eklemeler getirecektir.</p>
 
-<p>Migration ile modelimize <code>deleted_at</code> alanını ekleyelim:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">rails</span> <span class="n">generate</span> <span class="n">migration</span> <span class="no">AddDeletedAtToUsers</span> <span class="ss">deleted_at</span><span class="p">:</span><span class="ss">datetime</span><span class="p">:</span><span class="n">index</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Migration dosya içeriğimiz:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AddDeletedAtToUsers</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
-</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span><span class="p">,</span> <span class="ss">:datetime</span>
-</span><span class='line'>    <span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">acts_as_paranoid</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Şimdi bir user silelim:</p>
-
-<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span>
-</span><span class='line'><span class="c1"># =&gt; 2</span>
-</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">destroy</span>
-</span><span class='line'><span class="c1"># deleted_at güncellenecektir.</span>
-</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span>
-</span><span class='line'><span class="c1"># =&gt; 1</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Silinen veriler ile birlikte hepsini bulmak için:</span>
-</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">with_deleted</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Sadece silinen verileri bulmak için:</span>
-</span><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">only_deleted</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>User.count</code> kullandığımızda veya <code>find</code> ile o user&#8217;ı bulmaya çalıştığımızda user silinmiş gibi davranacaktır ancak veritabanında users tablosuna baktığımız zaman bu silinmiş sandığımız kaydın hala orada durduğunu ve <code>deleted_at</code> alanının verinin silindiği zamanı tuttuğunu göreceğiz.</p>
-
-<p>Peki acts_as_paranoid ile hiçbir zaman veritabanından bir veriyi tam anlamıyla silemeyecek miyiz? Bunun da bir çözümü var. Herşeye rağmen kesinlikle silmek istediğimiz kayıtlar var ise:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">really_destroy!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Eğer veritabanında tutacağımız kolon adının <code>deleted_at</code> yerine <code>destroyed_at</code> (veya herhangi birşey) olmasını istiyorsak:</p>
-
-<figure class='code'><figcaption><span>models/user.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">acts_as_paranoid</span> <span class="ss">column</span><span class="p">:</span> <span class="ss">:destroyed_at</span>
-</span><span class='line'>  <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -670,43 +319,12 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 
 <p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim. (<code>all</code> mı? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" /> pratikte <code>find_each</code> kullan <img alt="exclamation" src="/images/emoji/unicode/2757.png" class="emoji" />)</p>
 
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span>
-</span><span class='line'><span class="c1"># =&gt; User Load (32.0ms)  SELECT `users`.* FROM `users`</span>
-</span><span class='line'><span class="c1"># =&gt; [#&lt;User id: 5, ... &gt;, #&lt;User id: 6, ... &gt;, #&lt;User id: 7, ... &gt;, ... ]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>ActiveRecord&#8217;un bu hinliğini bilmeyen biri yukarıdaki query için geçen sürenin 32.0ms olduğunu düşünecektir. Ancak ActiveRecord burada bize tam anlamıyla doğruyu söylemiyor. Çünkü bu süre bizim object&#8217;lerimizin ne kadar sürede oluşturulduğunu içermiyor. O halde Benchmark ile bu query&#8217;nin gerçekte ne kadar maliyeti olduğunu bulalım.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
-</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">310000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">060000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">370000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">387782</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Toplam(total) süreye bakarsak bu query&#8217;nin harcadığı gerçek süre 370.0ms. Bu süre ise bize diğer süre ile arasındaki farkın 10 kattan daha fazla olduğunu göstermektedir. Geçen sürenin çoğunluğu ActiveRecord nesnelerinin oluşturulmasında kullanılır.</p>
-
-<p>ActiveRecord query sürelerini daha yakından inceleyerek performans konusunda biraz iyileştirme yapabilmemiz mümkün.</p>
-
-<p>Aşağıdaki response&#8217;un görünenden daha uzun sürede tamamlanacağını artık söyleyebiliriz.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Completed</span> <span class="mi">200</span> <span class="no">OK</span> <span class="k">in</span> <span class="mi">669</span><span class="n">ms</span> <span class="p">(</span><span class="ss">Views</span><span class="p">:</span> <span class="mi">608</span><span class="o">.</span><span class="mi">3</span><span class="n">ms</span> <span class="o">|</span> <span class="ss">ActiveRecord</span><span class="p">:</span> <span class="mi">43</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Eğer request&#8217;te pluck ve select metodlarını kullandıysak ve bu request süresini yarı yarıya düşürmek istiyorsak bu metodların kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -752,39 +370,12 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 
 <blockquote><p>Eğer sistemlerinizi kompleks yapmak yerine onları daha basit tutarsanız sisteminiz en iyi şekilde çalışacaktır. Bu nedenle tasarımda hedef nokta basitlik olmalı ve gereksiz karmaşıklıktan kaçınılmalıdır.</p></blockquote>
 
-<h4>Diğer açılımları:</h4>
-
-<p><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>imple <strong>S</strong>illy</p>
-
-<p><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>hort and <strong>S</strong>imple</p>
-
-<p><strong>K</strong>eep <strong>I</strong>t <strong>Si</strong>mple and <strong>S</strong>traightforward</p>
-
-<p><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>mall and <strong>S</strong>imple</p>
-
-<h3>YAGNI: You Aren&rsquo;t Gonna Need It</h3>
-
-<p><strong>&ldquo;Buna ihtiyacın olmayacak&rdquo;</strong> şeklinde çevirebiliriz. Extreme Programming(XP)&lsquo;nin prensiplerinden biridir.</p>
-
-<p>Proje geliştirirken bazen ileride ihtiyaç olacağını düşündüğümüz bazı ekstra özellikleri şimdiden planlar ve yapmaya başlarız. Bu bizi, ileride kullanılmayacak ya da daha farklı bir şeye ihtiyaç duyacağımız bir durumla karşı karşıya bırakabilir. Bu da ihtiyaç dışı planlama ve kodlama için vakit kaybına neden olmuş olacaktır. Aynı zamanda sistem daha karmaşık hale gelecektir ki bu da KISS prensibine aykırı bir durumdur.</p>
-
-<p>Peki ne yapacağız dersek:</p>
-
-<p>Projede sadece gerçekten ihtiyaç olan özellikleri ve durumları hesaba katmamız ve uygulamamız gerekmektedir.</p>
-
-<h3>DRY: Don&rsquo;t Repeat Yourself</h3>
-
-<p><strong>&ldquo;Kendini tekrar etme&rdquo;</strong> şeklinde çevirebiliriz. Aynı zamanda Rails&#8217;in (<img alt="heart" src="/images/emoji/unicode/2764.png" class="emoji" />) temel prensiplerden biridir. Aynı metodlar/fonksiyonlar sistemimizde farklı yerlerde kullanılıp tekrar ediliyorsa bu prensibe uymuyoruz demektir.</p>
-
-<p>Andrew Hunt ve David Thomas, &ldquo;The Pragmatic Programmer&rdquo; adlı kitaplarında bu prensipten şöyle söz etmişlerdir:</p>
-
-<blockquote><p>Bir sistem içinde bilginin her bir parçası tek, kesin ve güvenilir olmalıdır.</p></blockquote>
-
-<p>Diğer bir deyişle:</p>
-
-<blockquote><p>Sistemin fonksiyonel davranışları, kodun tek bir parçası içerisinde tutulmaya çalışılmalıdır.</p></blockquote>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/03/27/bir-developerin-hayatini-kolaylastiracak-3-prensip-kiss-yagni-dry/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -825,169 +416,14 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 <iframe src="//giphy.com/embed/3ornjQyEX1mSXYoqPu" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
 
 
-<h3>Controller&#8217;da concern kullanımına bir örnek:</h3>
-
-<p>İki farklı controller&#8217;da aynı metodların aşağıdaki gibi kullanılmakta olduğunu düşünelim.</p>
-
-<figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
-</span><span class='line'>    <span class="n">find_similar_questions</span>
-</span><span class='line'>    <span class="n">find_similar_answers</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-
-
-<figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
-</span><span class='line'>    <span class="n">find_similar_questions</span>
-</span><span class='line'>    <span class="n">find_similar_answers</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bu metodları controller içinde tanımlayıp fonksiyonları tekrarlamak yerine concern ile bu işin nasıl yapılabileceğine bakalım:</p>
-
-<figure class='code'><figcaption><span>/controllers/concerns/similarity_analysis.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SimilarityAnalysis</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
-</span><span class='line'>
-</span><span class='line'> <span class="n">included</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
-</span><span class='line'>    <span class="n">find_similar_questions</span>
-</span><span class='line'>    <span class="n">find_similar_answers</span>
-</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bu fonksiyonları kullanabilmek için yapmamız gereken tek şey oluşturduğumuz module&#8217;ı kullanmak istediğimiz controller&#8217;a include etmektir.</p>
-
-<figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bunun gibi DRY durumlarından kurtulmak için concern&#8217;i model&#8217;de de kullanabiliriz. Model&#8217;de kullanımını görmek için şu <a href="http://blog.uzem.omu.edu.tr/articles/rails-activesupport-concern-kullanimi/">yazıma</a> bakabilirsiniz.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -1055,250 +491,14 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 <iframe src="//giphy.com/embed/EmB4QtACPVBpS" width="480" height="195" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
 
 
-<p>O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
-
-<p>Car modelimize status alanını integer olarak ekliyoruz.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">AddStatusToCars</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
-</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:status</span><span class="p">,</span> <span class="ss">:integer</span><span class="p">,</span> <span class="ss">default</span><span class="p">:</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-
-
-<figure class='code'><figcaption><span>car.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{suitable_for_use rented out_of_use}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">status_to_s</span>
-</span><span class='line'>    <span class="no">STATUSES</span><span class="o">[</span><span class="n">status</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">suitable_for_use?</span>
-</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;suitable_for_use&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">rented?</span>
-</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;rented&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">out_of_use?</span>
-</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">&#39;out_of_use&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Aslında bunu tek fonksiyona indirebiliriz. Şöyleki:</p>
-
-<figure class='code'><figcaption><span>car.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{suitable_for_use rented out_of_use}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="no">STATUSES</span><span class="o">.</span><span class="n">each_with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">define_method</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="s2">?&quot;</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">status</span> <span class="o">==</span> <span class="n">i</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># suitable_for_use? - rented? - out_of_use? fonksiyonlarını oluşturduk.</span>
-</span><span class='line'>  <span class="c1"># Hmmm daha güzel durdu sanki.</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Kullanımına bakalım:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status_to_s</span>
-</span><span class='line'><span class="c1"># =&gt; “suitable_for_use”</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">suitable_for_use?</span>
-</span><span class='line'><span class="c1"># =&gt; true</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">rented?</span>
-</span><span class='line'><span class="c1"># =&gt; false</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">out_of_use?</span>
-</span><span class='line'><span class="c1"># =&gt; false</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Üç kolon oluşturmak yerine bu daha tercih edilebilir. Ancak ekstra fonksiyon oluşturma işleri nereye kadar?</p>
-
-<p><img alt="sparkles" src="/images/emoji/unicode/2728.png" class="emoji" /> Enum&#8217;u devreye sokalım.</p>
-
-<p>Car modelimize status alanını ekleyelim:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">AddStatusToCars</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
-</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:status</span><span class="p">,</span> <span class="ss">:integer</span><span class="p">,</span> <span class="ss">default</span><span class="p">:</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Modelimize enum ile status&#8217;larımızı tanımlayalım.</p>
-
-<figure class='code'><figcaption><span>car.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>    <span class="n">enum</span> <span class="ss">status</span><span class="p">:</span> <span class="o">[</span><span class="ss">:suitable_for_use</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:out_of_use</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Hepsi bu kadar. Başka herhangi bir fonksiyon filan tanımlamaya gerek yok. Direk nasıl kullanıldığına bakalım:</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span>
-</span><span class='line'><span class="c1"># =&gt; {&quot;suitable_for_use&quot;=&gt;0, &quot;rented&quot;=&gt;1, &quot;out_of_use&quot;=&gt;2}</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keys</span>
-</span><span class='line'><span class="c1"># =&gt; [&quot;suitable_for_use&quot;, &quot;rented&quot;, &quot;out_of_use&quot;]</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">status</span>
-</span><span class='line'><span class="c1"># =&gt; &quot;suitable_for_use&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">rented?</span>
-</span><span class='line'><span class="c1"># =&gt; false</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Kitap durumunu kiralık olarak değiştirelim</span>
-</span><span class='line'><span class="n">book</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="ss">:rented</span>
-</span><span class='line'><span class="n">book</span><span class="o">.</span><span class="n">rented!</span> <span class="c1"># güncellendi</span>
-</span><span class='line'><span class="n">book</span><span class="o">.</span><span class="n">rented?</span>
-</span><span class='line'><span class="c1"># =&gt; true</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Bütün kiralık arabaları bulmak için (scope metodu)</span>
-</span><span class='line'> <span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">rented</span>
-</span><span class='line'><span class="c1"># =&gt; SELECT &quot;cars&quot;.* FROM &quot;cars&quot; WHERE &quot;cars&quot;.&quot;status&quot; = ?  [[&quot;status&quot;, 1]]</span>
-</span><span class='line'><span class="c1"># [#&lt;Car:0x007f41d3eeeeee</span>
-</span><span class='line'><span class="c1"># id: 1,</span>
-</span><span class='line'><span class="c1"># status: 1,</span>
-</span><span class='line'><span class="c1"># ]</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Bütün kullanım dışı arabaları bulmak için (scope metodu)</span>
-</span><span class='line'><span class="o">&gt;</span> <span class="no">Car</span><span class="o">.</span><span class="n">out_of_use</span>
-</span><span class='line'><span class="c1"># =&gt; SELECT &quot;cars&quot;.* FROM &quot;cars&quot; WHERE &quot;cars&quot;.&quot;status&quot; = ?  [[&quot;status&quot;, 2]]</span>
-</span><span class='line'><span class="c1"># =&gt; []  (Kullanım dışı araç yok)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>View kısmında kullanımı:</p>
-
-<figure class='code'><figcaption><span>views/cars/form.hml.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;field&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= f.label :status %&gt;&lt;br&gt;</span>
-</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">select</span> <span class="ss">:status</span><span class="p">,</span> <span class="no">Car</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">keys</span> <span class="sx">%&gt;</span>
-</span><span class='line'><span class="sx">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Eğer view kısmında select box&#8217;da gözüken yazılar istediğiniz gibi değil ise <a href="https://github.com/zmbacker/enum_help">enum_help gem&#8217;i</a> işinize yarayacaktır.</p>
-
-<p>Enum&#8217;u keşfeden Rails geliştiricilerinin son hali:</p>
-
-<iframe src="//giphy.com/embed/d86kftzaeizO8" width="480" height="200" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
-
-
-<p>Özetlersek:</p>
-
-<p>Status ile ilgili veriler tabloda tek bir kolonda tutularak enum ile tanımlanan attribute&#8217;lar ile veritabanındaki tamsayılar eşleştirilir.  ActiveRecord bu dizi indislerine karşılık gerçek sembolleri çeker ve onları döndürür. Enum aynı zamanda  suitable_for_use, rented, out_of_use scope&#8217;larını oluşturur.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Devamı &rarr;</a>
+   </footer>
  
 
 

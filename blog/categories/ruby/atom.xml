@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-08-15T10:07:03+03:00</updated>
+  <updated>2016-08-15T10:25:36+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -44,6 +44,9 @@ person.name = "Ecmel" # =&gt; NoMethodError: undefined method `name='
 <p><code>name</code> metodunu tanımladık ancak görüldüğü gibi sadece okuma yapabiliyoruz, herhangi bir değer atayamıyoruz.</p>
 
 <p>İşte bu iki işlemden biri reader (değişkenin değerine erişilmesi) diğeri ise writer (değişkenin değerinin değiştirilmesi) olarak adlandırılır.</p>
+
+<!--more-->
+
 
 <p>Yukarıda writer metodu oluşturmamıştık şimdi onu da oluşturalım:</p>
 

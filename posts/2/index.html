@@ -116,40 +116,12 @@
 <p><strong>Sebep 2:</strong> Ubuntu kernel yükseltildiği (upgrated) için ya da kötü bir superblock&#8217;a sahip olduğunuz için bu sorun yaşanabilir.
 Çözüm için önerilen bir çok yolu denedim. Ancak bir tanesi ile sorunu halledebildim. Bende tam olarak onu buraya not etmiş olacağım.</p>
 
-<p>Ubuntu Live CD ile bilgisayarı boot ediyoruz. Ekrana aşağıdaki gibi bir görüntü geldiğinde <code>Try Ubuntu</code> deyip devam ediyoruz.</p>
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_385,w_561/v1450429545/ubuntu_ohikd8.png"></p>
-
-<p>Ubuntu masaüstü açılacaktır. Sonrasında Ctrl + Alt + T ile terminali açıyoruz.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo fdisk -l</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Devamında bilgisayarınıza takılı tüm diskler ve disk bölümlerinin listelendiği bir tablo karşınıza gelecektir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Device Boot Start End Blocks Id System
-</span><span class='line'>/dev/sda1 * 1 30238 242886703+ 83 Linux
-</span><span class='line'>/dev/sda2 30239 30401 1309297+ 5 Extended
-</span><span class='line'>/dev/sda5 30239 30401 1309266 82 Linux swap / Solaris</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Linux hangi disk alanında ise onu seçip fsck komutu ile diski tamir etmek için aşağıdaki kod satırını çalıştırıyoruz.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo fsck /dev/sda1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Sistemin boot ayarlarını eski haline getirdikten sonra yeniden başlatıyoruz ve problem çözülmüş olması gerekiyor.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -227,276 +199,12 @@
 
 <p>Gelelim işin Angular kısmına:</p>
 
-<p><strong>Hatırlatma:</strong> Herşeyden önce <a href="https://code.angularjs.org/1.3.9/angular-resource.js">angular-resource.js</a> dosyasını projemize eklemeliyiz. İster cdn olarak isterseniz de assets dizinine ekleyebilirsiniz.</p>
-
-<figure class='code'><figcaption><span>layouts/application.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">&quot;https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-resource.min.js&quot;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>javascripts/angular/app.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;bookApp&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;ngResource&quot;</span><span class="p">]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>bookApp</code> adında bir module tanımladık ve ngResource modülünü dependency olarak belirttik.</p>
-
-<p>Angular uygulaması başlaması için <code>ng-app</code> directive&#8217;ini layout&#8217;a ekleyelim.</p>
-
-<figure class='code'><figcaption><span>views/layout/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">&quot;bookApp&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    ...
-</span><span class='line'>  <span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Şimdi de Book verileri üzerinde crud işlemleri yapabilmek için Angularjs&#8217;in servis oluşturma komponentlerinden biri olan factory ile bir servis oluşturalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/app.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">factory</span><span class="p">(</span><span class="s2">&quot;Book&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$resource</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">$resource</span><span class="p">(</span><span class="s2">&quot;/books/:id.json&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;@id&quot;</span> <span class="p">},</span>
-</span><span class='line'>      <span class="p">{</span>
-</span><span class='line'>        <span class="nx">create</span><span class="o">:</span>  <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">index</span><span class="o">:</span>   <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nx">isArray</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">get</span><span class="o">:</span>    <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nx">isArray</span><span class="o">:</span> <span class="kc">false</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">update</span><span class="o">:</span>  <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;PUT&#39;</span> <span class="p">},</span>
-</span><span class='line'>        <span class="nx">destroy</span><span class="o">:</span> <span class="p">{</span> <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;DELETE&#39;</span> <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>    <span class="p">);</span>
-</span><span class='line'>  <span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>Book</code> adında bir servis oluşturduk. Bu servisi kullanacağımız controller&#8217;a dependency olarak aşağıdaki gibi belirteceğiz.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'>  <span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yukarıdaki kodun açılımı şudur: <code>bookApp</code> modülüne (app) <code>BookCtrl</code> adında bir controller tanımladık ve bu controller&#8217;a oluşturduğumuz <code>Book</code> servisini dependency olarak belirttik. Yani servisimizde tanımladığımız fonksiyonları bu controller içerisinde artık kullanabileceğiz.</p>
-
-<p>Oluşturduğumuz controller&#8217;ı hangi directive kapsamında çalışmasını istiyorsak orada tanımlıyoruz. İster <code>body</code>&lsquo;de tanımlayın, isterseniz kapsamını azaltmak için başka bir directive&#8217;e tanımlayın. Ben bu örnekte ilgili sayfanın index&#8217;ine tanımlayacağım.</p>
-
-<figure class='code'><figcaption><span>views/books/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span> <span class="na">ng-controller=</span><span class="s">&quot;BookCtrl&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-md-6 col-md-offset-3&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;center&gt;&lt;h1&gt;</span>Books<span class="nt">&lt;/h1&gt;&lt;/center&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">&quot;form-horizontal&quot;</span> <span class="na">ng-submit=</span><span class="s">&quot;addBook()&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;input-group&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;book_title&quot;</span> <span class="na">required</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;input-group-btn&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>              <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">class=</span><span class="s">&quot;btn btn-default&quot;</span> <span class="na">value=</span><span class="s">&quot;Ekle&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;/span&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/form&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;table</span> <span class="na">class=</span><span class="s">&quot;table table-striped table-condensed&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;thead&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;tr&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;th&gt;</span>Başlık<span class="nt">&lt;/th&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;th&gt;</span>Like<span class="nt">&lt;/th&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;th</span> <span class="na">colspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>İşlemler<span class="nt">&lt;/th&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;/tr&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/thead&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;tbody&gt;</span>
-</span><span class='line'>            <span class="nt">&lt;tr</span> <span class="na">ng-repeat=</span><span class="s">&quot;book in books&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;td&gt;</span><span class="err">&lt;</span>%= link_to &quot;&quot;, book_path(&quot;&quot;) %&gt;<span class="nt">&lt;/td&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;td&gt;</span>
-</span><span class='line'>            <span class="err">&lt;</span>%= link_to &quot;Like&quot;, &#39;&#39;, &#39;ng-click&#39; =&gt; &quot;likeBook($index)&quot;, value:&quot;like&quot;, class:&quot;btn btn-success btn-xs&quot; %&gt;
-</span><span class='line'>            <span class="err">&lt;</span>%= link_to &quot;Dislike&quot;, &#39;&#39;, &#39;ng-click&#39; =&gt; &quot;dislikeBook($index)&quot;, value:&quot;dislike&quot;, class:&quot;btn btn-danger btn-xs&quot; %&gt;
-</span><span class='line'>            <span class="err">&lt;</span>%= link_to &quot;Remove&quot;, &#39;&#39;,&#39;ng-click&#39; =&gt; &quot;deleteBook($index)&quot;, value:&quot;remove&quot;, class:&quot;btn btn-warning btn-xs&quot; %&gt;
-</span><span class='line'>          <span class="nt">&lt;/td&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;/tr&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/tbody&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/table&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Görüldüğü gibi <code>BookCtrl</code> controller en baştaki tag&#8217;da tanımlı ve ben bu tag&#8217;lar arasında controller içerisinde tanımladığım bütün fonksiyonları kullanabileceğim.</p>
-
-<h4>Read İşlemi</h4>
-
-<p>Tanımlı book nesnelerini elde etmek için <code>Book</code> servisimizdeki <em>index</em> metodundan yararlanacağız.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">index</span><span class="p">();</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Create İşlemi</h4>
-
-<p>İndex sayfası içerisindeki <code>ng-submit="addBook()"</code> ve <code>ng-model="book_title"</code> yeni bir book nesnesi oluşturmakta bize yardımcı olacak.
-İnput&#8217;a tanımlanan ng-model&#8217;in <code>book_title</code> değişkeni $scope&#8217;a bağlanacaktır. Submit ederken <code>addBook()</code> fonksiyonu çalışacaktır. Şimdi bu fonksiyonu controller&#8217;ımıza tanımlayalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">addBook</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">attr</span> <span class="o">=</span> <span class="p">{};</span>
-</span><span class='line'>    <span class="nx">attr</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">book_title</span><span class="p">;</span> <span class="c1">// ng-model&#39;deki veri</span>
-</span><span class='line'>    <span class="nx">attr</span><span class="p">.</span><span class="nx">like</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// Yeni oluşturulan verinin like değeri</span>
-</span><span class='line'>    <span class="nx">newBook</span> <span class="o">=</span> <span class="nx">Book</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">attr</span><span class="p">);</span> <span class="c1">// Create işlemi burada</span>
-</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">newBook</span><span class="p">);</span> <span class="c1">// View kısmını refresh etmeden verileri göstermek için books değişkenine veriyi ekliyoruz</span>
-</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">book_title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="c1">// Nesneyi ekledikten sonra input&#39;taki veriyi siler</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Update İşlemi</h4>
-
-<p>Güncelleme işlemi için kullanılacak satır:</p>
-
-<figure class='code'><figcaption><span>views/books/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= link_to &quot;Like&quot;, &#39;&#39;, &#39;ng-click&#39; =</span><span class="o">&gt;</span> <span class="s2">&quot;likeBook($index)&quot;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span><span class="s2">&quot;like&quot;</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span><span class="s2">&quot;btn btn-success btn-xs&quot;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Butona basılınca <code>likeBook()</code> fonksiyonu çalışacak. O halde <code>likeBook()</code> fonksiyonunu tanımlayalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">likeBook</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">book</span> <span class="o">=</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
-</span><span class='line'>    <span class="nx">book</span><span class="p">.</span><span class="nx">like</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">Book</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">book</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">like</span><span class="o">:</span> <span class="nx">book</span><span class="p">.</span><span class="nx">like</span><span class="p">});</span> <span class="c1">// Update işlemi burada</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Delete İşlemi</h4>
-
-<p>Silme işlemi için kullanılacak satır:</p>
-
-<figure class='code'><figcaption><span>views/books/index.html.erb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= link_to &quot;Remove&quot;, &#39;&#39;,&#39;ng-click&#39; =</span><span class="o">&gt;</span> <span class="s2">&quot;deleteBook($index)&quot;</span><span class="p">,</span> <span class="ss">value</span><span class="p">:</span><span class="s2">&quot;remove&quot;</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span><span class="s2">&quot;btn btn-warning btn-xs&quot;</span> <span class="o">%&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>deleteBook()</code> fonksiyonunu tanımlayalım.</p>
-
-<figure class='code'><figcaption><span>javascripts/angular/controllers.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s2">&quot;BookCtrl&quot;</span><span class="p">,[</span><span class="s1">&#39;$scope&#39;</span><span class="p">,</span> <span class="s1">&#39;Book&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">,</span> <span class="nx">Book</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">deleteBook</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="nx">book</span> <span class="o">=</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
-</span><span class='line'>    <span class="nx">Book</span><span class="p">.</span><span class="nx">destroy</span><span class="p">(</span><span class="nx">book</span><span class="p">);</span> <span class="c1">// Delete işlemi burada</span>
-</span><span class='line'>    <span class="nx">$scope</span><span class="p">.</span><span class="nx">books</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>  <span class="c1">// View kısmını güncellemek için belirtilen indexten itibaren 1 nesne siler.</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}]);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>422 (Unprocessable Entity) hatasından kurtulmak için:</h4>
-
-<figure class='code'><figcaption><span>controllers/application_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">skip_before_action</span> <span class="ss">:verify_authenticity_token</span><span class="p">,</span> <span class="k">if</span><span class="p">:</span> <span class="ss">:json_request?</span>
-</span><span class='line'>
-</span><span class='line'><span class="kp">protected</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">json_request?</span>
-</span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">json?</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p style="text-align:center;"><strong>TL;DR</strong></p>
-
-<p>Look at the my github repo => <a href="https://github.com/ecmelkytz/rails-angular-resource">https://github.com/ecmelkytz/rails-angular-resource</a></p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -593,120 +301,12 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
 
 <h5>Özetle: Atla (<img alt="horse" src="/images/emoji/unicode/1f434.png" class="emoji" />) deve (<img alt="dromedary_camel" src="/images/emoji/unicode/1f42a.png" class="emoji" />) değildir.</h5>
 
-<p>Dosya içeriği:</p>
-
-<figure class='code'><figcaption><span>geoip </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">GETGEOIPCONTEXT</span><span class="o">=</span><span class="s2">&quot;http://www.webservicex.net/geoipservice.asmx/GetGeoIPContext&quot;</span>
-</span><span class='line'><span class="nv">GETGEOIP</span><span class="o">=</span><span class="s2">&quot;http://www.webservicex.net/geoipservice.asmx/GetGeoIP&quot;</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>get_ip<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  curl -H <span class="s2">&quot;Accept: application/soap+xml&quot;</span> -d <span class="s2">&quot;IPAddress=$1&quot;</span> <span class="k">${</span><span class="nv">GETGEOIP</span><span class="k">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>my_ip<span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>  curl -H <span class="s2">&quot;Accept: application/soap+xml&quot;</span> -d <span class="s2">&quot;IPAddress=$1&quot;</span> <span class="k">${</span><span class="nv">GETGEOIPCONTEXT</span><span class="k">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$@</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Terminal&#8217;de kullanım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>geoip my_ip
-</span><span class='line'><span class="c"># Ekran çıktısı</span>
-</span><span class='line'>  &lt;ReturnCode&gt;1&lt;/ReturnCode&gt;
-</span><span class='line'>  &lt;IP&gt;193.xxx.xx.xx&lt;/IP&gt;
-</span><span class='line'>  &lt;ReturnCodeDetails&gt;Success&lt;/ReturnCodeDetails&gt;
-</span><span class='line'>  &lt;CountryName&gt;Turkey&lt;/CountryName&gt;
-</span><span class='line'>  &lt;CountryCode&gt;TUR&lt;/CountryCode&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>geoip get_ip 195.xxx.xx.xx
-</span><span class='line'><span class="c"># Ekran çıktısı</span>
-</span><span class='line'>  &lt;ReturnCode&gt;1&lt;/ReturnCode&gt;
-</span><span class='line'>  &lt;IP&gt;195.xxx.xx.xx&lt;/IP&gt;
-</span><span class='line'>  &lt;ReturnCodeDetails&gt;Success&lt;/ReturnCodeDetails&gt;
-</span><span class='line'>  &lt;CountryName&gt;Germany&lt;/CountryName&gt;
-</span><span class='line'>  &lt;CountryCode&gt;DEU&lt;/CountryCode&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/v1457516071/bigdeal_bpnp2u.jpg"></p>
-
-<p>Yazdığımız bash kodunu konsoldan çalışır duruma getirme işine bakalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>chmod <span class="m">755</span> geoip
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Artık scriptin bulunduğu dizinde şu şekilde çalıştırabiliriz.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="nv">$ </span>./geoip my_ip
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Sadece dosya ismiyle çalıştırmak istiyorum. Bundan dolayı sudo ile mc (Midnight Commander) aracılığıyla bash script&#8217;i /bin dizinine attım. Aynı işlemi yapabileceğimiz bir çok yol elbette mevcut.</p>
-
-<p>Misal:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='Bash'><span class='line'><span class="c"># Taşımak için</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span>sudo mv path/geoip bin
-</span><span class='line'>
-</span><span class='line'><span class="c"># Kopyalamak için</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$ </span>sudo cp path/geoip bin
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>[Terminal&#8217;de kullanım] kısmında gözüktüğü gibi scriptimiz çalışır hale gelecektir.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -750,29 +350,12 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
 
 <p>Hal böyle olunca Angularjs geliştiricileri Angular 1.3 versiyonu ile data binding&#8217;den kaynaklanan performans sorunlarını gidermek adına one-time binding&#8217;i tanıttılar. One time binding view-model güncelleme işlemini bir kez yapıyor, bundan sonra yapılan etkileşimler herhangi bir şekilde view&#8217;e ya da modele yansıtılmıyor. Yani digest cycle bir kez kullanıcı etkileşimlerini dinliyor ve bu sayede güncelleme bir kez yapılmış oluyor.</p>
 
-<h3>One-time binding nasıl çalışır görelim:</h3>
-
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1449581533/one-time-binding_eaj5td.gif" alt="" /></p>
-
-<p>Yukarıdaki gif&#8217;den de anlaşılacağı üzere model&#8217;de yazdığım yazının ilk karakteri view&#8217;e bağlanıyor. Ondan sonraki etkileşimlerde hiçbir şekilde veri bağlama yapılmıyor.</p>
-
-<h4>Syntax farkına bakalım:</h4>
-
-<p>Two way binding</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;p&gt;</span> {{ name }} <span class="nt">&lt;/p&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>One time binding</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  <span class="nt">&lt;p&gt;</span> {{ ::name }} <span class="nt">&lt;/p&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -852,67 +435,12 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
 
 <p>Uygulamamızın modul&#8217;une ngRoute modul&#8217;unu dependency olarak belirtiyoruz. Yani modulun bağımlılıklarını belirtiyoruz. Bu sayede ngRoute içindeki her fonksiyonu/servisi kendi uygulamamızda da kullanabiliyoruz.</p>
 
-<p>Config sadece Provider&#8217;lar için kullanılır. Provider&#8217;lar Angularjs&#8217;de en gelişmiş servis oluşturma kompanentidir. Buradaki <code>$routeProvider</code> servisi uygulama başlamadan Routing konfigürasyonunu sağlar.</p>
-
-<p><code>$routeProvider</code> sayesinde eğer url isteği /home olursa template olarak <code>home.html</code> kullanılmasını, eğer istek /services olursa template olarak <code>services.html</code> kullanılmasını sağlıyoruz. <code>.otherwise</code> ise olmayan herhangi farklı bir istekte bulunulursa /home url&#8217;e yönlendirmek için kullanılmaktadır.</p>
-
-<figure class='code'><figcaption><span>services.html </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;h1&gt;</span>Services Page<span class="nt">&lt;/h1&gt;</span>
-</span><span class='line'><span class="nt">&lt;p&gt;</span>Nobody can give you freedom. If you&#39;re a man, you take it.<span class="nt">&lt;/p&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Angular route yapısı için daha çok <a href="https://github.com/angular-ui/ui-router">ui-router</a> kullanılması tavsiye edilir.</p>
-
-<figure class='code'><figcaption><span>index.html </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">&quot;myApp&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;style.css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular-route.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;script.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nt">&lt;body&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;ul&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/home&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/services&quot;</span><span class="nt">&gt;</span>Services<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/clients&quot;</span><span class="nt">&gt;</span>Clients<span class="nt">&lt;/a&gt;&lt;/li&gt;&lt;br&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/ul&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;div</span> <span class="na">ng-view</span><span class="nt">&gt;&lt;/div&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/body&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Angularjs route yapısında <code>#</code> karakteri kullanılır. O yüzden linklerdeki url&#8217;lerde <code>#</code> karakteri kullanılmıştır. <code>ng-view</code> aslında Rails&#8217;de ki <code>yield</code> ile aynı işlevi görür. Angularda eğer bunu eklemezsek sayfada görüntü oluşmayacaktır.</p>
-
-<p>Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a></p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2015/08/15/angularjs-single-page-application/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -976,122 +504,12 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p><code>ng-app</code> directive&#8217;inden sonra sayfa içerisindeki diğer directiveler aranmaya başlanır. Bulunan direktiveler uygulamaya bind edilir.  Bind edilenler <code>$wacth list</code>&lsquo;e eklenir. Daha sonrasında digest cycle kullanıcı etkileşimlerini dinlemeye başlar.</p>
 
-<h4>Digest Cycle</h4>
-
-<p>Digest Cycle uygulamanın view katmanını yani kullanıcının gördüğü ekrandaki verileri güncel tutmakla görevlidir. Kullanıcı tarafından yapılan en ufak bir etkileşimde view&#8217;in otomatik güncellenmesini sağlar.</p>
-
-<p>Özetle; Digest Cycle kullanıcı etkileşimlerini dinliyor, bir değişiklik var ise view kısmını güncel tutuyor vs. tamam ama bunun sağlanmasında arkada nasıl bir mekanizma çalışıyor asıl buna değinmek ve biraz daha derine inmek istiyorum. Bu olayı two way binding üzerinden anlatacağım.</p>
-
-<h4>Two Way Binding denilen şey ne, nasıl işler?</h4>
-
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1449136639/desktop-animation2_av1hak.gif" alt="" /></p>
-
-<p>Yukarıdaki gif görsel olarak two way binding dediğimiz şeydir. Görüldüğü üzere model içerisinde yaptığım her değişiklik bind ettiğim view kısmına anında aktarılıyor. <a href="http://plnkr.co/edit/ayo5ZxwxmKeptLTSxElu?p=preview">Plunker Code</a></p>
-
-<figure class='code'><figcaption><span>index.html </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;body</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;name&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;h1&gt;</span> Merhaba {{ name }} <span class="nt">&lt;/h1&gt;</span>
-</span><span class='line'><span class="nt">&lt;/body&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>{{ }} işareti angular&#8217;da expression olarak adlandırılır ve scope nesnesini view&#8217;e bind (bağlamaya) etmeye yarar.</p>
-
-<p>Şimdi elimizde bir <code>$watch list</code>  adında bir listemizin olduğunu hayal edelim. Biz UI&#8217;ye her bind ettiklerimizi bu <code>$watch list</code>&lsquo;e  <code>$watch</code> nesnesi olarak eklediğimizi düşünelim. Digest cycle kullanıcı etkileşimlerini dinlerken her defasında bu  <code>$watch list</code>&#8216;e bakar.  Eğer bu <code>$watch</code>&#8216;lardan birinde herhangi bir değişiklik var ise model-view senkronizasyonunu sağlar (Two way binding&#8217;de olduğu gibi). Bu senkronizasyonu dirty cheking mekanizması ile yapar.</p>
-
-<p><strong>Dirty Cheking Mekanizmasi:</strong> Bir değerin eski değeri ile yeni değerinin karşılaştırılmasıdır.</p>
-
-<p><strong>$watch list oluşturma örneği 1:</strong></p>
-
-<figure class='code'><figcaption><span>controller.js </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;MainController&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$scope</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="s2">&quot;Foo&quot;</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">$scope</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s2">&quot;Bar&quot;</span><span class="p">;</span>
-</span><span class='line'><span class="p">});</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>index.html </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  Hello {{ bar }}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yukarıdaki örnekte html sayfasında ekran çıktısı olarak “Hello Bar” yazısı gözükecektir. Çünkü {{ bar }} expression&#8217;ı scope nesnesini view&#8217;e bind edecek. Controller içinde scope&#8217;a tanımlanmış bir de foo değişkeni var ancak o view&#8217;e bind edilmemiş durumda. İşte bu yüzden <code>$watch list</code>&lsquo;e sadece 1 tane $watch nesnesi eklenecek. Digest cycle ile de sadece <code>$scope.bar</code> üzerindeki değişiklikler dinlenecek ve view&#8217;e aktarılacak.</p>
-
-<p><strong>$watch list oluşturma örneği 2:</strong></p>
-
-<figure class='code'><figcaption><span>index.html </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>  Name: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;name&quot;</span> <span class="nt">/&gt;</span>
-</span><span class='line'>  Password: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">ng-model=</span><span class="s">&quot;password&quot;</span> <span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>ng-model</code> directivenin özelliklerinden birisi input nesnesini scope’a bağlamaktır. Yani $scope.name ve $scope.password&#8217;un ikiside bind edildiği için <code>$watch list</code>&lsquo;e 2 tane $watch nesnesi eklenecek ve digest cycle bu iki inputtaki değişiklikleri dinleyecek.</p>
-
-<p><strong>Ufak bilgi:</strong> Digest çevirimi tetiklendikten sonra minimum 2 maximum 10 kez çalışır. (Angular 1.4’de 20 kez)</p>
-
-<p><strong>Digest Loop <code>$watch list</code> gezerken nasıl bir senaryo izliyor biraz daha bakalım:</strong></p>
-
-<blockquote><ul>
-<li>Hey $watch, senin değerin ne?
-
-<ul>
-<li>9</li>
-</ul>
-</li>
-<li>Pekala, bir değişiklik var mı? (Dirty Checking)
-
-<ul>
-<li>Hayır yok.</li>
-</ul>
-</li>
-</ul>
-
-
-<p>(Herhangi bir değişiklik olmadığı için diğer $watch’a geçer.)</p>
-
-<ul>
-<li>Hey sen, senin değerin ne?
-
-<ul>
-<li>Foo</li>
-</ul>
-</li>
-<li>Bir değişiklik var mı?  (Dirty Checking)
-
-<ul>
-<li>Evet, önceden Bar’dım.</li>
-</ul>
-</li>
-<li>Güzel, o halde DOM’u güncelleyelim.</li>
-</ul>
-</blockquote>
-
-<p><code>$watch</code>’lar bitene kadar bu çevirim devam eder. $digest loop bittiğinde değişiklik var ise DOM&#8217;da değişiklik yapılır.</p>
-
-<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım.</p>
-
-<p>O halde şu söz de burada dursun:</p>
-
-<blockquote><p>“Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.”</p></blockquote>
-
-<p>Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2015/08/11/angularjs-calisma-mantigi/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -1135,54 +553,12 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p>Angularjs deyince hepsi olmamakla birlikte akla gelebilecek temel unsurlar yukarıdaki resimde mevcuttur. Hepsinden kabaca söz edip daha detaylı bilgileri başka blog girdilerinde yazmayı düşünüyorum.</p>
 
-<ul>
-<li>Angularda two way binding dediğimiz şey çift yönlü veri bağlama yani Model&#8217;deki değişiklikleri View&#8217;e, View&#8217;deki değişiklikleri Model&#8217;e aktarma işlemidir. Bir de one time binding var. Bunların izahını sonraya bırakıyorum.</li>
-<li>Angularda Template dediğimiz şeyler aslında viewlerimizdir.</li>
-<li>Bir sayfadan başka sayfaya geçildiğinde geri işlemi için eski state&#8217;i tutan bir hafızaya (geçmiş bilgisine) ihtiyaç vardır bunu  History mekanızması sağlar.</li>
-<li>Factories, Services ve yukarıdaki resimde olmayan Provider Angular&#8217;da servis oluşturma komponentleridir.</li>
-<li>Angular bünyesinde Jquery&#8217;nin Lite versiyonu vardır. Bunu jqLite modülü ile sağlar. Eğer projenizde jquery dosyaları yok ise Angular jqlite modülünü kullanacaktır. Aksi takdirde sistemde yüklü olan jquery dosyasını kullanır.</li>
-<li>MVC bir design patterndir. Angular ilk başlarda MVC mantığı ile geliştirilmiş ancak daha sonrasında MVVM design patterni kullanılmıştır.  Buradaki VM(ViewModel) aynı zamanda angulardaki $scope servisine denkttir.</li>
-<li>Angularda Directive&#8217;ler dışında DOM&#8217;a müdahale etmemek gerekiyor. Directive deyince DOM manipülasyonlarının yoğun olarak yapıldığı yer aklımıza gelmeli. Yapısal directiveler anguların kendi bünyesindeki  directivelerdir (ng-controller, ng-if, ng-show vs.). Birde kendimizin oluşturabileceği custom directiveler vardır. Custom directiveler ile kendi Html etiketimizi oluşturup Html&#8217;e yeni özellikler ekleyebiliriz.</li>
-<li>Angular form validasyonlarında benimde severek kullandığım validasyon mekanizmasına sahiptir. Sunucuya gitmeden client tarafında verileri validasyona tabi tutuyoruz.</li>
-<li><p>Dependency Injection ise uygulamanın bağımlılıklarının belirtilmesidir. Mesela bir modulde third party kütüphane kullanma ihtiyacı var ise ya da farklı bir modul ile ilişkili ise bunları dependecy olarak module eklememiz gerekmektedir.</p></li>
-<li><p>Angular ile Single Page Application(SPA) oluşturabilirsiniz. SPA imkanıyla beraber angular route kaynaklı bazı SEO problemleri yaşanabilir. Angularda route yapısında # karakteri kullanılır.</p></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#/users
-</span><span class='line'>#/users/new</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Google # işaretinin gerçek bir adres karakteri olmadığını bildiği için bu karakterden sonra ne yazıldıysa yazılsın onu indexlemiyor. <img alt="pensive" src="/images/emoji/unicode/1f614.png" class="emoji" /></p>
-
-<p>Yukarıdaki bilgiler detaya inmeden kabaca üstünden geçilerek yazılmıştır. Bu sayfadaki bütün bilgilerin ayrıntısını ilerleyen zamanlarda yazmayı düşünmekteyim.</p>
-
-<p>Son olarak;
-Angular hızlı response oluşturur dedik. Peki nasıl?</p>
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222532/browser1_pyrbaa.png"></p>
-
-<p>Bir web sitesine girmeye çalıştığınızı düşünün. İlk olarak browserdan server&#8217;a URL isteğinde bulunuyoruz. Server bize cevap olarak web sayfasını ve assets (Javascript vs.)&lsquo;i döndürüyor. Daha sonra kullanıcı herhangi bir linke tıkladığında, server&#8217;a yine bir istek gidiyor ve dönen cevap ilk dönen cevap ile aynı oluyor. Yani tekrar sayfanın tamamı ve assets yükleniyor.</p>
-
-<p>Birde AngularJS ile bu iş nasıl oluyor ona bakalım.</p>
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222636/browser2_fqhyc3.png"></p>
-
-<p>Sayfa ilk yüklendiğinde geleneksel senaryo ile aynı responsu alacağız. Ancak kullanıcı bir linke tıkladığında veya başka bir yeni istekte bulunduğunda diğerinde olduğu gibi bütün bir sayfayı ve assets&#8217;i yüklemiyor. Önceden oluşturduğu veriden istenilen veriyi JSON data olarak çekiyor. Dolayısıyla istemci-sunucu trafiğini azaltmış olup hızlı bir cevap elde etmiş oluyoruz.</p>
-
-<h3>Faydalı olabilecek linkler</h3>
-
-<ul>
-<li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#110;&#x67;&#117;&#x6c;&#x61;&#x72;&#x40;&#x67;&#x6f;&#x6f;&#x67;&#x6c;&#101;&#103;&#114;&#111;&#117;&#112;&#115;&#x2e;&#x63;&#111;&#109;">&#x61;&#110;&#103;&#x75;&#108;&#97;&#x72;&#x40;&#103;&#x6f;&#x6f;&#x67;&#108;&#101;&#103;&#x72;&#x6f;&#117;&#112;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
-<li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
-<li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
-</ul>
-
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2015/08/07/angularjs-nedir/">Devamı &rarr;</a>
+   </footer>
  
 
 

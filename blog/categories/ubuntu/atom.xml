@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ubuntu | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-08-15T10:07:03+03:00</updated>
+  <updated>2016-08-15T10:25:36+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -26,6 +26,9 @@
 
 <p><strong>Sebep 2:</strong> Ubuntu kernel yükseltildiği (upgrated) için ya da kötü bir superblock&#8217;a sahip olduğunuz için bu sorun yaşanabilir.
 Çözüm için önerilen bir çok yolu denedim. Ancak bir tanesi ile sorunu halledebildim. Bende tam olarak onu buraya not etmiş olacağım.</p>
+
+<!--more-->
+
 
 <p>Ubuntu Live CD ile bilgisayarı boot ediyoruz. Ekrana aşağıdaki gibi bir görüntü geldiğinde <code>Try Ubuntu</code> deyip devam ediyoruz.</p>
 

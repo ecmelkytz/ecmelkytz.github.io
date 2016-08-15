@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-08-15T10:07:03+03:00</updated>
+  <updated>2016-08-15T10:25:36+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -47,6 +47,9 @@
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;=&gt;</span> <span class="o">[</span><span class="mi">38</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">]</span>
 </span></code></pre></td></tr></table></div></figure></p>
+
+<!--more-->
+
 
 <p><strong>Pluck</strong></p>
 
@@ -110,6 +113,9 @@
 <p>Tabloya type&#8217;ı datetime olacak şekilde ekleyeceğimiz <code>deleted_at</code> alanı sayesinde silme işlemi yaptığımız zaman sadece bu kolonun değeri güncellenecek ve silinme zamanı burada tutulacak.</p>
 
 <p>Bu plugin Active Record&#8217;un sadece destroy metodu üzerinde override yapmaz aynı zamanda find ve count metodları üzerinde de değişiklik yapar. Sql sorgularına deleted_at&#8217;i null olanların getirilmesiyle ilgili eklemeler getirecektir.</p>
+
+<!--more-->
+
 
 <p>Migration ile modelimize <code>deleted_at</code> alanını ekleyelim:</p>
 
@@ -229,6 +235,9 @@
 
 <p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim. (<code>all</code> mı? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" /> pratikte <code>find_each</code> kullan <img alt="exclamation" src="/images/emoji/unicode/2757.png" class="emoji" />)</p>
 
+<!--more-->
+
+
 <p><figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -280,6 +289,11 @@
     <content type="html"><![CDATA[<p>Rails 4 ile gelen ActiveSupport&#8217;un concern modülü  DRY ilkesine aykırı durumları idare etmemizi sağlar. Bazı Rails geliştiricileri concern&#8217;i sistemi daha da karmaşık hale getirdiğini söylese de; Rails kendi concern dizinlerini kaldırmadığı sürece kullanıp kullanmama sorunsalı geliştiricinin kendi inisiyatifine kalmış bir durum olarak ele alıyorum ve gerektiği yerlerde bunu kullanıyorum.</p>
 
 <iframe src="//giphy.com/embed/3ornjQyEX1mSXYoqPu" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+
+
+<!--more-->
 
 
 <h3>Controller&#8217;da concern kullanımına bir örnek:</h3>
@@ -464,6 +478,11 @@ end
 <p>Bu gibi durumların insanı soktuğu ruh hali:</p>
 
 <iframe src="//giphy.com/embed/EmB4QtACPVBpS" width="480" height="195" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+
+
+<!--more-->
 
 
 <p>O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>

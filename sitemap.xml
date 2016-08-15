@@ -111,6 +111,12 @@
   </url>
   
   <url>
+    <loc>http://ecmelkytz.github.com/blog/2014/11/29/chroma-key-nedir/</loc>
+    <lastmod>2014-11-29T21:46:50+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://ecmelkytz.github.com/blog/2014/11/17/rails-upcase/</loc>
     <lastmod>2014-11-17T21:58:03+02:00</lastmod>
     <priority>0.8</priority>
@@ -146,23 +152,17 @@
     <priority>0.8</priority>
   </url>
   
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir/</loc>
-    <lastmod>2014-01-29T21:46:50+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
   
   <url>
     <loc>http://ecmelkytz.github.com/blog/archives/</loc>
-    <lastmod>2016-08-15T10:07:03+03:00</lastmod>
+    <lastmod>2016-08-15T10:25:36+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://ecmelkytz.github.com/</loc>
-    <lastmod>2016-08-15T10:07:03+03:00</lastmod>
+    <lastmod>2016-08-15T10:25:36+03:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

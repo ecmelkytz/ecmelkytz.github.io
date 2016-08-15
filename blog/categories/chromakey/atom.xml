@@ -4,7 +4,7 @@
   <title><![CDATA[Category: chromakey | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/chromakey/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-08-15T10:07:03+03:00</updated>
+  <updated>2016-08-15T10:25:36+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Chroma Key Nedir?]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir/"/>
-    <updated>2014-01-29T21:46:50+02:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2014/01/29/chroma-key-nedir</id>
+    <link href="http://ecmelkytz.github.com/blog/2014/11/29/chroma-key-nedir/"/>
+    <updated>2014-11-29T21:46:50+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2014/11/29/chroma-key-nedir</id>
     <content type="html"><![CDATA[<p>Film çekim setlerinde arkaplanın sadece mavi ya da sadece yeşil renkte olduğunu gördüyseniz ne amaçla bu şekilde yapıldığını merak etmiş olabilirsiniz. Filmlerin böyle bir ortamda çekilmesi Chroma Key tekniğini uygulayabilmek içindir.</p>
 
 <p><img class="center <a" src="href="http://upload.wikimedia.org/wikipedia/en/0/0d/300_comparison.JPG">http://upload.wikimedia.org/wikipedia/en/0/0d/300_comparison.JPG</a>&#8221;></p>
@@ -25,6 +25,9 @@
 <h3>Teknik olarak chroma key nasıl uygulanır?</h3>
 
 <p>Chroma Key eşit şekilde aydınlatılmış mavi veya yeşil (tek renk) bir arka plan önünde bulunan bir kişi veya nesnenin, başka bir video görüntüsü veya resim üzerine bindirilmesi esasına dayanır.</p>
+
+<!--more-->
+
 
 <ul>
 <li>Blue Screen, Green Screen, Chroma Key, greenbox, bluebox ve CSO (Color Seperation Overlay) terimleri ortak kullanılan terimlerdir ve temelleri aynı esaslara dayanır.</li>

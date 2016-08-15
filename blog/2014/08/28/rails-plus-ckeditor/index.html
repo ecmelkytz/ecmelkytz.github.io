@@ -126,17 +126,22 @@ kullanmak bu iş için uygun olacaktır.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
+
+
+<!--more-->
+
+
 <p>Gemleri install ettik. Peki yüklenecek dosyalar için nasıl model oluşturacağız? Active_record orm&#8217;si paperclip gemini default olarak kullanır. Mongoid, Carrierwave ile nasıl kullanılacağını merak ediyorsanız daha ayrıntılı bilgi için <a href="https://github.com/galetahub/ckeditor">README</a> kaynağına göz atabilirsiniz. <br/>
 ActiveRecord + Paperclip kullanımı:</p>
 
-<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">rails</span> <span class="n">generate</span> <span class="ss">ckeditor</span><span class="p">:</span><span class="n">install</span> <span class="o">--</span><span class="n">orm</span><span class="o">=</span><span class="n">active_record</span> <span class="o">--</span><span class="n">backend</span><span class="o">=</span><span class="n">paperclip</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
 <p>Bir sorunla karşılaşmadıysanız terminalden hangi dosyaların oluşturulduğunu görebilirsiniz.</p>
 
-<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -153,7 +158,7 @@ ActiveRecord + Paperclip kullanımı:</p>
 
 <p>Tabloların oluşmasını tetikleyelim o halde:</p>
 
-<figure class='code'><figcaption><span>Terminal </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">rake</span> <span class="ss">db</span><span class="p">:</span><span class="n">migrate</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -167,7 +172,7 @@ ActiveRecord + Paperclip kullanımı:</p>
 
 <p>Sonra <code>body</code> içerisine javascript kodunu ekliyoruz:</p>
 
-<figure class='code'><figcaption><span>application.html.erb </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
