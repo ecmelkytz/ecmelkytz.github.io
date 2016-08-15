@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Rails: ActiveRecord ile ilgili ufak bir sır - Ecmel Kaytazoğlu</title>
+  <title>Git Komutları 2: git checkout, git diff, git blame - Ecmel Kaytazoğlu</title>
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">Rails: ActiveRecord Ile Ilgili Ufak Bir Sır</h1>
+      <h1 class="entry-title">Git Komutları 2: Git Checkout, Git Diff, Git Blame</h1>
     
     
       <p class="meta">
@@ -95,7 +95,7 @@
   
 
 
-<time datetime="2016-04-05T11:06:13+03:00" pubdate data-updated="true">Apr 5<sup>th</sup>, 2016</time>
+<time datetime="2016-08-12T15:04:05+03:00" pubdate data-updated="true">Aug 12<sup>th</sup>, 2016</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -104,52 +104,49 @@
   </header>
 
 
-<div class="entry-content"><p>Bu yazımda ActiveRecord&#8217;un bizden sakladığı ufak bir sırra ve bunun performans olarak yansımalarının neler olduğuna değineceğim.</p>
+<div class="entry-content"><h4>git checkout</h4>
 
-<p>Bu sır, ActiverRecord&#8217;un bize sorguların(queries) ne kadar sürede tamamlandığını tam anlamıyla söylememesidir.</p>
-
-<p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim. (<code>all</code> mı? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" /> pratikte <code>find_each</code> kullan <img alt="exclamation" src="/images/emoji/unicode/2757.png" class="emoji" />)</p>
-
-<!--more-->
-
-
-
+<p>Dosyalarda yapmış olduğumuz değişiklikleri geri alır. Bu komut çalıştırıldıktan sonra <code>git status</code> komutunun ekran çıktısında dosyamızın ismi artık gözükmeyecektir.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span>
-</span><span class='line'><span class="c1"># =&gt; User Load (32.0ms)  SELECT `users`.* FROM `users`</span>
-</span><span class='line'><span class="c1"># =&gt; [#&lt;User id: 5, ... &gt;, #&lt;User id: 6, ... &gt;, #&lt;User id: 7, ... &gt;, ... ]</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git checkout README.md <span class="c">#README.md dosyasındaki değişiklikleri siler.</span>
+</span><span class='line'>~/examp-git<span class="nv">$ </span>git checkout . <span class="c">#Yapılan bütün değişiklikleri geri alır.</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>ActiveRecord&#8217;un bu hinliğini bilmeyen biri yukarıdaki query için geçen sürenin 32.0ms olduğunu düşünecektir. Ancak ActiveRecord burada bize tam anlamıyla doğruyu söylemiyor. Çünkü bu süre bizim object&#8217;lerimizin ne kadar sürede oluşturulduğunu içermiyor. O halde Benchmark ile bu query&#8217;nin gerçekte ne kadar maliyeti olduğunu bulalım.</p>
+<h4>git diff</h4>
+
+<p>Kendi yerelimizde yaptığımız değişiklikler neticesinde yönlendirdiğimiz depo arasında oluşan farkları gösterir. Hangi satırı sildiğimiz, hangi satırı eklediğimiz vs. bilgilerini içerir.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
-</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">310000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">060000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">370000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">387782</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git diff  <span class="c">#Yapılan bütün değişiklikleri gösterecektir.</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Toplam(total) süreye bakarsak bu query&#8217;nin harcadığı gerçek süre 370.0ms. Bu süre ise bize diğer süre ile arasındaki farkın 10 kattan daha fazla olduğunu göstermektedir. Geçen sürenin çoğunluğu ActiveRecord nesnelerinin oluşturulmasında kullanılır.</p>
-
-<p>ActiveRecord query sürelerini daha yakından inceleyerek performans konusunda biraz iyileştirme yapabilmemiz mümkün.</p>
-
-<p>Aşağıdaki response&#8217;un görünenden daha uzun sürede tamamlanacağını artık söyleyebiliriz.</p>
+<p><code>git status</code> ile hangi dosyalarda değişiklik yapıldığını, nelerin yeni eklendiği, silindiğini vs. öğrenebiliyorduk. Burada belirtilen dosyalardan sadece birinde yapılan değişiklikleri görmek için:</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Completed</span> <span class="mi">200</span> <span class="no">OK</span> <span class="k">in</span> <span class="mi">669</span><span class="n">ms</span> <span class="p">(</span><span class="ss">Views</span><span class="p">:</span> <span class="mi">608</span><span class="o">.</span><span class="mi">3</span><span class="n">ms</span> <span class="o">|</span> <span class="ss">ActiveRecord</span><span class="p">:</span> <span class="mi">43</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git diff README.md <span class="c">#README.md dosyasında yapılan değişiklikleri gösterir.</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Eğer request&#8217;te pluck ve select metodlarını kullandıysak ve bu request süresini yarı yarıya düşürmek istiyorsak bu metodların kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470987741/diff_nhrmdn.png" alt="" /></p>
+
+<h4>git blame</h4>
+
+<p>Belirlenen dosyadaki her bir satırın hangi commit ile eklendiği, kimin tarafından ve ne zaman eklendiği bilgilerini gösterir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git blame README.md
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470990914/git_blame_phsyrz.png" alt="" /></p>
 </div>
 
 
@@ -172,12 +169,12 @@
   
 
 
-<time datetime="2016-04-05T11:06:13+03:00" pubdate data-updated="true">Apr 5<sup>th</sup>, 2016</time>
+<time datetime="2016-08-12T15:04:05+03:00" pubdate data-updated="true">Aug 12<sup>th</sup>, 2016</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/activerecord/'>activerecord</a>, <a class='category' href='/blog/categories/rails/'>rails</a>
+    <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/github/'>github</a>
   
 </span>
 
@@ -186,7 +183,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -197,10 +194,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/03/27/bir-developerin-hayatini-kolaylastiracak-3-prensip-kiss-yagni-dry/" title="Previous Post: Bir Developer'ın hayatını kolaylaştıracak 3 prensip: KISS, YAGNI, DRY">&laquo; Bir Developer'ın hayatını kolaylaştıracak 3 prensip: KISS, YAGNI, DRY</a>
+        <a class="basic-alignment left" href="/blog/2016/08/11/git-komutlari-1/" title="Previous Post: Git Komutları 1">&laquo; Git Komutları 1</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/" title="Next Post: Rails: acts_as_paranoid ile veri silmekten korkmayın">Rails: acts_as_paranoid ile veri silmekten korkmayın &raquo;</a>
       
     </p>
   </footer>
@@ -321,8 +316,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/';
-        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/';
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2/';
         var disqus_script = 'embed.js';
       
     (function () {

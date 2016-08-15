@@ -82,6 +82,86 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: Git Checkout, Git Diff, Git Blame</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-12T15:04:05+03:00" pubdate data-updated="true">Aug 12<sup>th</sup>, 2016</time>
+        
+         | <a href="/blog/2016/08/12/git-komutlari-2/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4>git checkout</h4>
+
+<p>Dosyalarda yapmış olduğumuz değişiklikleri geri alır. Bu komut çalıştırıldıktan sonra <code>git status</code> komutunun ekran çıktısında dosyamızın ismi artık gözükmeyecektir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git checkout README.md <span class="c">#README.md dosyasındaki değişiklikleri siler.</span>
+</span><span class='line'>~/examp-git<span class="nv">$ </span>git checkout . <span class="c">#Yapılan bütün değişiklikleri geri alır.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>git diff</h4>
+
+<p>Kendi yerelimizde yaptığımız değişiklikler neticesinde yönlendirdiğimiz depo arasında oluşan farkları gösterir. Hangi satırı sildiğimiz, hangi satırı eklediğimiz vs. bilgilerini içerir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git diff  <span class="c">#Yapılan bütün değişiklikleri gösterecektir.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>git status</code> ile hangi dosyalarda değişiklik yapıldığını, nelerin yeni eklendiği, silindiğini vs. öğrenebiliyorduk. Burada belirtilen dosyalardan sadece birinde yapılan değişiklikleri görmek için:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git diff README.md <span class="c">#README.md dosyasında yapılan değişiklikleri gösterir.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470987741/diff_nhrmdn.png" alt="" /></p>
+
+<h4>git blame</h4>
+
+<p>Belirlenen dosyadaki her bir satırın hangi commit ile eklendiği, kimin tarafından ve ne zaman eklendiği bilgilerini gösterir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git blame README.md
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470990914/git_blame_phsyrz.png" alt="" /></p>
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1</a></h1>
     
     
@@ -504,114 +584,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-01-27T10:37:13+02:00" pubdate data-updated="true">Jan 27<sup>th</sup>, 2016</time>
-        
-         | <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Şöyle bir routes&#8217;a sahip olduğumuzu düşünelim:</p>
-
-<figure class='code'><figcaption><span>routes.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">resources</span> <span class="ss">:comments</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Hem <code>:comments</code> hemde <code>:posts</code> resources yapıları aynı route&#8217;a sahip <code>post :like</code>.</p>
-
-<p>Rails 4&#8217;te route yapısında <strong>concern</strong>  kullanarak DRY aykırı durumları idare edebiliriz.</p>
-
-<p>Şöyle ki:</p>
-
-<figure class='code'><figcaption><span>routes.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">concern</span> <span class="ss">:vote</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">member</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:like</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">resources</span> <span class="ss">:posts</span><span class="p">,</span> <span class="ss">concerns</span><span class="p">:</span> <span class="ss">:vote</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">collection</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">post</span> <span class="ss">:print</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
- 
- 
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -625,6 +597,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git checkout, git diff, git blame</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1</a>
@@ -660,10 +636,6 @@
     
       <li class="post">
         <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/">Rails: AngularJS ile CRUD İşlemleri</a>
       </li>
     
   </ul>
