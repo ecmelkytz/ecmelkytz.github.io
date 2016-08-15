@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Git Komutları 1 - Ecmel Kaytazoğlu</title>
+  <meta name="author" content="Ecmel Kaytazoğlu">
+
+  
+  <meta name="description" content="Web teknolojileri, Rails, AngularJS, Ionic, Git ve diğer güncel teknolojiler hakkında tuttuğum notlar yer almaktadır.">
+  <meta name="keywords" content="Ruby on Rails, Rails, AngularJS, Unix, Git, Github">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/08/11/git-komutlari-1/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="atom.xml" rel="alternate" title="Ecmel Kaytazoğlu" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-73221741-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ecmel Kaytazoğlu</a></h1>
+  
+    <h2>$scope.life = ['black', 'white']</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ecmelkytz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Git Komutları 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-11T10:39:24+03:00" pubdate data-updated="true">Aug 11<sup>th</sup>, 2016</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>git init, git remote, git clone, git status, git add/commit/push, git clean, git pull, git log</h3>
+
+<hr />
+
+<p>Bu konu ile ilgili bir çok doküman olmasına karşın kendi notlarımı yazmak istememle gelişen bir blog girdisidir.</p>
+
+<h4>git init</h4>
+
+<p>Git deposu oluşturacağımız dizinimizin içerisinde neler var bakalım:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>ls -a
+</span><span class='line'>.  ..  examp-git-file1.md  examp-git-file2.md
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu dizin içerisine git deposu oluşturmak için çalıştıracağımız komut: <code>git init</code>. Bu komut ile boş bir git deposunu initialize etmiş oluyoruz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git init
+</span><span class='line'>~/examp-git<span class="nv">$ </span>ls -a
+</span><span class='line'><span class="o">=</span>&gt;.  ..  examp-git-file1.md  examp-git-file2.md  .git  //oluşan git dosyası
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>.git dosyasını terminalden değil de dizinin içinde görmek için <code>Ctrl + h</code> komutunu kullanmamız gerek.</p>
+
+<h4>git remote</h4>
+
+<p>Git depomuzu yerelde oluşturduk. Peki internet üzerinde istediğimiz bir depoyla bağlantıyı nasıl sağlayacağız?
+Bunun için github, bitbucket veya diğer git deposu için web hosting sağlayan servisleri kullanmamız gerekmektedir. Ben örnekleri github üzerinden göstereceğim.</p>
+
+<p>Github&#8217;da yerelimdeki dizinle aynı isimde bir depo oluşturuyorum.</p>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470901707/git1_dqsb5u.png" alt="" /></p>
+
+<p><code>git@github.com:ecmelkytz/examp-git.git</code> depomuzu yönlendireceğimiz github&#8217;daki reponun url&#8217;i.</p>
+
+<p>Depomuzu github reposuna yönlendirmek/bağlamak için:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git remote add origin git@github.com:ecmelkytz/examp-git.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>remote -v</code> komutu ile url&#8217;lerin doğru bir şekilde oluşup oluşmadığını kontrol edebiliriz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git remote -v
+</span><span class='line'>origin    git@github.com:ecmelkytz/examp-git.git <span class="o">(</span>fetch<span class="o">)</span>
+</span><span class='line'>origin    git@github.com:ecmelkytz/examp-git.git <span class="o">(</span>push<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>git clone</h4>
+
+<p>Github&#8217;daki herhangi bir depoyu klonlamak için kullanılır. Bu sayede repo&#8217;daki bütün dosyaları yerelimize kopyalamış oluruz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~<span class="nv">$ </span>git clone git@github.com:ecmelkytz/ionic-prayer-time.git
+</span><span class='line'>~<span class="nv">$ </span><span class="nb">cd </span>ionic-prayer-time
+</span><span class='line'>~<span class="nv">$ </span>ls -a
+</span><span class='line'>.  ..  bower.json  .bowerrc  config.xml  .editorconfig    .git  .gitignore  gulpfile.js  hooks  ionic.project  package.json  README.md  resources  scss  www
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>git status</h4>
+
+<p>Depoda yaptığımız değişiklikleri gösterir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git status
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470907001/git-status_iv3jry.png" alt="" /></p>
+
+<p><code>git status -s</code> ile çıktının kısa haline bakalım:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git status -s
+</span><span class='line'> M bower.json <span class="c">#Modified</span>
+</span><span class='line'> D config.xml <span class="c">#Deleted</span>
+</span><span class='line'>?? new-file.txt <span class="c">#Added</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>git add/commit/push</h4>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git add -A  <span class="c">#-A komutu bütün değişiklikleri eklememizi sağlar.</span>
+</span><span class='line'>~/examp-git<span class="nv">$ </span>git commit -m <span class="s2">&quot;Some descriptions&quot;</span>
+</span><span class='line'><span class="c">#Yapılan değişiklikle ilgili mesaj diğer grup elemanlarının kolay anlayabileceği bir şekilde oluşturulmalı.</span>
+</span><span class='line'>~/examp-git<span class="nv">$ </span>git push <span class="c">#Yapılan değişiklikler yazılan commit mesajı ile github deposuna gönderilir.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>git clean</h4>
+
+<p>Yeni eklenen dosyaları (izlenmeyen dosyalar/untracked) <code>git add</code> komutunu çalıştırmadan önce silmemizi sağlar.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git clean -f -d new_file.txt
+</span><span class='line'>~/examp-git<span class="nv">$ </span>git clean -f -d . <span class="c">#Yeni eklenen tüm dosyaları siler</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>git pull</h4>
+
+<p>Bir projede birden fazla kişi ile çalışıyorsanız yapılan değişiklikleri kendi yerelinize çekmek için bu komutu fazlasıyla kullanacaksınız demektir. Kolları sıvayıp köklü bir değişiklik yapmadan önce sizden önce herhangi bir değişiklik yapılmış olma ihtimalina karşı <code>git pull</code> komutunu kullanın ve deponun son hali üzerinden kendi değişikliklerinizi yapmaya başlayın. Aksi takdirde olası aynı dosyalarda yapılan değişiklikler sayesinde <a href="https://help.github.com/articles/resolving-a-merge-conflict-from-the-command-line/">conflict</a> olabilirsiniz ve bana kalırsa bu işin en can sıkıcı yanı burasıdır.
+Tam da şöyle hissedersiniz:</p>
+
+<iframe src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470906693/git_cpkiww.gif" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<h4>git log</h4>
+
+<p>Commit geçmişini görmemizi sağlar. Son committen önceki commitlere doğru sıralı şekilde çıktı verecektir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/prayer<span class="nv">$ </span>git log
+</span><span class='line'>commit 9bbd06c8b39221a5ca5b33b0c01e4ce72110309e
+</span><span class='line'>Author: Ecmel Kaytazoğlu &lt;ecmel.kytz@gmail.com&gt;
+</span><span class='line'>Date:   Wed Aug <span class="m">10</span> 16:44:05 <span class="m">2016</span> +0300
+</span><span class='line'>
+</span><span class='line'>    change to icons
+</span><span class='line'>
+</span><span class='line'>commit a8ea41f801b5258bc759a8bf5901ecf7700f1459
+</span><span class='line'>Author: Ecmel Kaytazoğlu &lt;ecmel.kytz@gmail.com&gt;
+</span><span class='line'>Date:   Wed Aug <span class="m">10</span> 15:10:56 <span class="m">2016</span> +0300
+</span><span class='line'>
+</span><span class='line'>    config file changed
+</span><span class='line'>
+</span><span class='line'>commit 4e0618a0ab1d52cc06c141839858bd7e46215b0f
+</span><span class='line'>Author: Ecmel Kaytazoğlu &lt;ecmel.kytz@gmail.com&gt;
+</span><span class='line'>Date:   Wed Aug <span class="m">10</span> 15:05:58 <span class="m">2016</span> +0300
+</span><span class='line'>:
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Çıktının en son satırında <code>:</code> var ve yön tuşlarıyla aşağıya veya enter&#8217;a bastıkça önceki commitler gözükecektir. Commitlerde kelime aratmak için en son satırda <code>:</code> varken <code>/</code> tuşuna basıp istediğimiz kelimeyi yazabiliriz. Eğer aranan kelime birden fazla yerde geçiyorsa diğer kelimenin olduğu yere <code>n</code> tuşuna basarak gidebiliriz. <code>git log</code> komutunun terminal çıktısını sonlandırmak için <code>q</code> ya basmamız gerek. Bu arama işlemi için daha spesifik komutlar var. Bu nedenle <code>git log</code> komutunun alabileceği bazı parametrelere burada değinmek istiyorum.</p>
+
+<p><code>git log --oneline</code> sadece commit id ve commit mesajını tek bir satırda gösterir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git log --oneline
+</span><span class='line'>9bbd06c change to icons
+</span><span class='line'>a8ea41f config file changed
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>git log --graph</code> hangi branch ile commit yapıldığı ve nerede merge edildiği bilgilerini gösterir.</p>
+
+<p><code>git log -p</code> commitlerle yapılan değişiklikleri gösterir. Hangi satırı sildiğin hangi satırı eklediğin vs.</p>
+
+<p><code>git log --stat</code> commitlerdeki değişiklik olan dosyalarda kaç satırın eklendiğinin ve kaç satırın silindiğinin sayısını gösterir.</p>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470916423/git-log-stat_pczax0.png" alt="" /></p>
+
+<p>Bu parametreleri birlikte kullanmak mümkün. Söz gelimi commitlerde hangi branchların kullanıldığı bilgisini tek satırda göstermek istiyoruz. O halde <code>git log --oneline --graph</code> işimizi görecektir.</p>
+
+<h5><code>git log</code> ile filtreleme işlemleri:</h5>
+
+<p><code>git log -number</code></p>
+
+<p>Son iki commite bakmak için: <code>git log -2</code></p>
+
+<hr />
+
+<p><code>git log --after=""</code></p>
+
+<p>Sadece dün ve şuan arasındaki commitlere bakmak için: <code>git log --after="yesterday"</code></p>
+
+<p>&ldquo;yesterday&rdquo; yerine &ldquo;30 minutes ago&rdquo;, &ldquo;last monday&rdquo;, &ldquo;last week&rdquo;, &ldquo;2 weeks ago&rdquo;, &ldquo;10-06-2016&rdquo;, &ldquo;10/06/2016&rdquo; vb. parametreler yazabiliriz.</p>
+
+<hr />
+
+<p><code>git log --after="" --before=""</code></p>
+
+<p>Belirli tarih aralığındaki commitlere bakmak için: <code>git log --after="8/08/2016" --before="10/08/2016"</code> veya <code>git log --since="8/08/2016" --until="10/08/2016"</code></p>
+
+<hr />
+
+<p><code>git log --author=""</code> ve <code>git log -i</code></p>
+
+<p>Sadece istediğimiz kişinin commitlerini görmek için:  <code>git log --author="ecmel"</code> Kişinin hem isminden hemde email&#8217;inden filtreleme yapılır. Ancak büyük-küçük harf ayrımı yapmadan aradığımızı bulmak için <code>-i</code>(ignore) parametresini kullanmamız gerek.  <code>git log -i --author="ecmel"</code></p>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470981736/aouthor_a9bucu.png" alt="" /></p>
+
+<p>Filter işleminde regular expression kullanımına da izin var. İstediğiniz bir kaç kişinin commitlerini görmek için: <code>git log --author="Ecmel\|Merve"</code></p>
+
+<hr />
+
+<p><code>git log --grep=""</code></p>
+
+<p> Commit mesajındaki aradığımız bir kelimeye göre commitleri göstermek için: <code>git log --grep="change"</code> Yani commit mesajında &ldquo;change&rdquo; kelimesi geçen bütün commitler gösterilecektir.</p>
+
+<hr />
+
+<p><code>git log -p -S""</code></p>
+
+<p><code>git log -p -S"strftime"</code> strftime kullanarak yaptığım bütün değişikliklerin commitlerini gösterir.
+Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> yerine <code>-G</code> kullanmamız gerek.
+<code>git log -p -Gstrftime\|random</code> strftime ve random ile yaptığım değikliklerin commitlerini gösterir.</p>
+
+<hr />
+
+<p><code>git log file_name</code></p>
+
+<p>Sadece istediğimiz dosya için yapılan commitleri görmek için: <code>git log README.md</code></p>
+
+<p>Son olarak bir tane çoklu parametreli filter örneğini gösterip log ile ilgili yazmayı sonlandıralım.</p>
+
+<p><code>git log -3 -i --author="merve" README.md</code> Merve kişisinin README.md dosyası ile ilgili attığı son 3 commit mesajı gösterilir.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ecmel Kaytazoğlu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-08-11T10:39:24+03:00" pubdate data-updated="true">Aug 11<sup>th</sup>, 2016</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>git</a>, <a class='category' href='/blog/categories/github/'>github</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/08/11/git-komutlari-1/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/08/11/git-komutlari-1/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/" title="Previous Post: Rails: Select ve Pluck metodları arasındaki fark nedir?">&laquo; Rails: Select ve Pluck metodları arasındaki fark nedir?</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Rails: Select ve Pluck metodları arasındaki fark nedir?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Rails: acts_as_paranoid ile veri silmekten korkmayın</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">Rails: ActiveRecord ile ilgili ufak bir sır</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/27/bir-developerin-hayatini-kolaylastiracak-3-prensip-kiss-yagni-dry/">Bir Developer'ın hayatını kolaylaştıracak 3 prensip: KISS, YAGNI, DRY</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don't Repeat Yourself (DRY)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/">Rails: AngularJS ile CRUD İşlemleri</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  
+  <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQNHm5gbWBpZVGCb9oKzcy_LZ2CEMgdjYNG4qXxq0A3PVRJ4f5ggQ" width="36" height="36">
+  <a href="https://github.com/ecmelkytz">@ecmelkytz</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        // github.showRepos({
+        //     user: 'ecmelkytz',
+        //     count: 0,
+        //     skip_forks: true,
+        //     target: '#gh_repos'
+        // });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/118106468866506746709?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Ecmel Kaytazoğlu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ecmelkytz';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/08/11/git-komutlari-1/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/08/11/git-komutlari-1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

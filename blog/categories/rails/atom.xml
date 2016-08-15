@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: rails, | Ecmel Kaytazoğlu]]></title>
+  <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-08-12T14:17:24+03:00</updated>
+  <updated>2016-08-15T10:07:03+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,211 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: Select ve Pluck metodları arasındaki fark nedir?]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/"/>
+    <updated>2016-05-01T15:53:59+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark</id>
+    <content type="html"><![CDATA[<p>Bu yazımda select ve pluck metodlarının performans açısından farklarının neler olduğuna değineceğim.</p>
+
+<p><strong>Select</strong></p>
+
+<p>Select metodu User nesnelerini array olarak döndürecektir.</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">users</span><span class="o">&lt;</span><span class="sr">/code&gt;.&lt;code&gt;id&lt;/</span><span class="n">code</span><span class="o">&gt;</span> <span class="no">FROM</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">users</span><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;=&gt;</span> <span class="o">[</span><span class="c1">#&lt;User id: 38&gt;, #&lt;User id: 50&gt;, #&lt;User id: 53&gt;, &amp;hellip;]</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Ayrıca sadece id&#8217;leri elde etmek için aşağıdaki gibi ek kod yazmamız gerekecek.</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="no">User</span> <span class="no">Load</span> <span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">users</span><span class="o">&lt;</span><span class="sr">/code&gt;.&lt;code&gt;id&lt;/</span><span class="n">code</span><span class="o">&gt;</span> <span class="no">FROM</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">users</span><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;=&gt;</span> <span class="o">[</span><span class="mi">38</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><strong>Pluck</strong></p>
+
+<p>Pluck metodu herhangi bir ActiveRecord nesnesini oluşturmadan veritabanı sonucunu doğrudan bir array içinde döndürür. Sadece ilgili alanı sorgular.  Bu ise büyük bir sorgu yaptığımız zaman performans anlamında daha iyi bir sonuç elde edeceğimiz anlamına gelmektedir.</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">users</span><span class="o">&lt;</span><span class="sr">/code&gt;.&lt;code&gt;id&lt;/</span><span class="n">code</span><span class="o">&gt;</span> <span class="no">FROM</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">users</span><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;=&gt;</span> <span class="o">[</span><span class="mi">38</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Terminal&#8217;deki geçen sürelere baktığımızda select sorgusunun 1.2ms, pluck sorgusunun 1.0ms sürdüğünü göreceğiz. Hatta bazen bu değerler aynı bile çıkabilir.  O zaman performans anlamında farktan nasıl bahsedeceğiz? <a href="http://ecmelkytz.github.io/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">ActiveRecord ile ilgili ufak bir sır</a> başlıklı blog girdimde bu farkın nasıl oluşacağını bulabilirsiniz.</p>
+
+<p>Benchmark kullanarak select ve pluck metodunun gerçek maliyetini bulalım.</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">110000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">110000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">111221</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">pluck</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
+</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mo">010000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">000000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">010000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mo">014544</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>13000 user kaydı arasında yapılan bu sorgulamalarda select&#8217;in pluck&#8217;a göre %90&#8217;dan fazla daha yavaş olduğu görülmektedir.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: acts_as_paranoid ile veri silmekten korkmayın]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir/"/>
+    <updated>2016-04-09T13:58:21+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir</id>
+    <content type="html"><![CDATA[<iframe src="//giphy.com/embed/bEVKYB487Lqxy" width="480" height="264" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<blockquote><p>“Bu veriyi silersem ileride lazım olur mu?”</p>
+
+<p>“Eyvah! Yanlış veriyi sildim şimdi ne yapacağım? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" />”</p></blockquote>
+
+<p>tarzında çeşitlendirilebilen kaygılarınız var ise  ActiveRecord&#8217;un  acts_as_paranoid plugin&#8217;i imdadınıza yetişecektir.</p>
+
+<h3>Peki nedir bu acts_as_paranoid ve nasıl kullanılır?</h3>
+
+<p>Acts_as_paranoid silme işleminde <code>soft delete</code> yapmamıza olanak sağlar.  Yani veriyi sildiğimiz zaman aslında tam anlamıyla veritabanından o veriyi yok etmiş olmuyoruz.</p>
+
+<p>Tabloya type&#8217;ı datetime olacak şekilde ekleyeceğimiz <code>deleted_at</code> alanı sayesinde silme işlemi yaptığımız zaman sadece bu kolonun değeri güncellenecek ve silinme zamanı burada tutulacak.</p>
+
+<p>Bu plugin Active Record&#8217;un sadece destroy metodu üzerinde override yapmaz aynı zamanda find ve count metodları üzerinde de değişiklik yapar. Sql sorgularına deleted_at&#8217;i null olanların getirilmesiyle ilgili eklemeler getirecektir.</p>
+
+<p>Migration ile modelimize <code>deleted_at</code> alanını ekleyelim:</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="n">rails</span> <span class="n">generate</span> <span class="n">migration</span> <span class="no">AddDeletedAtToUsers</span> <span class="ss">deleted_at</span><span class="p">:</span><span class="ss">datetime</span><span class="p">:</span><span class="n">index</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Migration dosya içeriğimiz:</p>
+
+<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">AddDeletedAtToUsers</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span><span class="p">,</span> <span class="ss">:datetime</span>
+</span><span class='line'>    <span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Şimdi bir user silelim:</p>
+
+<p><figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; 2&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">destroy</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;deleted_at güncellenecektir.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">count</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; 1&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Silinen</span> <span class="n">veriler</span> <span class="n">ile</span> <span class="n">birlikte</span> <span class="n">hepsini</span> <span class="n">bulmak</span> <span class="n">i</span><span class="err">ç</span><span class="k">in</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;$ User.with_deleted&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Sadece</span> <span class="n">silinen</span> <span class="n">verileri</span> <span class="n">bulmak</span> <span class="n">i</span><span class="err">ç</span><span class="k">in</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;$ User.only_deleted&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><code>User.count</code> kullandığımızda veya <code>find</code> ile o user&#8217;ı bulmaya çalıştığımızda user silinmiş gibi davranacaktır ancak veritabanında users tablosuna baktığımız zaman bu silinmiş sandığımız kaydın hala orada durduğunu ve <code>deleted_at</code> alanının verinin silindiği zamanı tuttuğunu göreceğiz.</p>
+
+<p>Peki acts_as_paranoid ile hiçbir zaman veritabanından bir veriyi tam anlamıyla silemeyecek miyiz? Bunun da bir çözümü var. Herşeye rağmen kesinlikle silmek istediğimiz kayıtlar var ise:</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="err">$</span> <span class="no">User</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">really_destroy!</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Eğer veritabanında tutacağımız kolon adının <code>deleted_at</code> yerine <code>destroyed_at</code> (veya herhangi birşey) olmasını istiyorsak:</p>
+
+<p><figure class='code'><figcaption><span>models/user.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">acts_as_paranoid</span> <span class="ss">column</span><span class="p">:</span> <span class="ss">:destroyed_at</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails: ActiveRecord ile ilgili ufak bir sır]]></title>
@@ -64,6 +269,487 @@
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Eğer request&#8217;te pluck ve select metodlarını kullandıysak ve bu request süresini yarı yarıya düşürmek istiyorsak bu metodların kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: ActiveSupport Concern Kullanımı]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/"/>
+    <updated>2016-03-25T09:22:23+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi</id>
+    <content type="html"><![CDATA[<p>Rails 4 ile gelen ActiveSupport&#8217;un concern modülü  DRY ilkesine aykırı durumları idare etmemizi sağlar. Bazı Rails geliştiricileri concern&#8217;i sistemi daha da karmaşık hale getirdiğini söylese de; Rails kendi concern dizinlerini kaldırmadığı sürece kullanıp kullanmama sorunsalı geliştiricinin kendi inisiyatifine kalmış bir durum olarak ele alıyorum ve gerektiği yerlerde bunu kullanıyorum.</p>
+
+<iframe src="//giphy.com/embed/3ornjQyEX1mSXYoqPu" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<h3>Controller&#8217;da concern kullanımına bir örnek:</h3>
+
+<p>İki farklı controller&#8217;da aynı metodların aşağıdaki gibi kullanılmakta olduğunu düşünelim.</p>
+
+<p><figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def find_similar_questions</span>
+</span><span class='line'><span class="sr">    &amp;hellip;.</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  private</span>
+</span><span class='line'><span class="sr">  def merge_similars</span>
+</span><span class='line'><span class="sr">    find_similar_questions</span>
+</span><span class='line'><span class="sr">    find_similar_answers</span>
+</span><span class='line'><span class="sr">    &amp;hellip;</span>
+</span><span class='line'><span class="sr">  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def find_similar_questions</span>
+</span><span class='line'><span class="sr">    &amp;hellip;.</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  private</span>
+</span><span class='line'><span class="sr">  def merge_similars</span>
+</span><span class='line'><span class="sr">    find_similar_questions</span>
+</span><span class='line'><span class="sr">    find_similar_answers</span>
+</span><span class='line'><span class="sr">    &amp;hellip;.</span>
+</span><span class='line'><span class="sr">  end</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Bu metodları controller içinde tanımlayıp fonksiyonları tekrarlamak yerine concern ile bu işin nasıl yapılabileceğine bakalım:</p>
+
+<p><figure class='code'><figcaption><span>/controllers/concerns/similarity_analysis.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SimilarityAnalysis</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt; included do</span>
+</span><span class='line'><span class="sr">    before_action :merge_similars, only: [:show]</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def find_similar_answers</span>
+</span><span class='line'><span class="sr">    &amp;hellip;.</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="kp">private</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
+</span><span class='line'>    <span class="n">find_similar_questions</span>
+</span><span class='line'>    <span class="n">find_similar_answers</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Bu fonksiyonları kullanabilmek için yapmamız gereken tek şey oluşturduğumuz module&#8217;ı kullanmak istediğimiz controller&#8217;a include etmektir.</p>
+
+<p><figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Bunun gibi DRY durumlarından kurtulmak için concern&#8217;i model&#8217;de de kullanabiliriz. Model&#8217;de kullanımını görmek için şu <a href="http://blog.uzem.omu.edu.tr/articles/rails-activesupport-concern-kullanimi/">yazıma</a> bakabilirsiniz.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: ActiveRecord Enum Kullanımı]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/03/10/rails-activerecord-enum-kullanimi/"/>
+    <updated>2016-03-10T14:00:01+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/03/10/rails-activerecord-enum-kullanimi</id>
+    <content type="html"><![CDATA[<p>Rails 4.1 ile gelen enum özelliğini örnek senaryolar üzerinden açıklamaya çalışacağım.</p>
+
+<p>Şimdi Car adında bir modelimiz olsun ve biz  aracın  kiralanmış (rented), kullanıma uygun (suitable_for_use) veya kullanım dışı (out_of_use) olması gibi bilgilerini tutmak isteyelim.</p>
+
+<h5>Bunun için birden fazla kolon mu kullanalım? Neden?</h5>
+
+<p>Aşağıdaki gibi bir migration ile tablomuza bu alanları eklediğimizi düşünelim.</p>
+
+<pre><code class="Ruby">class AddStatusesToCars &lt; ActiveRecord::Migration
+  def change
+    add_column :cars, :suitable_for_use?, :boolean
+    add_column :cars, :rented, :boolean
+    add_column :cars, :out_of_use?, :boolean
+  end
+end
+</code></pre>
+
+<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birinin değerini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
+
+<p>Bu gibi durumların insanı soktuğu ruh hali:</p>
+
+<iframe src="//giphy.com/embed/EmB4QtACPVBpS" width="480" height="195" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<p>O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
+
+<p>Car modelimize status alanını integer olarak ekliyoruz.</p>
+
+<pre><code class="Ruby">class AddStatusToCars &lt; ActiveRecord::Migration
+  def change
+    add_column :cars, :status, :integer, default: 0
+  end
+end
+</code></pre>
+
+<p><figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{suitable_for_use rented out_of_use}</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def status_to_s</span>
+</span><span class='line'><span class="sr">    STATUSES[status]</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">suitable_for_use?</span>
+</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">suitable_for_use</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  def rented?</span>
+</span><span class='line'><span class="sr">    status_to_s == &amp;lsquo;rented&amp;rsquo;</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">out_of_use?</span>
+</span><span class='line'>    <span class="n">status_to_s</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">out_of_use</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Aslında bunu tek fonksiyona indirebiliriz. Şöyleki:</p>
+
+<p><figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Car</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{suitable_for_use rented out_of_use}</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;  STATUSES.each_with_index do |s, i|</span>
+</span><span class='line'><span class="sr">    define_method &amp;ldquo;</span><span class="si">#{</span><span class="n">s</span><span class="si">}</span><span class="sr">?&amp;rdquo; do</span>
+</span><span class='line'><span class="sr">      status == i</span>
+</span><span class='line'><span class="sr">    end</span>
+</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="c1"># suitable_for_use? - rented? - out_of_use? fonksiyonlarını oluşturduk.</span>
+</span><span class='line'>  <span class="c1"># Hmmm daha güzel durdu sanki.</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Kullanımına bakalım:</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;Car.first.status_to_s&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="err">“</span><span class="n">suitable_for_use</span><span class="err">”</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.suitable_for_use?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">true</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.rented?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">false</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.out_of_use?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">false</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p></blockquote>
+
+<p>Üç kolon oluşturmak yerine bu daha tercih edilebilir. Ancak ekstra fonksiyon oluşturma işleri nereye kadar?</p>
+
+<p><img alt="sparkles" src="/images/emoji/unicode/2728.png" class="emoji" /> Enum&#8217;u devreye sokalım.</p>
+
+<p>Car modelimize status alanını ekleyelim:</p>
+
+<pre><code class="Ruby">class AddStatusToCars &lt; ActiveRecord::Migration
+  def change
+    add_column :cars, :status, :integer, default: 0
+  end
+end
+</code></pre>
+
+<p>Modelimize enum ile status&#8217;larımızı tanımlayalım.</p>
+
+<p><figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">class</span> <span class="nc">Car</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>    <span class="n">enum</span> <span class="ss">status</span><span class="p">:</span> <span class="o">[</span><span class="ss">:suitable_for_use</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:out_of_use</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Hepsi bu kadar. Başka herhangi bir fonksiyon filan tanımlamaya gerek yok. Direk nasıl kullanıldığına bakalım:</p>
+
+<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;Car.statuses&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="p">{</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">suitable_for_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">=&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">rented</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">=&gt;</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">out_of_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">=&gt;</span><span class="mi">2</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.statuses.keys&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="o">[&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">suitable_for_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">rented</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">out_of_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">]&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.status&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">suitable_for_use</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;Car.first.rented?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">false</span><span class="o">&lt;</span><span class="sr">/h1&gt;&lt;/</span><span class="n">blockquote</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Kitap</span> <span class="n">durumunu</span> <span class="n">kiral</span><span class="err">ı</span><span class="n">k</span> <span class="n">olarak</span> <span class="n">de</span><span class="err">ğ</span><span class="n">i</span><span class="err">ş</span><span class="n">tirelim</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;book.status = :rented</span>
+</span><span class='line'><span class="sr">book.rented! # güncellendi</span>
+</span><span class='line'><span class="sr">book.rented?&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="kp">true</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;Bütün kiralık arabaları bulmak için (scope metodu)&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">blockquote</span><span class="o">&gt;&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Car</span><span class="o">.</span><span class="n">rented</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; SELECT &amp;ldquo;cars&amp;rdquo;.* FROM &amp;ldquo;cars&amp;rdquo; WHERE &amp;ldquo;cars&amp;rdquo;.&amp;ldquo;status&amp;rdquo; = ?  [[&amp;ldquo;status&amp;rdquo;, 1]]&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;[</span><span class="c1">#&amp;lt;Car:0x007f41d3eeeeee&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nb">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;status: 1,&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;]&lt;</span><span class="sr">/h1&gt;&lt;/</span><span class="n">blockquote</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">B</span><span class="err">ü</span><span class="n">t</span><span class="err">ü</span><span class="n">n</span> <span class="n">kullan</span><span class="err">ı</span><span class="n">m</span> <span class="n">d</span><span class="err">ışı</span> <span class="n">arabalar</span><span class="err">ı</span> <span class="n">bulmak</span> <span class="n">i</span><span class="err">ç</span><span class="k">in</span> <span class="p">(</span><span class="n">scope</span> <span class="n">metodu</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;p&gt;Car.out_of_use&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="no">SELECT</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cars</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">.</span><span class="n">*</span> <span class="no">FROM</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cars</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="no">WHERE</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">cars</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span><span class="o">.</span><span class="n">&amp;ldquo</span><span class="p">;</span><span class="n">status</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;</span> <span class="o">=</span> <span class="p">?</span>  <span class="o">[[&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">status</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="mi">2</span><span class="o">]]&lt;</span><span class="sr">/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; []  (Kullanım dışı araç yok)&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p></blockquote>
+
+<p>View kısmında kullanımı:</p>
+
+<p><figure class='code'><figcaption><span>views/cars/form.hml.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;div class=&quot;field&quot;&gt;</span>
+</span><span class='line'><span class="sr">  &lt;%= f.label :status %&gt;&lt;br&gt;</span>
+</span><span class='line'><span class="sr">  &lt;%= f.select :status, Car.statuses.keys %&gt;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Eğer view kısmında select box&#8217;da gözüken yazılar istediğiniz gibi değil ise <a href="https://github.com/zmbacker/enum_help">enum_help gem&#8217;i</a> işinize yarayacaktır.</p>
+
+<p>Enum&#8217;u keşfeden Rails geliştiricilerinin son hali:</p>
+
+<iframe src="//giphy.com/embed/d86kftzaeizO8" width="480" height="200" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<p>Özetlersek:</p>
+
+<p>Status ile ilgili veriler tabloda tek bir kolonda tutularak enum ile tanımlanan attribute&#8217;lar ile veritabanındaki tamsayılar eşleştirilir.  ActiveRecord bu dizi indislerine karşılık gerçek sembolleri çeker ve onları döndürür. Enum aynı zamanda  suitable_for_use, rented, out_of_use scope&#8217;larını oluşturur.</p>
 ]]></content>
   </entry>
   
