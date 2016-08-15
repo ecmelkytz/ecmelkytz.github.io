@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Git Komutları 2: git checkout, git diff, git blame - Ecmel Kaytazoğlu</title>
+  <title>Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, .gitignore - Ecmel Kaytazoğlu</title>
   <meta name="author" content="Ecmel Kaytazoğlu">
 
   
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">Git Komutları 2: Git Checkout, Git Diff, Git Blame</h1>
+      <h1 class="entry-title">Git Komutları 2: Git Diff, Git Blame, Git Checkout, Git Clean, Git Reset, .gitignore</h1>
     
     
       <p class="meta">
@@ -104,21 +104,9 @@
   </header>
 
 
-<div class="entry-content"><h4>git checkout</h4>
+<div class="entry-content"><h4>git diff</h4>
 
-<p>Dosyalarda yapmış olduğumuz değişiklikleri geri alır. Bu komut çalıştırıldıktan sonra <code>git status</code> komutunun ekran çıktısında dosyamızın ismi artık gözükmeyecektir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git checkout README.md <span class="c">#README.md dosyasındaki değişiklikleri siler.</span>
-</span><span class='line'>~/examp-git<span class="nv">$ </span>git checkout . <span class="c">#Yapılan bütün değişiklikleri geri alır.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>git diff</h4>
-
-<p>Kendi yerelimizde yaptığımız değişiklikler neticesinde yönlendirdiğimiz depo arasında oluşan farkları gösterir. Hangi satırı sildiğimiz, hangi satırı eklediğimiz vs. bilgilerini içerir.</p>
+<p>Kendi yerelimizde yaptığımız değişiklikler neticesinde, projeyi yönlendirdiğimiz repo arasında oluşan farkları gösterir. Hangi satırı sildiğimiz, hangi satırı eklediğimiz vs. bilgilerini içerir.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -126,7 +114,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><code>git status</code> ile hangi dosyalarda değişiklik yapıldığını, nelerin yeni eklendiği, silindiğini vs. öğrenebiliyorduk. Burada belirtilen dosyalardan sadece birinde yapılan değişiklikleri görmek için:</p>
+<p>Yapılan bütün değişiklikleri değil de sadece istediğimiz dosya içerisinde nasıl bir değişiklik yapıldığını görmek için o dosyanın adını <code>git diff</code> komutunun yanına eklemeliyiz.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -135,6 +123,9 @@
 
 
 <p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470987741/diff_nhrmdn.png" alt="" /></p>
+
+<!--more-->
+
 
 <h4>git blame</h4>
 
@@ -147,6 +138,123 @@
 
 
 <p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470990914/git_blame_phsyrz.png" alt="" /></p>
+
+<h4>git checkout</h4>
+
+<p>Dosyalarda yapmış olduğumuz değişiklikleri geri alır. Bu komut ile yapılan değişiklikleri geri aldığımız için <code>git status</code> komutunun ekran çıktısında dosyamızın ismi artık gözükmeyecektir.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git checkout README.md <span class="c">#README.md dosyasındaki değişiklikleri siler.</span>
+</span><span class='line'>~/examp-git<span class="nv">$ </span>git checkout . <span class="c">#Yapılan bütün değişiklikleri geri alır.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>git checkout HEAD~</code> komutu ile projemizi istediğimiz commit durumuna geri döndürebiliriz. Şöyle ki: Projemizin bulunduğu dizinde <code>git log</code> komutunu çalıştırdığımız zaman en son commitden en baştaki committe doğru bütün commitler sıralanacaktır.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git log
+</span><span class='line'>commit 898de0b8f2d21497569ed980c990d32778e7bd5c
+</span><span class='line'>Author: ecmel &lt;ecmel.kytz@gmail.com&gt;
+</span><span class='line'>Date:   Tue Jul <span class="m">26</span> 08:57:38 <span class="m">2016</span> +0300
+</span><span class='line'>
+</span><span class='line'>    Hava durumuna yeni açıklama ekle
+</span><span class='line'>
+</span><span class='line'>commit 1985f16aa89d41fae740086c53fb1ecefca4affc
+</span><span class='line'>Author: ecmel &lt;ecmel.kytz@gmail.com&gt;
+</span><span class='line'>Date:   Wed Jul <span class="m">20</span> 12:47:44 <span class="m">2016</span> +0300
+</span><span class='line'>
+</span><span class='line'>    Tasarımsal düzenlemeler
+</span><span class='line'>
+</span><span class='line'>commit d44645020926795a4f6b9d74c279632d344543ec
+</span><span class='line'>Author: ecmel &lt;ecmel.kytz@gmail.com&gt;
+</span><span class='line'>Date:   Wed Jul <span class="m">20</span> 09:20:50 <span class="m">2016</span> +0300
+</span><span class='line'>
+</span><span class='line'>    Excel dosya isimlerinde düzenleme yap
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En son commit &ldquo;Hava durumuna yeni açıklama ekle&rdquo; iken ben &ldquo;Excel dosya isimlerinde düzenleme yap&rdquo; commiti durumuna geçmek istiyorsam çalıştırmam gereken kod: <code>git checkout HEAD~2</code></p>
+
+<p>Geçmek istediğim commit en son commitden(master) kaç commit gerideyse <code>HEAD~</code> yanına o rakamı koyuyoruz. Sistemi tekrar son haline geri döndürmek için ise <code>git checkout master</code> yazmamız yeterli.</p>
+
+<h4>git clean</h4>
+
+<p><code>git checkout</code> ile dosyalarda yapılan değişiklikleri geri alabiliyorduk. <code>git clean</code> ile ise yeni eklenen dosyaları silebiliyoruz.</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git clean -fd <span class="c">#Bütün eklenen yeni dosyaları siler.</span>
+</span><span class='line'>~/isy<span class="nv">$ </span>git clean new_file.txt <span class="c">#new_file adında yeni eklenen dosyayı siler.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>git reset</h4>
+
+<ul>
+<li><p>Söz gelimi yaptığımız değişiklikleri <code>git add .</code> komutu ile izlemeye aldık ve hepsini izlemeden çıkarmak istiyoruz, o halde <code>git reset</code> komutunu kullanmamız gerekmektedir. İzlenen bütün dosyaları değil de sadece bazı dosyaları izlemeden çıkarmak için: <code>git reset HEAD file_name</code> komutu çalıştırılmalı.</p></li>
+<li><p>Yapılan değişiklikler için commit mesajını yazdık ve github&#8217;a göndermeden commit mesajını değiştirmek istiyorsak şu komut çalıştırılmalı:</p></li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git reset --soft HEAD~
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu komut izlemeyi kaldırmayacaktır. <code>git commit -m ""</code> diyerek yeni commit mesajımızı girebiliriz.</p>
+
+<ul>
+<li>Github&#8217;a gönderdiğimiz son commiti geri almak için:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git reset <span class="o">(</span>kalmasını istediğin commit numarası ör:def668e<span class="o">)</span>
+</span><span class='line'>git push -f
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu komutu kullanırken dikkatli olmak gerek zira referans aldığınız commit numarasından önceki bütün commitleri silersiniz. Yani sistemi, referans aldığınız commit durumuna almış olursunuz ve ondan önceki bütün commitleri silersiniz. Silinen commitler ile yapılan değişiklikler sizin yerelinizde gözükür ve tek commit ile tekrar <code>push</code> edebilirsiniz. Çok gerekmediği takdirde birden fazla commiti geri alıp tek commit ile tekrar göndermek projenin gelişim aşaması için anlaşılmazlıklara sebebiyet verebilir. Bu sebeple ben genel itibariyle son attığım commiti değiştirmek için kullanıyorum bu komutu.</p>
+
+<h4>.gitignore</h4>
+
+<p>Yapılan değişikliklerin takip edilmesini istemediğimiz dosyaları/dosya yollarını <code>.gitignore</code>&lsquo;un içerisine ekliyoruz. Ancak <code>.gitignore</code>&#8216;a sonradan eklenen dosya yolları <code>git status</code> ile değişiklik yapılanlar arasında gösterilir. Bu durumu düzeltmek için şu yol izlenir:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git rm -r --cached .
+</span><span class='line'>~/isy<span class="nv">$ </span>git add .
+</span><span class='line'>~/isy<span class="nv">$ </span>git commit -m <span class="s2">&quot;.gitignore artık düzgün çalışıyor&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu komutların yaptığı şey tam olarak şöyle: Takibini yapmasını istemediğiniz dosyalar remote ettiğimiz yerdeki repo&#8217;da mevcut olduğu için o dosyaların silinmesini sağlar. O dosyaları sildikten sonra artık yaptığınız değişiklikler izlenmeyecek ve <code>git status</code> ile görüntülenmeyecektir.</p>
 </div>
 
 
@@ -194,7 +302,7 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2016/08/11/git-komutlari-1/" title="Previous Post: Git Komutları 1">&laquo; Git Komutları 1</a>
+        <a class="basic-alignment left" href="/blog/2016/08/11/git-komutlari-1/" title="Previous Post: Git Komutları 1: git init, git remote, git clone, git status, git add/commit/push, git clean, git pull, git log">&laquo; Git Komutları 1: git init, git remote, git clone, git status, git add/commit/push, git clean, git pull, git log</a>
       
       
     </p>
@@ -216,11 +324,11 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git checkout, git diff, git blame</a>
+        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, .gitignore</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1</a>
+        <a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1: git init, git remote, git clone, git status, git add/commit/push, git clean, git pull, git log</a>
       </li>
     
       <li class="post">

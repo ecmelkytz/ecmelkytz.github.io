@@ -82,7 +82,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: Git Checkout, Git Diff, Git Blame</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: Git Diff, Git Blame, Git Checkout, Git Clean, Git Reset, .gitignore</a></h1>
     
     
       <p class="meta">
@@ -107,21 +107,9 @@
   </header>
 
 
-<div class="entry-content"><h4>git checkout</h4>
+<div class="entry-content"><h4>git diff</h4>
 
-<p>Dosyalarda yapmış olduğumuz değişiklikleri geri alır. Bu komut çalıştırıldıktan sonra <code>git status</code> komutunun ekran çıktısında dosyamızın ismi artık gözükmeyecektir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/examp-git<span class="nv">$ </span>git checkout README.md <span class="c">#README.md dosyasındaki değişiklikleri siler.</span>
-</span><span class='line'>~/examp-git<span class="nv">$ </span>git checkout . <span class="c">#Yapılan bütün değişiklikleri geri alır.</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>git diff</h4>
-
-<p>Kendi yerelimizde yaptığımız değişiklikler neticesinde yönlendirdiğimiz depo arasında oluşan farkları gösterir. Hangi satırı sildiğimiz, hangi satırı eklediğimiz vs. bilgilerini içerir.</p>
+<p>Kendi yerelimizde yaptığımız değişiklikler neticesinde, projeyi yönlendirdiğimiz repo arasında oluşan farkları gösterir. Hangi satırı sildiğimiz, hangi satırı eklediğimiz vs. bilgilerini içerir.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -129,7 +117,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><code>git status</code> ile hangi dosyalarda değişiklik yapıldığını, nelerin yeni eklendiği, silindiğini vs. öğrenebiliyorduk. Burada belirtilen dosyalardan sadece birinde yapılan değişiklikleri görmek için:</p>
+<p>Yapılan bütün değişiklikleri değil de sadece istediğimiz dosya içerisinde nasıl bir değişiklik yapıldığını görmek için o dosyanın adını <code>git diff</code> komutunun yanına eklemeliyiz.</p>
 
 <figure class='code'><figcaption><span>Terminal </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -139,19 +127,12 @@
 
 <p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470987741/diff_nhrmdn.png" alt="" /></p>
 
-<h4>git blame</h4>
-
-<p>Belirlenen dosyadaki her bir satırın hangi commit ile eklendiği, kimin tarafından ve ne zaman eklendiği bilgilerini gösterir.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>~/isy<span class="nv">$ </span>git blame README.md
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470990914/git_blame_phsyrz.png" alt="" /></p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/08/12/git-komutlari-2/">Devamı &rarr;</a>
+   </footer>
  
 
 
@@ -162,7 +143,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1: Git Init, Git Remote, Git Clone, Git Status, Git Add/commit/push, Git Clean, Git Pull, Git Log</a></h1>
     
     
       <p class="meta">
@@ -187,11 +168,7 @@
   </header>
 
 
-<div class="entry-content"><h3>git init, git remote, git clone, git status, git add/commit/push, git clean, git pull, git log</h3>
-
-<hr />
-
-<p>Bu konu ile ilgili bir çok doküman olmasına karşın kendi notlarımı yazmak istememle gelişen bir blog girdisidir.</p>
+<div class="entry-content"><p>Bu konu ile ilgili bir çok doküman olmasına karşın kendi notlarımı yazmak istememle gelişen bir blog girdisidir.</p>
 
 <h4>git init</h4>
 
@@ -599,11 +576,11 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git checkout, git diff, git blame</a>
+        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, .gitignore</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1</a>
+        <a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1: git init, git remote, git clone, git status, git add/commit/push, git clean, git pull, git log</a>
       </li>
     
       <li class="post">
