@@ -4,7 +4,7 @@
   <title><![CDATA[Category: activerecord | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/activerecord/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-10-03T15:44:31+03:00</updated>
+  <updated>2016-10-18T08:55:30+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -22,7 +22,7 @@
 
 <p>Bu sır, ActiverRecord&#8217;un bize sorguların(queries) ne kadar sürede tamamlandığını tam anlamıyla söylememesidir.</p>
 
-<p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim. (<code>all</code> mı? <img alt="scream" src="/images/emoji/unicode/1f631.png" class="emoji" /> pratikte <code>find_each</code> kullan <img alt="exclamation" src="/images/emoji/unicode/2757.png" class="emoji" />)</p>
+<p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim.</p>
 
 <!--more-->
 
