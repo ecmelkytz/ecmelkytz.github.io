@@ -82,6 +82,73 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">Rails: Tab Menülerde Paginate Işlemi</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-09-24T09:58:22+03:00" pubdate data-updated="true">Sep 24<sup>th</sup>, 2016</time>
+        
+         | <a href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Tab menülerde paginate işlemini yapılandırırken karşılaştığım sorunlar:</p>
+
+<p>İlk önce tablar arasında geçişlerde bir sıkıntı yaşadım. Bunu <a href="https://github.com/mislav/will_paginate">will_paginate</a>&lsquo;in <code>param_name</code> parametresiyle şöyle hallettim.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@teachers</span> <span class="o">=</span> <span class="no">Teacher</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="ss">page</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:teachers_page</span><span class="o">]</span><span class="p">,</span> <span class="ss">per_page</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'><span class="vi">@students</span> <span class="o">=</span> <span class="no">Student</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="ss">page</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:students_page</span><span class="o">]</span><span class="p">,</span> <span class="ss">per_page</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= will_paginate @teachers, param_name: &quot;teachers_page&quot; %&gt;</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">will_paginate</span> <span class="vi">@students</span><span class="p">,</span> <span class="ss">param_name</span><span class="p">:</span> <span class="s2">&quot;students_page&quot;</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Diğer bir sorun ise ilk tab dışındaki diğer tablarda paginate işlemiyle başka sayfalara geçiş yaptığım zaman (?pages=2) sistem sayfayı ilk tab&#8217;ın konumuna atıyordu.</p>
+
+<p>Yani <code>yapmak istediğim ama aslında olan</code> tam da şu şekildeydi:</p>
+
+<iframe src="//giphy.com/embed/GQTHzCNx0UgdW" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<p>Bu sorunu da HTML5&#8217;in localStorage&#8217;ını kullanarak şu şekilde hallettim:</p>
+
+</div>
+ 
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">Devamı &rarr;</a>
+   </footer>
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: Git Diff, Git Blame, Git Checkout, Git Clean, Git Reset, Git Stash, .gitignore</a></h1>
     
     
@@ -490,81 +557,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-03-10T14:00:01+02:00" pubdate data-updated="true">Mar 10<sup>th</sup>, 2016</time>
-        
-         | <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Rails 4.1 ile gelen enum özelliğini örnek senaryolar üzerinden açıklamaya çalışacağım.</p>
-
-<p>Şimdi Car adında bir modelimiz olsun ve biz  aracın  kiralanmış (rented), kullanıma uygun (suitable_for_use) veya kullanım dışı (out_of_use) olması gibi bilgilerini tutmak isteyelim.</p>
-
-<h5>Bunun için birden fazla kolon mu kullanalım? Neden?</h5>
-
-<p>Aşağıdaki gibi bir migration ile tablomuza bu alanları eklediğimizi düşünelim.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">AddStatusesToCars</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
-</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:suitable_for_use?</span><span class="p">,</span> <span class="ss">:boolean</span>
-</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:boolean</span>
-</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:out_of_use?</span><span class="p">,</span> <span class="ss">:boolean</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birinin değerini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
-
-<p>Bu gibi durumların insanı soktuğu ruh hali:</p>
-
-<iframe src="//giphy.com/embed/EmB4QtACPVBpS" width="480" height="195" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
-
-
-
-
-</div>
- 
- 
-   <footer>
-     <a rel="full-article" href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Devamı &rarr;</a>
-   </footer>
- 
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -578,6 +570,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">Rails: Tab menülerde paginate işlemi</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore</a>
@@ -613,10 +609,6 @@
     
       <li class="post">
         <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
       </li>
     
   </ul>

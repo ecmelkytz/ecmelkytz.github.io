@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rails: Tab menülerde paginate işlemi - Ecmel Kaytazoğlu</title>
+  <meta name="author" content="Ecmel Kaytazoğlu">
+
+  
+  <meta name="description" content="Web teknolojileri, Rails, AngularJS, Ionic, Git ve diğer güncel teknolojiler hakkında tuttuğum notlar yer almaktadır.">
+  <meta name="keywords" content="Ruby on Rails, Rails, AngularJS, Unix, Git, Github">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ecmelkytz.github.com/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="atom.xml" rel="alternate" title="Ecmel Kaytazoğlu" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-73221741-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Ecmel Kaytazoğlu</a></h1>
+  
+    <h2>$scope.life = ['black', 'white']</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ecmelkytz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Rails: Tab Menülerde Paginate Işlemi</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-09-24T09:58:22+03:00" pubdate data-updated="true">Sep 24<sup>th</sup>, 2016</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Tab menülerde paginate işlemini yapılandırırken karşılaştığım sorunlar:</p>
+
+<p>İlk önce tablar arasında geçişlerde bir sıkıntı yaşadım. Bunu <a href="https://github.com/mislav/will_paginate">will_paginate</a>&lsquo;in <code>param_name</code> parametresiyle şöyle hallettim.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@teachers</span> <span class="o">=</span> <span class="no">Teacher</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="ss">page</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:teachers_page</span><span class="o">]</span><span class="p">,</span> <span class="ss">per_page</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'><span class="vi">@students</span> <span class="o">=</span> <span class="no">Student</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="ss">page</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:students_page</span><span class="o">]</span><span class="p">,</span> <span class="ss">per_page</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">%= will_paginate @teachers, param_name: &quot;teachers_page&quot; %&gt;</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">will_paginate</span> <span class="vi">@students</span><span class="p">,</span> <span class="ss">param_name</span><span class="p">:</span> <span class="s2">&quot;students_page&quot;</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Diğer bir sorun ise ilk tab dışındaki diğer tablarda paginate işlemiyle başka sayfalara geçiş yaptığım zaman (?pages=2) sistem sayfayı ilk tab&#8217;ın konumuna atıyordu.</p>
+
+<p>Yani <code>yapmak istediğim ama aslında olan</code> tam da şu şekildeydi:</p>
+
+<iframe src="//giphy.com/embed/GQTHzCNx0UgdW" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+<p>Bu sorunu da HTML5&#8217;in localStorage&#8217;ını kullanarak şu şekilde hallettim:</p>
+
+<!--more-->
+
+
+
+
+<figure class='code'><figcaption><span>users_controller.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># GET /users/1</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@user_activities_for_course_weeks</span> <span class="o">=</span> <span class="no">PublicActivity</span><span class="o">::</span><span class="no">Activity</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="ss">:trackable</span><span class="p">,</span> <span class="ss">:owner</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">owner_id</span><span class="p">:</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">),</span> <span class="ss">trackable_type</span><span class="p">:</span> <span class="s2">&quot;CourseWeek&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="ss">page</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:course_weeks</span><span class="o">]</span><span class="p">,</span> <span class="ss">per_page</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@user_activities_for_teachers</span> <span class="o">=</span> <span class="no">PublicActivity</span><span class="o">::</span><span class="no">Activity</span><span class="o">.</span><span class="n">includes</span><span class="p">(</span><span class="ss">:trackable</span><span class="p">,</span> <span class="ss">:owner</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="ss">owner_id</span><span class="p">:</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">),</span> <span class="ss">trackable_type</span><span class="p">:</span> <span class="s2">&quot;Teacher&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="ss">page</span><span class="p">:</span> <span class="n">params</span><span class="o">[</span><span class="ss">:teachers</span><span class="o">]</span><span class="p">,</span> <span class="ss">per_page</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>show.html.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;activityTab&quot;</span> <span class="na">class=</span><span class="s">&quot;nav nav-tabs&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;active&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= link_to &quot;Course Weeks&quot;, &quot;#tab_week&quot;, id: &quot;profile-tab&quot;, role: &quot;tab&quot;, &quot;data-toggle&quot; =&gt; &quot;tab&quot; %&gt;<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;</span><span class="err">&lt;</span>%= link_to &quot;Teachers&quot;, &quot;#tab_teacher&quot;, role: &quot;tab&quot;, id: &quot;profile-tab&quot;, &quot;data-toggle&quot; =&gt; &quot;tab&quot; %&gt;<span class="nt">&lt;/li&gt;</span>
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;tab-content&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= render &quot;week_activities&quot; %&gt;
+</span><span class='line'>  <span class="err">&lt;</span>%= render &quot;teacher_activities&quot; %&gt;
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>_week_activities.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;tabpanel&quot;</span> <span class="na">class=</span><span class="s">&quot;tab-pane fade active in&quot;</span> <span class="na">id=</span><span class="s">&quot;tab_week&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;messages&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="err">&lt;</span>% @user_activities_for_course_weeks.each do |activity| %&gt;
+</span><span class='line'>      <span class="nt">&lt;li&gt;</span>
+</span><span class='line'>        ...
+</span><span class='line'>      <span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>    <span class="err">&lt;</span>% end %&gt;
+</span><span class='line'>  <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= will_paginate @user_activities_for_course_weeks, class: &quot;apple_pagination&quot;, param_name: &quot;course_weeks&quot; %&gt;
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>_teacher_activities.erb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;tabpanel&quot;</span> <span class="na">class=</span><span class="s">&quot;tab-pane fade&quot;</span> <span class="na">id=</span><span class="s">&quot;tab_teacher&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;messages&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="err">&lt;</span>% @user_activities_for_teachers.each do |activity| %&gt;
+</span><span class='line'>      <span class="nt">&lt;li</span> <span class="na">style=</span><span class="s">&quot;list-style-type: none;&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        ...
+</span><span class='line'>      <span class="nt">&lt;/li&gt;</span>
+</span><span class='line'>    <span class="err">&lt;</span>% end %&gt;
+</span><span class='line'>  <span class="nt">&lt;/ul&gt;</span>
+</span><span class='line'>  <span class="err">&lt;</span>%= will_paginate @user_activities_for_teachers, class: &quot;apple_pagination&quot;, param_name: &quot;teachers&quot; %&gt;
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>user.js </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a[data-toggle=&quot;tab&quot;]&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;show.bs.tab&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;activeTab&#39;</span><span class="p">,</span> <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">));</span>
+</span><span class='line'><span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">activeTab</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;activeTab&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nx">activeTab</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#activityTab a[href=&quot;&#39;</span> <span class="o">+</span> <span class="nx">activeTab</span> <span class="o">+</span> <span class="s1">&#39;&quot;]&#39;</span><span class="p">).</span><span class="nx">tab</span><span class="p">(</span><span class="s1">&#39;show&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Farklı çözüm önerileriyle aydınlandığım vakit burayı güncelleyeceğim.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Ecmel Kaytazoğlu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-09-24T09:58:22+03:00" pubdate data-updated="true">Sep 24<sup>th</sup>, 2016</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ecmelkytz.github.com/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/" data-via="__EcmeL__" data-counturl="http://ecmelkytz.github.com/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/08/12/git-komutlari-2/" title="Previous Post: Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore">&laquo; Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">Rails: Tab menülerde paginate işlemi</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/08/11/git-komutlari-1/">Git Komutları 1: git init, git remote, git clone, git status, git add/commit/push, git clean, git pull, git log</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Rails: Select ve Pluck metodları arasındaki fark nedir?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Rails: acts_as_paranoid ile veri silmekten korkmayın</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/">Rails: ActiveRecord ile ilgili ufak bir sır</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/27/bir-developerin-hayatini-kolaylastiracak-3-prensip-kiss-yagni-dry/">Bir Developer'ın hayatını kolaylaştıracak 3 prensip: KISS, YAGNI, DRY</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/25/rails-activesupportconcern-kullanimi/">Rails: ActiveSupport Concern Kullanımı</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don't Repeat Yourself (DRY)</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  
+  <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQNHm5gbWBpZVGCb9oKzcy_LZ2CEMgdjYNG4qXxq0A3PVRJ4f5ggQ" width="36" height="36">
+  <a href="https://github.com/ecmelkytz">@ecmelkytz</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        // github.showRepos({
+        //     user: 'ecmelkytz',
+        //     count: 0,
+        //     skip_forks: true,
+        //     target: '#gh_repos'
+        // });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/118106468866506746709?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Ecmel Kaytazoğlu
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'ecmelkytz';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ecmelkytz.github.com/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/';
+        var disqus_url = 'http://ecmelkytz.github.com/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

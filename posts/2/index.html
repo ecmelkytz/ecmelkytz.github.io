@@ -82,6 +82,81 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-03-10T14:00:01+02:00" pubdate data-updated="true">Mar 10<sup>th</sup>, 2016</time>
+        
+         | <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Rails 4.1 ile gelen enum özelliğini örnek senaryolar üzerinden açıklamaya çalışacağım.</p>
+
+<p>Şimdi Car adında bir modelimiz olsun ve biz  aracın  kiralanmış (rented), kullanıma uygun (suitable_for_use) veya kullanım dışı (out_of_use) olması gibi bilgilerini tutmak isteyelim.</p>
+
+<h5>Bunun için birden fazla kolon mu kullanalım? Neden?</h5>
+
+<p>Aşağıdaki gibi bir migration ile tablomuza bu alanları eklediğimizi düşünelim.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">AddStatusesToCars</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:suitable_for_use?</span><span class="p">,</span> <span class="ss">:boolean</span>
+</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:boolean</span>
+</span><span class='line'>    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:out_of_use?</span><span class="p">,</span> <span class="ss">:boolean</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birinin değerini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
+
+<p>Bu gibi durumların insanı soktuğu ruh hali:</p>
+
+<iframe src="//giphy.com/embed/EmB4QtACPVBpS" width="480" height="195" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+
+
+
+</div>
+ 
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Devamı &rarr;</a>
+   </footer>
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a></h1>
     
     
@@ -554,75 +629,6 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/08/11/angularjs-calisma-mantigi/">AngularJS Çalışma Mantığı</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-08-11T00:26:37+03:00" pubdate data-updated="true">Aug 11<sup>th</sup>, 2015</time>
-        
-         | <a href="/blog/2015/08/11/angularjs-calisma-mantigi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Angularjs ile ilgili beni en çok uğraştıran konu kesinlikle angularjs&#8217;in çalışma mantığını anlatmak olacak. Çünkü Angularjs ng-app directive&#8217;i gibi basit bir söz dizilimi ile çalışmaya başlayıp, mekanizmayı tam anlamıyla anlamak için içerisine dallandıkça <strong>digest cycle</strong>,  <strong>$watch list</strong>, <strong>two way binding</strong>, <strong>dirty cheking</strong> mekanizmasının birbiri ile alakasının anlatılması gereken bir konu haline geliyor.</p>
-
-<p>Eğer bir Angularjs uygulaması oluşturmak istiyorsanız elbetteki ilk yapacağınız iş anguların kütüphanesini projenize eklemek olacaktır. Angularjs&#8217;nin sayfanın başına veya sonuna eklenmesinin bir önemi yok çünkü Angularjs uygulaması DomReady olmadan yani tüm scriptler yüklenmeden boot etmiyor.</p>
-
-<p>Angularjs uygulamasını başlatmak için <code>ng-app</code> yapısal directive ihtiyacımız vardır. Angularjs yüklendikten sonra uygulamanın başlaması için aranan ilk directive <code>ng-app</code>&lsquo;dir. <code>ng-app</code>&#8216;ın bulunduğu etiketin sarmaladığı alanlar arasında Angular uygulaması başlar.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span><span class='line'><span class="nt">&lt;html</span> <span class="na">ng-app</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;head&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://code.angularjs.org/1.3.9/angular.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/head&gt;</span>
-</span><span class='line'><span class="nt">&lt;body&gt;&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Yukarıdaki kodda <code>ng-app</code> html etiketine eklendiği için bu taglar arasında kalan yer Angularjs uygulaması olarak çalışacaktır. <code>ng-app</code> direktive&#8217;i aynı zamanda uygulamanın global scope&#8217;u olan <code>$rootScope</code> nesnesini oluşturmaktadır.
-Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C standartlarına uymadığı için <code>data-ng-app</code> kullanımı tavsiye edilmektedir.</p>
-
-<p><code>ng-app</code> directive&#8217;inden sonra sayfa içerisindeki diğer directiveler aranmaya başlanır. Bulunan direktiveler uygulamaya bind edilir.  Bind edilenler <code>$wacth list</code>&lsquo;e eklenir. Daha sonrasında digest cycle kullanıcı etkileşimlerini dinlemeye başlar.</p>
-
-</div>
- 
- 
-   <footer>
-     <a rel="full-article" href="/blog/2015/08/11/angularjs-calisma-mantigi/">Devamı &rarr;</a>
-   </footer>
- 
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -638,6 +644,10 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">Rails: Tab menülerde paginate işlemi</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore</a>
@@ -673,10 +683,6 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
     
       <li class="post">
         <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
       </li>
     
   </ul>

@@ -82,6 +82,86 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/">Rails - &#8216;the Json Native Gem Requires Installed Build Tools&#8217; Hatası</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-10T10:41:35+03:00" pubdate data-updated="true">Aug 10<sup>th</sup>, 2014</time>
+        
+         | <a href="/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Rails kurulumunu gerçekleştirirken oluşabilecek hatalardan bir tanesidir. Bu hata bazı kütüphanelerin sistemde eksik olmasından kaynaklanmaktadır. Hatanın çözümü için ise aşağıdaki gibi bir yol izlenebilir.</p>
+
+<p>Ruby 1.9.3 veya üzeri bir ruby sürümünün sisteme yüklü olduğunu ve ruby sürümüne uygun bir development kit’in de sisteminizde kurulu olduğunu farzediyorum. Bunları indirmek için bkz: <a href="http://rubyinstaller.org/downloads">Ruby Installer</a></p>
+
+<figure class='code'><figcaption><span>Terminal(Hata Kodu)</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="ss">ERROR</span><span class="p">:</span> <span class="no">Error</span> <span class="n">installing</span> <span class="ss">json</span><span class="p">:</span> <span class="no">The</span> <span class="s1">&#39;json&#39;</span> <span class="n">native</span> <span class="n">gem</span> <span class="n">requires</span> <span class="n">installed</span> <span class="n">build</span> <span class="n">tools</span><span class="o">.</span>
+</span><span class='line'><span class="no">Please</span> <span class="n">update</span> <span class="n">your</span> <span class="no">PATH</span> <span class="n">to</span> <span class="kp">include</span> <span class="n">build</span> <span class="n">tools</span> <span class="ow">or</span> <span class="n">download</span> <span class="n">the</span> <span class="no">DevKit</span> <span class="n">from</span>
+</span><span class='line'><span class="s1">&#39;http://rubyinstaller.org/downloads&#39;</span> <span class="ow">and</span> <span class="n">follow</span> <span class="n">the</span> <span class="n">instructions</span> <span class="n">at</span>
+</span><span class='line'><span class="s1">&#39;http://github.com/oneclick/rubyinstaller/wiki/Development-Kit&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Daha sonra Ruby193 dosyası(versiyona göre sizde farklı olabilir) içerisine kurduğumuz DevKit&#8217;in bulunduğu dizine geçiyoruz ve gerekli işlemleri sırasıyla yapıyoruz.</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">cd</span> <span class="ss">C</span><span class="p">:\</span><span class="n">ruby193</span><span class="p">\</span><span class="no">DevKit</span>
+</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">init</span>
+</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">review</span>
+</span><span class='line'><span class="n">ruby</span> <span class="n">dk</span><span class="o">.</span><span class="n">rb</span> <span class="n">install</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Şimdide json kurmayı deneyelim.</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">json</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Json başarılı bir şekilde kurulmuş olmalı. Hepsi bu kadar artık rails kurulumunu gerçekleştirebiliriz.</p>
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">rails</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+ 
+ 
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/06/05/tekno-girisim/">Teknogirişim</a></h1>
     
     
@@ -195,6 +275,10 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">Rails: Tab menülerde paginate işlemi</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/08/12/git-komutlari-2/">Git Komutları 2: git diff, git blame, git checkout, git clean, git reset, git stash, .gitignore</a>
       </li>
     
@@ -228,10 +312,6 @@ Kayıt işlemlerini tamamladıktan sonra <code>Creat a Pandorabots</code> menüs
     
       <li class="post">
         <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/20/ubuntu-initramfs-hatasi/">Ubuntu initramfs hatası</a>
       </li>
     
   </ul>
