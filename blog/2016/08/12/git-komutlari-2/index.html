@@ -281,6 +281,14 @@
 
 
 <p>Bu komutların yaptığı şey tam olarak şöyle: Takibini yapmasını istemediğiniz dosyalar remote ettiğimiz yerdeki repo&#8217;da mevcut olduğu için o dosyaların silinmesini sağlar. O dosyaları sildikten sonra artık yaptığınız değişiklikler izlenmeyecek ve <code>git status</code> ile görüntülenmeyecektir.</p>
+
+<p><code>Repo'daki dosyalar silinmesin ve yaptığım değişiklikler izlenmesin</code>&lsquo;i istiyorsak şu işimizi görecektir:</p>
+
+<figure class='code'><figcaption><span>Terminal </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>git update-index --assume-unchanged FILE_NAME
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
