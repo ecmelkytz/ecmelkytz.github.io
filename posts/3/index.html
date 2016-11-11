@@ -69,6 +69,7 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/categories/out-of-life">Hayatın Dışından</a></li>
 </ul>
 
 </nav>
@@ -77,9 +78,97 @@
       <div class="blog-index">
   
   
-  
-    <article>
+    
       
+        <article>
+          
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/15/angularjs-single-page-application/">AngularJS Single Page Application</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-15T23:04:08+03:00" pubdate data-updated="true">Aug 15<sup>th</sup>, 2015</time>
+        
+         | <a href="/blog/2015/08/15/angularjs-single-page-application/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
+
+<p>Angularjs ile bir single page application nasıl oluşturuluyor. Angular bunun için nasıl bir route mekanizması kullanıyor ona bakalım.</p>
+
+<figure class='code'><figcaption><span>app.js </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;myApp&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;ngRoute&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">app</span><span class="p">.</span><span class="nx">config</span><span class="p">([</span><span class="s1">&#39;$routeProvider&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">$routeProvider</span><span class="p">.</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/home&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;home.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/services&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;services.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">when</span><span class="p">(</span><span class="s2">&quot;/clients&quot;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">templateUrl</span><span class="o">:</span> <span class="s1">&#39;clients.html&#39;</span>
+</span><span class='line'>    <span class="p">}).</span>
+</span><span class='line'>    <span class="nx">otherwise</span><span class="p">({</span>
+</span><span class='line'>      <span class="nx">redirectTo</span><span class="o">:</span> <span class="s1">&#39;/home&#39;</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="p">}]);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Uygulamamızın modul&#8217;une ngRoute modul&#8217;unu dependency olarak belirtiyoruz. Yani modulun bağımlılıklarını belirtiyoruz. Bu sayede ngRoute içindeki her fonksiyonu/servisi kendi uygulamamızda da kullanabiliyoruz.</p>
+
+</div>
+ 
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2015/08/15/angularjs-single-page-application/">Devamı &rarr;</a>
+   </footer>
+ 
+
+
+        </article>
+    
+  
+    
+      
+        <article>
+          
   <header>
     
       <h1 class="entry-title"><a href="/blog/2015/08/11/angularjs-calisma-mantigi/">AngularJS Çalışma Mantığı</a></h1>
@@ -144,11 +233,13 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
  
 
 
-    </article>
+        </article>
+    
   
-  
-    <article>
+    
       
+        <article>
+          
   <header>
     
       <h1 class="entry-title"><a href="/blog/2015/08/07/angularjs-nedir/">AngularJS Nedir?</a></h1>
@@ -193,11 +284,13 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
  
 
 
-    </article>
+        </article>
+    
   
-  
-    <article>
+    
       
+        <article>
+          
   <header>
     
       <h1 class="entry-title"><a href="/blog/2015/07/03/ruby-attr-accessor-kullanimi/">Ruby: Attr_accessor Kullanımı</a></h1>
@@ -276,11 +369,13 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
  
 
 
-    </article>
+        </article>
+    
   
-  
-    <article>
+    
       
+        <article>
+          
   <header>
     
       <h1 class="entry-title"><a href="/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/">Html Renklerin Hex Ve RGB Kodlarını Bulan Terminal Uygulaması: Grabc</a></h1>
@@ -338,11 +433,13 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
  
 
 
-    </article>
+        </article>
+    
   
-  
-    <article>
+    
       
+        <article>
+          
   <header>
     
       <h1 class="entry-title"><a href="/blog/2014/11/29/chroma-key-nedir/">Chroma Key Nedir?</a></h1>
@@ -387,11 +484,13 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
  
 
 
-    </article>
+        </article>
+    
   
-  
-    <article>
+    
       
+        <article>
+          
   <header>
     
       <h1 class="entry-title"><a href="/blog/2014/11/17/rails-upcase/">Rails - Upcase, Downcase, Capitalize, Titleize Metodları (Non-Ascii)</a></h1>
@@ -430,11 +529,13 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
  
 
 
-    </article>
+        </article>
+    
   
-  
-    <article>
+    
       
+        <article>
+          
   <header>
     
       <h1 class="entry-title"><a href="/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/">How to Change a Particular Column Background Color in Jquery of Datatable</a></h1>
@@ -538,72 +639,8 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
  
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
+        </article>
     
-      <h1 class="entry-title"><a href="/blog/2014/08/28/rails-plus-ckeditor/">Rails - Ckeditor</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-08-28T16:13:22+03:00" pubdate data-updated="true">Aug 28<sup>th</sup>, 2014</time>
-        
-         | <a href="/blog/2014/08/28/rails-plus-ckeditor/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-<div class="entry-content"><p>Rails uygulamalarınıza aşağıdaki resimde görülen tarzda bir text editörü eklemek istiyorsanız ckeditor
-kullanmak bu iş için uygun olacaktır.</p>
-
-<p><img class="center" src="http://i.imgur.com/PlrBDC6.png"></p>
-
-<p>Öncelikle uygulamamızdaki Gemfile içerisine gerekli gem&#8217;leri ekleyelim.</p>
-
-<figure class='code'><figcaption><span>Gemfile </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="n">gem</span> <span class="s1">&#39;paperclip&#39;</span>
-</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;ckeditor&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Ve Bundle ediyoruz.</p>
-
-<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="n">bundle</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
- 
- 
-   <footer>
-     <a rel="full-article" href="/blog/2014/08/28/rails-plus-ckeditor/">Devamı &rarr;</a>
-   </footer>
- 
-
-
-    </article>
   
   <div class="pagination">
     
@@ -620,6 +657,10 @@ kullanmak bu iş için uygun olacaktır.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/11/11/deneme/">Sen Gittin Gideli</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/">Rails: Tab menülerde paginate işlemi</a>
@@ -655,10 +696,6 @@ kullanmak bu iş için uygun olacaktır.</p>
     
       <li class="post">
         <a href="/blog/2016/03/10/rails-activerecord-enum-kullanimi/">Rails: ActiveRecord Enum Kullanımı</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/">Rails: Routes Don&#8217;t Repeat Yourself (DRY)</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-11-05T14:22:56+02:00</updated>
+  <updated>2016-11-11T13:48:25+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Sen Gittin Gideli]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2016/11/11/deneme/"/>
+    <updated>2016-11-11T10:03:41+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2016/11/11/deneme</id>
+    <content type="html"><![CDATA[<p>Gece ile hüzünleri birbirine sevdaladığımdan beri<br/>
+öğrenmiştim gözyaşlarının yanan bir ruhu nasıl alevlendirdiğini</br>
+ama sen gittin gideli</br>
+gündüzlerime de kara çaldılar anne.</p>
+
+<p>Meşru bir kılıf buldular aldatmayı sarıp sarmalayacak,</br>
+sarıp sarmaladılar anne</br>
+ve öyle bir günde geldiler ki bana</br>
+gönlümdeki çağlayanları kurutacak</br>
+hani o umutlarımı yeşertmekte beslediğim çağlayanları,</br>
+7 iklimi 4 mevsimle kucaklattığım yerde yetişen o nazenin çiçekleri&hellip;</p>
+
+<p>Baharı yaşattığım düşüncelerime güzü getirip</br>
+bir göçmen kuşunun kanadında uçurduğum huzuru çaldılar benden anne.</br>
+Çaldılar yokluğunun sancısına çizdiğim hududu</br>
+ve bir gamzelik tebessüm bile bırakmadılar.</p>
+
+<p>Umudun gölgesinde sakladığım benden öte bir beni işte böyle kopardılar anne</br>
+Öksüzlüğümün üzerine yetimliği boca edip</br>
+ağladıklarımın üzerinden bir kez daha geçirttiler beni</br>
+Hayat devam ediyor nasılsa deyip set çektiğim yaralarımı yeniden eşelettiler bana</br>
+hani var ya ara ara yokladığım düşünce çukurları&hellip;</p>
+
+<p>İşte beni tedavisi hiç bitmeyecek yaraların derinliğine böyle hapsettiler.</br>
+ve ben böyle öğrendim hazan güllerinin kokusunu</br>
+avuçladığım destedeki dikenlerde buldum sevdiklerimi</br>
+O zaman anladım anne</br>
+En büyük acıları insana sadece en yakınlarının yaşatabileceğini</br>
+ve insanın sevgiden bir paye biçmediklerinin hüznünde de bir yer etmediğini&hellip;</br>
+ama unuttular anne</br>
+Ne olursa olsun gönlümün ihanete geçit vermeyeceğini unuttular</br>
+İçinde ne sakladığımı bilmeden sapladılar yüreğimdeki yerlerine yalan dünyanın sahte gerçeklerini</br>
+ama daha kötüsü,</br>
+benim de bir yürek taşıdığımı unuttular anne</br>
+unuttular&hellip;</p>
+
+<p>Buraya her bakışımda etmeseydin böyle sözler diyeceğim,</br>
+hadi yazdın da bari burada durmasaydı bunlar diyeceğim biliyorum.</br>
+Biliyorum çünkü fersah fersah uzaklık estirecekler bana&hellip;</p>
+
+<p>Söyleyeceklerimi burada sonlandırırken Üstad Necip Fazıl&#8217;ın o güzide sözleriyle vadeleri de tamamlayalım.</p>
+
+<blockquote><p>Anne girdin düşüme.</br>
+Yorganın olsun duam;</br>
+Mezarında üşüme.</p>
+
+<p>Anlamam, anlatamam.</br>
+Düşen düştü peşime,</br>
+Artık vadeler tamam&hellip;</br>
+NFK</p></blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails: Tab menülerde paginate işlemi]]></title>
@@ -2404,7 +2462,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#97;&#110;&#x67;&#x75;&#108;&#97;&#x72;&#64;&#x67;&#x6f;&#x6f;&#x67;&#x6c;&#101;&#103;&#x72;&#111;&#117;&#x70;&#115;&#x2e;&#x63;&#111;&#x6d;">&#x61;&#110;&#103;&#x75;&#108;&#x61;&#x72;&#x40;&#x67;&#111;&#111;&#x67;&#108;&#x65;&#x67;&#114;&#x6f;&#117;&#x70;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#97;&#110;&#x67;&#x75;&#x6c;&#x61;&#114;&#64;&#x67;&#x6f;&#111;&#103;&#x6c;&#101;&#103;&#x72;&#111;&#x75;&#x70;&#x73;&#x2e;&#99;&#x6f;&#x6d;">&#97;&#110;&#103;&#x75;&#x6c;&#x61;&#x72;&#64;&#x67;&#111;&#x6f;&#x67;&#x6c;&#x65;&#x67;&#114;&#111;&#x75;&#112;&#x73;&#x2e;&#99;&#x6f;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
@@ -2564,39 +2622,6 @@ Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
 <p>Finally</p>
 
 <p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_280,w_346/v1457011914/thatsit.png_m778zf.jpg"></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Html Renklerin Hex ve RGB Kodlarını Bulan Terminal Uygulaması: Grabc]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/"/>
-    <updated>2015-06-14T12:44:17+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc</id>
-    <content type="html"><![CDATA[<p>Zamanında, ekranda gördüğüm herhangi bir rengin html kodunu anında nasıl bulabilirim diye araştırma yaparken <strong>grabc</strong> diye bir terminal uygulamasına denk gelmiştim. Uzun zamandan beri de severek kullanmaktayım.</p>
-
-<p>Özellikle front-end geliştirenler için çok güzel bir kolaylık sağlayacağını söyleyebilirim.</p>
-
-<h3>Kurulum:</h3>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install grabc</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Kullanım:</h3>
-
-<p>Terminale <strong>grabc</strong> yazdığınız zaman cursor(imleç) <code>+</code> şekline benzer bir hal alacaktır ve siz nereye tıklarsanız oranın renginin hex ve rgb kodunu ekrana basacaktır.</p>
-
-<figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ grabc
-</span><span class='line'>
-</span><span class='line'>#f55567
-</span><span class='line'>245,85,103</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
