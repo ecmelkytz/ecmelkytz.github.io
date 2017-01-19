@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2016-12-09T16:12:23+02:00</updated>
+  <updated>2017-01-19T09:53:25+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -987,19 +987,15 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 
 <p><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>mall and <strong>S</strong>imple</p>
 
-<h3>YAGNI: You Aren&rsquo;t Gonna Need It</h3>
+<h3>YAGNI: You Aren&rsquo;t Gonna Need It / Buna İhtiyacın Olmayacak</h3>
 
-<p><strong>&ldquo;Buna ihtiyacın olmayacak&rdquo;</strong> şeklinde çevirebiliriz. Extreme Programming(XP)&lsquo;nin prensiplerinden biridir.</p>
+<p>Extreme Programming(XP)&lsquo;nin prensiplerinden biridir.</p>
 
 <p>Proje geliştirirken bazen ileride ihtiyaç olacağını düşündüğümüz bazı ekstra özellikleri şimdiden planlar ve yapmaya başlarız. Bu bizi, ileride kullanılmayacak ya da daha farklı bir şeye ihtiyaç duyacağımız bir durumla karşı karşıya bırakabilir. Bu da ihtiyaç dışı planlama ve kodlama için vakit kaybına neden olmuş olacaktır. Aynı zamanda sistem daha karmaşık hale gelecektir ki bu da KISS prensibine aykırı bir durumdur.</p>
 
-<p>Peki ne yapacağız dersek:</p>
+<h3>DRY: Don&rsquo;t Repeat Yourself / Kendini Tekrar Etme</h3>
 
-<p>Projede sadece gerçekten ihtiyaç olan özellikleri ve durumları hesaba katmamız ve uygulamamız gerekmektedir.</p>
-
-<h3>DRY: Don&rsquo;t Repeat Yourself</h3>
-
-<p><strong>&ldquo;Kendini tekrar etme&rdquo;</strong> şeklinde çevirebiliriz. Aynı zamanda Rails&#8217;in (<img alt="heart" src="http://ecmelkytz.github.com/images/emoji/unicode/2764.png" class="emoji" />) temel prensiplerden biridir. Aynı metodlar/fonksiyonlar sistemimizde farklı yerlerde kullanılıp tekrar ediliyorsa bu prensibe uymuyoruz demektir.</p>
+<p>Aynı zamanda Rails&#8217;in (<img alt="heart" src="http://ecmelkytz.github.com/images/emoji/unicode/2764.png" class="emoji" />) temel prensiplerden biridir. Aynı metodlar/fonksiyonlar sistemimizde farklı yerlerde kullanılıp tekrar ediliyorsa bu prensibe uymuyoruz demektir.</p>
 
 <p>Andrew Hunt ve David Thomas, &ldquo;The Pragmatic Programmer&rdquo; adlı kitaplarında bu prensipten şöyle söz etmişlerdir:</p>
 
@@ -2462,7 +2458,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#97;&#x6e;&#x67;&#x75;&#108;&#97;&#114;&#64;&#103;&#x6f;&#111;&#x67;&#x6c;&#101;&#103;&#114;&#111;&#x75;&#x70;&#x73;&#46;&#x63;&#x6f;&#x6d;">&#97;&#110;&#x67;&#117;&#108;&#x61;&#114;&#64;&#103;&#x6f;&#x6f;&#103;&#x6c;&#101;&#103;&#x72;&#x6f;&#117;&#x70;&#115;&#x2e;&#x63;&#111;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#97;&#x6e;&#x67;&#x75;&#108;&#97;&#114;&#x40;&#x67;&#x6f;&#111;&#x67;&#x6c;&#x65;&#x67;&#x72;&#111;&#117;&#x70;&#115;&#46;&#99;&#x6f;&#x6d;">&#x61;&#110;&#103;&#x75;&#x6c;&#97;&#x72;&#x40;&#x67;&#111;&#x6f;&#103;&#108;&#x65;&#x67;&#114;&#111;&#x75;&#x70;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
