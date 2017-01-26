@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ruby | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-01-26T14:18:49+02:00</updated>
+  <updated>2017-01-26T14:26:42+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -29,7 +29,7 @@ person.name # =&gt; NoMethodError: undefined method 'name'
 
 <p><code>name</code> adında bir metot tanımlamadığımız sürece yukarıdaki gibi hata alacağız.</p>
 
-<p>O halde metodumuzu tanımlayalım:</p>
+<p>Metodu tanımlayalım:</p>
 
 <pre><code class="Ruby">class Person
   def name
@@ -49,7 +49,7 @@ person.name = "Ecmel" # =&gt; NoMethodError: undefined method `name='
 <!--more-->
 
 
-<p>Yukarıda writer metodu oluşturmamıştık şimdi onu da oluşturalım:</p>
+<p>Writer metodunu oluşturalım:</p>
 
 <pre><code class="Ruby">class Person
   def name # reader
