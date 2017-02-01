@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-01-26T14:26:42+02:00</updated>
+  <updated>2017-02-01T14:35:17+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -18,7 +18,15 @@
     <link href="http://ecmelkytz.github.com/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/"/>
     <updated>2015-09-19T15:40:24+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/09/19/rails-angularjs-ile-crud-islemleri</id>
-    <content type="html"><![CDATA[<p>Bu yazı Rails&#8217;de CRUD (Create, Read, Update, Delete) işlemlerinin AngularJS ile nasıl yapılabileceğini açıklamaktadır.</p>
+    <content type="html"><![CDATA[<p style="text-align:center;"><strong>TL;DR</strong></p>
+
+<p style="text-align:center;"><a href="https://github.com/ecmelkytz/rails-angular-resource">https://github.com/ecmelkytz/rails-angular-resource</a></p>
+
+<hr />
+
+<p><br></p>
+
+<p>Bu yazı Rails&#8217;de CRUD (Create, Read, Update, Delete) işlemlerinin AngularJS ile nasıl yapılabileceğini açıklamaktadır.</p>
 
 <p>AngularJS&#8217;nin ngResource modülü kullanılmıştır. ngResurce modülü $resource servisi üzerinden RESTful servislerle etkileşimde bulunabilmeyi sağlar.</p>
 
@@ -310,10 +318,6 @@
 </span><span class='line'>  <span class="n">request</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">json?</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure></p>
-
-<p style="text-align:center;"><strong>TL;DR</strong></p>
-
-<p>Look at the my github repo => <a href="https://github.com/ecmelkytz/rails-angular-resource">https://github.com/ecmelkytz/rails-angular-resource</a></p>
 ]]></content>
   </entry>
   
@@ -631,13 +635,7 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 
 <p><code>$watch</code>’lar bitene kadar bu çevirim devam eder. $digest loop bittiğinde değişiklik var ise DOM&#8217;da değişiklik yapılır.</p>
 
-<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım.</p>
-
-<p>O halde şu söz de burada dursun:</p>
-
-<blockquote><p>“Ne kadar bilirsen bil, anlattıkların karşındakinin anlayabildiği kadardır.”</p></blockquote>
-
-<p>Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
+<p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım. Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
 ]]></content>
   </entry>
   
