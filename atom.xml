@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-02-01T14:35:17+02:00</updated>
+  <updated>2017-02-01T16:43:11+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -2143,7 +2143,15 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
     <link href="http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application/"/>
     <updated>2015-08-15T23:04:08+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application</id>
-    <content type="html"><![CDATA[<p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
+    <content type="html"><![CDATA[<p style="text-align:center;"><strong>TL;DR</strong></p>
+
+<p style="text-align:center;">Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a></p>
+
+<hr />
+
+<p><br></p>
+
+<p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
 
 <p>Angularjs ile bir single page application nasıl oluşturuluyor. Angular bunun için nasıl bir route mekanizması kullanıyor ona bakalım.</p>
 
@@ -2247,8 +2255,6 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
 
 
 <p>Angularjs route yapısında <code>#</code> karakteri kullanılır. O yüzden linklerdeki url&#8217;lerde <code>#</code> karakteri kullanılmıştır. <code>ng-view</code> aslında Rails&#8217;de ki <code>yield</code> ile aynı işlevi görür. Angularda eğer bunu eklemezsek sayfada görüntü oluşmayacaktır.</p>
-
-<p>Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a></p>
 ]]></content>
   </entry>
   
@@ -2456,7 +2462,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#97;&#x6e;&#x67;&#117;&#x6c;&#97;&#114;&#x40;&#x67;&#111;&#x6f;&#x67;&#x6c;&#101;&#103;&#x72;&#111;&#117;&#x70;&#x73;&#x2e;&#99;&#111;&#x6d;">&#x61;&#x6e;&#103;&#117;&#108;&#97;&#114;&#64;&#103;&#x6f;&#111;&#x67;&#x6c;&#101;&#x67;&#114;&#111;&#117;&#112;&#x73;&#46;&#99;&#x6f;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x61;&#x6e;&#x67;&#x75;&#108;&#x61;&#x72;&#64;&#x67;&#x6f;&#x6f;&#103;&#108;&#x65;&#103;&#x72;&#x6f;&#x75;&#x70;&#x73;&#46;&#99;&#x6f;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#97;&#x72;&#x40;&#x67;&#111;&#111;&#103;&#x6c;&#x65;&#103;&#114;&#111;&#x75;&#112;&#115;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>

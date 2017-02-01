@@ -4,7 +4,7 @@
   <title><![CDATA[Category: angularjs | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-02-01T14:35:17+02:00</updated>
+  <updated>2017-02-01T16:43:11+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -386,7 +386,15 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
     <link href="http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application/"/>
     <updated>2015-08-15T23:04:08+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application</id>
-    <content type="html"><![CDATA[<p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
+    <content type="html"><![CDATA[<p style="text-align:center;"><strong>TL;DR</strong></p>
+
+<p style="text-align:center;">Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a></p>
+
+<hr />
+
+<p><br></p>
+
+<p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
 
 <p>Angularjs ile bir single page application nasıl oluşturuluyor. Angular bunun için nasıl bir route mekanizması kullanıyor ona bakalım.</p>
 
@@ -501,8 +509,6 @@ Doğal olarak aşağıdaki kodu çalıştıracaksınız:</p>
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Angularjs route yapısında <code>#</code> karakteri kullanılır. O yüzden linklerdeki url&#8217;lerde <code>#</code> karakteri kullanılmıştır. <code>ng-view</code> aslında Rails&#8217;de ki <code>yield</code> ile aynı işlevi görür. Angularda eğer bunu eklemezsek sayfada görüntü oluşmayacaktır.</p>
-
-<p>Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a></p>
 ]]></content>
   </entry>
   
