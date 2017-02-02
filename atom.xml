@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-02-01T16:43:11+02:00</updated>
+  <updated>2017-02-02T15:27:30+02:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -1218,19 +1218,15 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 
 <p>Bu senaryoya göre araç ya kiralanmıştır ya kullanılabilir durumdadır ya da kullanım dışıdır. Bunlardan herhangi birinin değerini true yaptığımızda diğer iki kolon kullanılmamış ve boş kalmış olacak.</p>
 
-<p>Bu gibi durumların insanı soktuğu ruh hali:</p>
-
 <iframe src="//giphy.com/embed/EmB4QtACPVBpS" width="480" height="195" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
 
 
-
+<p style="text-align:center;">Bu gibi durumların insanı soktuğu ruh hali</p>
 
 <!--more-->
 
 
-<p>O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım:</p>
-
-<p>Car modelimize status alanını integer olarak ekliyoruz.</p>
+<p>O halde bu işlemi tek kolonda halletmenin bir yoluna bakalım. Car modelimize status alanını integer olarak ekleyelim.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1476,14 +1472,28 @@ Bu filtreleme işleminde regular expression kullanabilmek için <code>-S</code> 
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>Bu işin <strong>best practice&#8217;ı</strong> enum değişkenlerini aşağıdaki gibi hash olarak tanımlamak olacaktır.</p>
+
+<figure class='code'><figcaption><span>car.rb </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>    <span class="n">enum</span> <span class="ss">status</span><span class="p">:</span> <span class="o">[</span><span class="ss">suitable_for_use</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="ss">rented</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">out_of_use</span><span class="p">:</span> <span class="mi">2</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Neden?:</strong> herhangi iki değişkenin arasına başka bir değer ataması yapmamızı mümkün kılar. Yani <code>suitable_for_use: 0</code> ile <code>rented: 1</code> arasına <code>xxx: 3</code> şeklinde bir ekleme yapabiliriz. Bu atama, bu değerlerin arasında çok da sevimli durmayacak ancak olası araya eklemelerde parametrelerin yanlış yeri referans göstermesini engellemiş olacağız.</p>
+
 <p><strong>Özetlersek:</strong></p>
 
 <p>Status ile ilgili veriler tabloda tek bir kolonda tutularak enum ile tanımlanan attribute&#8217;lar ile veritabanındaki tamsayılar eşleştirilir.  ActiveRecord bu dizi indislerine karşılık gerçek sembolleri çeker ve onları döndürür. Enum aynı zamanda  suitable_for_use, rented, out_of_use scope&#8217;larını oluşturur.</p>
 
-<p>Enum&#8217;u keşfeden Rails geliştiricilerinin son hali:</p>
-
 <iframe src="//giphy.com/embed/d86kftzaeizO8" width="480" height="200" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
 
+
+<p style="text-align:center;">Enum&#8217;u keşfeden Rails geliştiricilerinin son hali</p>
 ]]></content>
   </entry>
   
@@ -2462,7 +2472,7 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x61;&#x6e;&#x67;&#x75;&#108;&#x61;&#x72;&#64;&#x67;&#x6f;&#x6f;&#103;&#108;&#x65;&#103;&#x72;&#x6f;&#x75;&#x70;&#x73;&#46;&#99;&#x6f;&#109;">&#97;&#110;&#103;&#117;&#x6c;&#97;&#x72;&#x40;&#x67;&#111;&#111;&#103;&#x6c;&#x65;&#103;&#114;&#111;&#x75;&#112;&#115;&#x2e;&#x63;&#111;&#109;</a></li>
+<li>Mail listesi: <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x61;&#110;&#x67;&#117;&#x6c;&#97;&#114;&#x40;&#103;&#111;&#111;&#103;&#108;&#x65;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#x6f;&#x6d;">&#97;&#x6e;&#x67;&#x75;&#x6c;&#x61;&#x72;&#64;&#x67;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#x6f;&#117;&#112;&#x73;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
