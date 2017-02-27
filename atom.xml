@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-02-02T15:27:30+02:00</updated>
+  <updated>2017-02-27T16:53:09+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -14,9 +14,26 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Pervane]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2017/02/27/pervane/"/>
+    <updated>2017-02-27T16:44:14+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2017/02/27/pervane</id>
+    <content type="html"><![CDATA[<p>Dâr-ı fenanın sanına felek bir kez olsun düşmeye</br>
+Ahîz eylenen dil-i viran niyet etmez sönmeye</br>
+Vakti gelmez beklenenin hesabını dürmeye</br>
+Yanmaya pervane bir sözümüz mü olmasın?</br></p>
+
+<p>Dermanı yaş imiş gönle haşr olan</br>
+Olmaya cihanda bir kâmı nâr olan</br>
+Bir seni içre öte bir beri yoktan da var olan</br>
+Yanmaya pervane bir gönlümüz mü olmasın?</br></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Sen Gittin Gideli]]></title>
     <link href="http://ecmelkytz.github.com/blog/2016/11/11/sen-gittin-gideli/"/>
-    <updated>2016-11-11T10:03:41+02:00</updated>
+    <updated>2016-11-11T11:03:41+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2016/11/11/sen-gittin-gideli</id>
     <content type="html"><![CDATA[<p>Gece ile hüzünleri birbirine sevdaladığımdan beri<br/>
 öğrenmiştim gözyaşlarının yanan bir ruhu nasıl alevlendirdiğini</br>
@@ -2472,168 +2489,11 @@ Angular hızlı response oluşturur dedik. Peki nasıl?</p>
 
 <ul>
 <li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
-<li>Mail listesi: <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x61;&#110;&#x67;&#117;&#x6c;&#97;&#114;&#x40;&#103;&#111;&#111;&#103;&#108;&#x65;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#x6f;&#x6d;">&#97;&#x6e;&#x67;&#x75;&#x6c;&#x61;&#x72;&#64;&#x67;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#x6f;&#117;&#112;&#x73;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
+<li>Mail listesi: <a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x61;&#110;&#x67;&#x75;&#x6c;&#x61;&#114;&#x40;&#x67;&#111;&#x6f;&#103;&#108;&#101;&#103;&#x72;&#111;&#x75;&#112;&#115;&#x2e;&#x63;&#x6f;&#x6d;">&#x61;&#110;&#x67;&#117;&#108;&#x61;&#x72;&#64;&#x67;&#111;&#x6f;&#x67;&#x6c;&#101;&#103;&#114;&#111;&#x75;&#112;&#115;&#46;&#x63;&#x6f;&#109;</a></li>
 <li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
 <li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ruby: attr_accessor Kullanımı]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2015/07/03/ruby-attr-accessor-kullanimi/"/>
-    <updated>2015-07-03T15:45:44+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2015/07/03/ruby-attr-accessor-kullanimi</id>
-    <content type="html"><![CDATA[<p>Person adında bir sınıfımızın olduğunu farzedelim:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; NoMethodError: undefined method &#39;name&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>name</code> adında bir metot tanımlamadığımız sürece yukarıdaki gibi hata alacağız.</p>
-
-<p>Metodu tanımlayalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span>
-</span><span class='line'>    <span class="vi">@name</span> <span class="c1">#  instance variable</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; nil</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span> <span class="c1"># =&gt; NoMethodError: undefined method `name=&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>name</code> metodunu tanımladık ancak görüldüğü gibi sadece okuma yapabiliyoruz, herhangi bir değer atayamıyoruz.</p>
-
-<p>İşte bu iki işlemden biri reader (değişkenin değerine erişilmesi) diğeri ise writer (değişkenin değerinin değiştirilmesi) olarak adlandırılır.</p>
-
-<!--more-->
-
-
-<p>Writer metodunu oluşturalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span> <span class="c1"># reader</span>
-</span><span class='line'>    <span class="vi">@name</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">name</span><span class="o">=</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="c1"># writer</span>
-</span><span class='line'>    <span class="vi">@name</span> <span class="o">=</span> <span class="n">str</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Artık reader ve writer metodları kullanarak örnek değişkenin (@name) değerine erişip onu değiştirebiliriz.
-Peki her seferinde bu metodları bu şekilde tanımlayacak mıyız?</p>
-
-<p><strong>Bu işin kolayına bakalım:</strong></p>
-
-<p>Yukarıdaki gibi iki ayrı fonksiyon tanımlamaya gerek yok.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">attr_reader</span> <span class="ss">:name</span>
-</span><span class='line'>  <span class="kp">attr_writer</span> <span class="ss">:name</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Daha kolayına bakalım:</strong></p>
-
-<p>Hem reader hem de writer metodlarının işlevselliğine sahip bir metot:  <code>attr_accessor</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="c1"># =&gt; &quot;Ecmel&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p> <code>attr_accessor :name</code>  reader ve writer metodlarını oluşturmanın yanı sıra bir de @name (instance variable/örnek değişken) oluşturur.</p>
-
-<p>İnstance variable&#8217;ı kullanalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">class</span> <span class="nc">Person</span>
-</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:name</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">say_hello</span>
-</span><span class='line'>    <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Ecmel&quot;</span>
-</span><span class='line'><span class="n">person</span><span class="o">.</span><span class="n">say_hello</span> <span class="c1"># =&gt; &quot;Hello Ecmel&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally</p>
-
-<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_280,w_346/v1457011914/thatsit.png_m778zf.jpg"></p>
 ]]></content>
   </entry>
   
