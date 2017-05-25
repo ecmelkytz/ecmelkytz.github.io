@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-02-27T16:53:09+03:00</updated>
+  <updated>2017-05-25T14:26:03+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails: default_scope kullanmak kötü bir fikir mi?]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2017/03/12/rails-default-scope-kullanmak-kotu-bir-fikir-mi/"/>
+    <updated>2017-03-12T14:27:27+02:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2017/03/12/rails-default-scope-kullanmak-kotu-bir-fikir-mi</id>
+    <content type="html"><![CDATA[<p><code>default_scope</code> belirli bir model üzerinde yapılacak tüm işlemler için varsayılan bir kapsam belirtmemizi sağlayan ActiveRecord metodudur.</p>
+
+<p>Bu scope&#8217;u(kapsamı) modelimizde soft-deletion işlemi yapmak için kullanabiliriz. Soft-delete işlemi için <a href="https://github.com/rubysherpas/paranoia">paranioa</a> kullanmanızı ayrıca öneririm. <a href="http://ecmelkytz.net/blog/2016/04/09/rails-acts-as-paranoid-nedir/">Acts_as_paranoid ile veri silmekten korkmayın</a> başlıklı blog girdimde bundan bahsetmiştim.</p>
+
+<p>Aşağıdaki gibi <code>deleted_on</code> kolonunu kullanarak default bir scope oluşturalım.</p>
+
+<pre><code class="ruby">class Animal &lt; ActiveRecord::Base
+  # Eğer bir veri silindiyse `deleted_on` alanı dolu olacak.
+  default_scope where(deleted_on: nil)
+end
+</code></pre>
+
+<p><strong>Animal</strong> modelinde tanımladığımız <code>default_scope</code> ile silinen kayıtları saklamış ve sadece silinmemiş olan kayıtlarla iş yapmamızı sağlamış olacağız.</p>
+
+<pre><code class="ruby">&gt; Animal.limit(3)
+=&gt; Animal Load (4.2ms)  SELECT `animals`.* FROM `animals` WHERE `animals`.`deleted_on` IS NULL LIMIT 3
+</code></pre>
+
+<p>Bu scope tanımlaması bazı senaryolar için gerçekten kullanışlı bir durum olabilir ancak <code>default_scope</code> kullanımının tehlikeli bir yanı olduğunu da gözardı etmemek gerek. Çünkü bu scope modelimizin (initialization) başlatılmasını etkiler. Yani tüm (all) model kayıtlarımız üzerinde işlem yapmayı engellemiş oluruz.</p>
+
+<p>Bir örnek görelim:</p>
+
+<p><strong>Animal</strong> modelimizin polymorfic bir ilişkiye sahip olduğunu farzedelim ve <code>default_scope</code> ile  her zaman type&#8217;ı <strong>Cat</strong> olacak şekilde filtreleyelim.</p>
+
+<pre><code class="ruby">class Animal ActiveRecord::Base
+  belongs_to :genus, polymorphic: true
+  default_scope where(genus_type: 'Cat')
+end
+</code></pre>
+
+<p>Yeni bir <strong>Animal</strong> oluşturmaya çalıştığımız zaman <code>genus_type</code>&lsquo;ı varsayılan olarak <strong>Cat</strong> olacaktır.</p>
+
+<pre><code class="ruby">&gt; Animal.new
+=&gt; &lt;Animal id: nil, name: nil, genus_id: nil, genus_type: "Cat", created_at: nil, updated_at: nil&gt;
+</code></pre>
+
+<p>Bu tarz yan etkiler bilinmeden/farkına varılmadan kullanılırsa can sıkıcı problemlerin yaşanılması kaçınılmaz olacaktır.</p>
+
+<p>Ayrıca <code>default_scope</code> kullandıktan sonra devam sorgularının yazılmasının da zor olduğunu belirtmek isterim.</p>
+
+<p>Örneğin modelimizde type&#8217;ı <strong>Cat</strong> olmayanları şu şekilde bulmaya çalışalım:</p>
+
+<pre><code class="ruby">$ Animal.where.not(genus_type: 'Cat')
+</code></pre>
+
+<p>Bu query ile istediğimiz sonucu elde edemeyeceğiz. Çünkü default olarak sadece type&#8217;ı <strong>Cat</strong> olanlar baz alınarak query başlatılacaktır. Önceden de bahsettiğim gibi burada initialization&#8217;ı etkilemiş oluyoruz. Peki diğer type&#8217;lara sahip kayıtlara hiç mi ulaşamayacağız? Elbette bunun da bir yolu var. Bunu sağlamak için ek olarak <code>unscope/unscoped</code> kullanmamız gerekecek.</p>
+
+<h4>ActiveRecord kapsamlarını nasıl sileriz?</h4>
+
+<p>Aşağıdaki kapsamlara sahip bir User modelimiz olsun.</p>
+
+<pre><code class="ruby">class User &lt; ActiveRecord::Base
+  scope :active, -&gt; { where(locked: false) }
+  scope :admins, -&gt; { where(role: 'admin') }
+  scope :ordered, -&gt; { order(:name) }
+end
+</code></pre>
+
+<pre><code class="ruby"># Tüm kapsamları kullandık
+$ users = User.active.admins.ordered
+=&gt; SELECT "users".* FROM "users" WHERE "users"."locked" = 'f' AND "users"."role" = 'admin' ORDER BY "users"."name" ASC
+</code></pre>
+
+<p>Kapsamları kaldırmak için <code>unscope</code> ve <code>unscoped</code> metodlarını devreye sokalım:</p>
+
+<pre><code class="ruby"># Tek bir kolon üzerindeki koşulları kaldırmak için
+$ users.unscope(where: :role)
+=&gt; SELECT "users".* FROM "users" WHERE "users"."locked" = 'f' ORDER BY "users"."name" ASC
+
+# Bütün koşulları kaldırmak için
+$ users.unscope(:where)
+=&gt; SELECT "users".* FROM "users" ORDER BY "users"."name" ASC
+
+# Order kaldırmak için
+$ users.unscope(:order)
+=&gt; SELECT "users".* FROM "users" WHERE "users"."locked" = 'f' AND "users"."role" = 'admin'
+
+# Bütün kapsamları kaldırmak için
+$ users.unscoped
+=&gt; SELECT "users".* FROM "users"
+</code></pre>
+
+<p>Bir diğer dikkat etmemiz gereken husus <code>unscoped</code> kullanımı olacak. Çünkü bu query sadece default kapsamları değil tanımlı bütün kapsamları kaldıracaktır. <code>unscoped</code> Rails 3&#8217;den beri mevcut ancak <code>unscope</code> Rails 4 ile geldi.</p>
+
+<p>Vel hasıl-ı kelam kullanacağımız <code>default_scope</code>&lsquo;un kapsamını, uzun vadedeki etkilerini biliyor isek kullanmamızda bir sakınca olmayacaktır. Ancak ekstra atraksiyonlara gerek kalmadan daha maintainable bir yapı için <code>default_scope</code> yerine normal kapsamların kullanılmasının daha doğru bir tercih olacağı kanaatindeyim.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rails: Tab menülerde paginate işlemi]]></title>
@@ -454,176 +547,6 @@
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Eğer request&#8217;te pluck ve select metodlarını kullandıysak ve bu request süresini yarı yarıya düşürmek istiyorsak bu metodların kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails: ActiveSupport Concern Kullanımı]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/"/>
-    <updated>2016-03-25T09:22:23+02:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi</id>
-    <content type="html"><![CDATA[<p>Rails 4 ile gelen ActiveSupport&#8217;un concern modülü  DRY ilkesine aykırı durumları idare etmemizi sağlar. Bazı Rails geliştiricileri concern&#8217;i sistemi daha da karmaşık hale getirdiğini söylese de; Rails kendi concern dizinlerini kaldırmadığı sürece kullanıp kullanmama sorunsalı geliştiricinin kendi inisiyatifine kalmış bir durum olarak ele alıyorum ve gerektiği yerlerde bunu kullanıyorum.</p>
-
-<iframe src="//giphy.com/embed/3ornjQyEX1mSXYoqPu" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
-
-
-
-
-<!--more-->
-
-
-<h3>Controller&#8217;da concern kullanımına bir örnek:</h3>
-
-<p>İki farklı controller&#8217;da aynı metodların aşağıdaki gibi kullanılmakta olduğunu düşünelim.</p>
-
-<p><figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def find_similar_questions</span>
-</span><span class='line'><span class="sr">    &amp;hellip;.</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
-</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  private</span>
-</span><span class='line'><span class="sr">  def merge_similars</span>
-</span><span class='line'><span class="sr">    find_similar_questions</span>
-</span><span class='line'><span class="sr">    find_similar_answers</span>
-</span><span class='line'><span class="sr">    &amp;hellip;</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p><figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="n">before_action</span> <span class="ss">:merge_similars</span><span class="p">,</span> <span class="ss">only</span><span class="p">:</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def find_similar_questions</span>
-</span><span class='line'><span class="sr">    &amp;hellip;.</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">find_similar_answers</span>
-</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  private</span>
-</span><span class='line'><span class="sr">  def merge_similars</span>
-</span><span class='line'><span class="sr">    find_similar_questions</span>
-</span><span class='line'><span class="sr">    find_similar_answers</span>
-</span><span class='line'><span class="sr">    &amp;hellip;.</span>
-</span><span class='line'><span class="sr">  end</span>
-</span><span class='line'><span class="sr">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Bu metodları controller içinde tanımlayıp fonksiyonları tekrarlamak yerine concern ile bu işin nasıl yapılabileceğine bakalım:</p>
-
-<p><figure class='code'><figcaption><span>/controllers/concerns/similarity_analysis.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">SimilarityAnalysis</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt; included do</span>
-</span><span class='line'><span class="sr">    before_action :merge_similars, only: [:show]</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="k">def</span> <span class="nf">find_similar_questions</span>
-</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">end</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;p&gt;  def find_similar_answers</span>
-</span><span class='line'><span class="sr">    &amp;hellip;.</span>
-</span><span class='line'><span class="sr">  end&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="kp">private</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">merge_similars</span>
-</span><span class='line'>    <span class="n">find_similar_questions</span>
-</span><span class='line'>    <span class="n">find_similar_answers</span>
-</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span><span class="o">.</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Bu fonksiyonları kullanabilmek için yapmamız gereken tek şey oluşturduğumuz module&#8217;ı kullanmak istediğimiz controller&#8217;a include etmektir.</p>
-
-<p><figure class='code'><figcaption><span>/controllers/admin/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Admin</span><span class="o">::</span><span class="no">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p><figure class='code'><figcaption><span>/controllers/questions_controller.rb </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">QuestionsController</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="no">ApplicationController</span>
-</span><span class='line'>  <span class="kp">include</span>  <span class="no">SimilarityAnalysis</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Bunun gibi DRY durumlarından kurtulmak için concern&#8217;i model&#8217;de de kullanabiliriz. Model&#8217;de kullanımını görmek için şu <a href="http://blog.uzem.omu.edu.tr/articles/rails-activesupport-concern-kullanimi/">yazıma</a> bakabilirsiniz.</p>
 ]]></content>
   </entry>
   
