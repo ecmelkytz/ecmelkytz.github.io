@@ -142,111 +142,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Bu scope tanımlaması bazı senaryolar için gerçekten kullanışlı bir durum olabilir ancak <code>default_scope</code> kullanımının tehlikeli bir yanı olduğunu da gözardı etmemek gerek. Çünkü bu scope modelimizin (initialization) başlatılmasını etkiler. Yani tüm (all) model kayıtlarımız üzerinde işlem yapmayı engellemiş oluruz.</p>
-
-<p>Bir örnek görelim:</p>
-
-<p><strong>Animal</strong> modelimizin polymorfic bir ilişkiye sahip olduğunu farzedelim ve <code>default_scope</code> ile  her zaman type&#8217;ı <strong>Cat</strong> olacak şekilde filtreleyelim.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Animal</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">belongs_to</span> <span class="ss">:genus</span><span class="p">,</span> <span class="ss">polymorphic</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'>  <span class="n">default_scope</span> <span class="n">where</span><span class="p">(</span><span class="ss">genus_type</span><span class="p">:</span> <span class="s1">&#39;Cat&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Yeni bir <strong>Animal</strong> oluşturmaya çalıştığımız zaman <code>genus_type</code>&lsquo;ı varsayılan olarak <strong>Cat</strong> olacaktır.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&gt;</span> <span class="no">Animal</span><span class="o">.</span><span class="n">new</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="o">&lt;</span><span class="no">Animal</span> <span class="nb">id</span><span class="p">:</span> <span class="kp">nil</span><span class="p">,</span> <span class="nb">name</span><span class="p">:</span> <span class="kp">nil</span><span class="p">,</span> <span class="ss">genus_id</span><span class="p">:</span> <span class="kp">nil</span><span class="p">,</span> <span class="ss">genus_type</span><span class="p">:</span> <span class="s2">&quot;Cat&quot;</span><span class="p">,</span> <span class="ss">created_at</span><span class="p">:</span> <span class="kp">nil</span><span class="p">,</span> <span class="ss">updated_at</span><span class="p">:</span> <span class="kp">nil</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bu tarz yan etkiler bilinmeden/farkına varılmadan kullanılırsa can sıkıcı problemlerin yaşanılması kaçınılmaz olacaktır.</p>
-
-<p>Ayrıca <code>default_scope</code> kullandıktan sonra devam sorgularının yazılmasının da zor olduğunu belirtmek isterim.</p>
-
-<p>Örneğin modelimizde type&#8217;ı <strong>Cat</strong> olmayanları şu şekilde bulmaya çalışalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span> <span class="no">Animal</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">not</span><span class="p">(</span><span class="ss">genus_type</span><span class="p">:</span> <span class="s1">&#39;Cat&#39;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bu query ile istediğimiz sonucu elde edemeyeceğiz. Çünkü default olarak sadece type&#8217;ı <strong>Cat</strong> olanlar baz alınarak query başlatılacaktır. Önceden de bahsettiğim gibi burada initialization&#8217;ı etkilemiş oluyoruz. Peki diğer type&#8217;lara sahip kayıtlara hiç mi ulaşamayacağız? Elbette bunun da bir yolu var. Bunu sağlamak için ek olarak <code>unscope/unscoped</code> kullanmamız gerekecek.</p>
-
-<h4>ActiveRecord kapsamlarını nasıl sileriz?</h4>
-
-<p>Aşağıdaki kapsamlara sahip bir User modelimiz olsun.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:active</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">locked</span><span class="p">:</span> <span class="kp">false</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:admins</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">role</span><span class="p">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">scope</span> <span class="ss">:ordered</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">order</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Tüm kapsamları kullandık</span>
-</span><span class='line'><span class="err">$</span> <span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">admins</span><span class="o">.</span><span class="n">ordered</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="n">*</span> <span class="no">FROM</span> <span class="s2">&quot;users&quot;</span> <span class="no">WHERE</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;locked&quot;</span> <span class="o">=</span> <span class="s1">&#39;f&#39;</span> <span class="no">AND</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;role&quot;</span> <span class="o">=</span> <span class="s1">&#39;admin&#39;</span> <span class="no">ORDER</span> <span class="no">BY</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;name&quot;</span> <span class="no">ASC</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Kapsamları kaldırmak için <code>unscope</code> ve <code>unscoped</code> metodlarını devreye sokalım:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Tek bir kolon üzerindeki koşulları kaldırmak için</span>
-</span><span class='line'><span class="err">$</span> <span class="n">users</span><span class="o">.</span><span class="n">unscope</span><span class="p">(</span><span class="ss">where</span><span class="p">:</span> <span class="ss">:role</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="n">*</span> <span class="no">FROM</span> <span class="s2">&quot;users&quot;</span> <span class="no">WHERE</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;locked&quot;</span> <span class="o">=</span> <span class="s1">&#39;f&#39;</span> <span class="no">ORDER</span> <span class="no">BY</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;name&quot;</span> <span class="no">ASC</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Bütün koşulları kaldırmak için</span>
-</span><span class='line'><span class="err">$</span> <span class="n">users</span><span class="o">.</span><span class="n">unscope</span><span class="p">(</span><span class="ss">:where</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="n">*</span> <span class="no">FROM</span> <span class="s2">&quot;users&quot;</span> <span class="no">ORDER</span> <span class="no">BY</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;name&quot;</span> <span class="no">ASC</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Order kaldırmak için</span>
-</span><span class='line'><span class="err">$</span> <span class="n">users</span><span class="o">.</span><span class="n">unscope</span><span class="p">(</span><span class="ss">:order</span><span class="p">)</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="n">*</span> <span class="no">FROM</span> <span class="s2">&quot;users&quot;</span> <span class="no">WHERE</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;locked&quot;</span> <span class="o">=</span> <span class="s1">&#39;f&#39;</span> <span class="no">AND</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="s2">&quot;role&quot;</span> <span class="o">=</span> <span class="s1">&#39;admin&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Bütün kapsamları kaldırmak için</span>
-</span><span class='line'><span class="err">$</span> <span class="n">users</span><span class="o">.</span><span class="n">unscoped</span>
-</span><span class='line'><span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">&quot;users&quot;</span><span class="o">.</span><span class="n">*</span> <span class="no">FROM</span> <span class="s2">&quot;users&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Bir diğer dikkat etmemiz gereken husus <code>unscoped</code> kullanımı olacak. Çünkü bu query sadece default kapsamları değil tanımlı bütün kapsamları kaldıracaktır. <code>unscoped</code> Rails 3&#8217;den beri mevcut ancak <code>unscope</code> Rails 4 ile geldi.</p>
-
-<p>Vel hasıl-ı kelam kullanacağımız <code>default_scope</code>&lsquo;un kapsamını, uzun vadedeki etkilerini biliyor isek kullanmamızda bir sakınca olmayacaktır. Ancak ekstra atraksiyonlara gerek kalmadan daha maintainable bir yapı için <code>default_scope</code> yerine normal kapsamların kullanılmasının daha doğru bir tercih olacağı kanaatindeyim.</p>
 </div>
  
+ 
+   <footer>
+     <a rel="full-article" href="/blog/2017/03/12/rails-default-scope-kullanmak-kotu-bir-fikir-mi/">Devamı &rarr;</a>
+   </footer>
  
 
 
