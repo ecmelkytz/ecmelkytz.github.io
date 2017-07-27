@@ -4,7 +4,7 @@
   <title><![CDATA[Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-06-04T12:36:24+03:00</updated>
+  <updated>2017-07-27T13:33:32+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -169,64 +169,6 @@ Yanmaya pervane bir sözümüz mü olmasın?</br></p>
 Olmaya cihanda bir kâmı nâr olan</br>
 Bir seni içre öte bir beri yoktan da var olan</br>
 Yanmaya pervane bir gönlümüz mü olmasın?</br></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Sen Gittin Gideli]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2016/11/11/sen-gittin-gideli/"/>
-    <updated>2016-11-11T10:03:41+02:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2016/11/11/sen-gittin-gideli</id>
-    <content type="html"><![CDATA[<p>Gece ile hüzünleri birbirine sevdaladığımdan beri<br/>
-öğrenmiştim gözyaşlarının yanan bir ruhu nasıl alevlendirdiğini</br>
-ama sen gittin gideli</br>
-gündüzlerime de kara çaldılar anne.</p>
-
-<p>Meşru bir kılıf buldular aldatmayı sarıp sarmalayacak,</br>
-sarıp sarmaladılar anne</br>
-ve öyle bir günde geldiler ki bana</br>
-gönlümdeki çağlayanları kurutacak</br>
-hani o umutlarımı yeşertmekte beslediğim çağlayanları,</br>
-7 iklimi 4 mevsimle kucaklattığım yerde yetişen o nazenin çiçekleri&hellip;</p>
-
-<p>Baharı yaşattığım düşüncelerime güzü getirip</br>
-bir göçmen kuşunun kanadında uçurduğum huzuru çaldılar benden anne.</br>
-Çaldılar yokluğunun sancısına çizdiğim hududu</br>
-ve bir gamzelik tebessüm bile bırakmadılar.</p>
-
-<p>Umudun gölgesinde sakladığım benden öte bir beni işte böyle kopardılar anne</br>
-Öksüzlüğümün üzerine yetimliği boca edip</br>
-ağladıklarımın üzerinden bir kez daha geçirttiler beni</br>
-Hayat devam ediyor nasılsa deyip set çektiğim yaralarımı yeniden eşelettiler bana</br>
-hani var ya ara ara yokladığım düşünce çukurları&hellip;</p>
-
-<p>İşte beni tedavisi hiç bitmeyecek yaraların derinliğine böyle hapsettiler.</br>
-ve ben böyle öğrendim hazan güllerinin kokusunu</br>
-avuçladığım destedeki dikenlerde buldum sevdiklerimi</br>
-O zaman anladım anne</br>
-En büyük acıları insana sadece en yakınlarının yaşatabileceğini</br>
-ve insanın sevgiden bir paye biçmediklerinin hüznünde de bir yer etmediğini&hellip;</br>
-ama unuttular anne</br>
-Ne olursa olsun gönlümün ihanete geçit vermeyeceğini unuttular</br>
-İçinde ne sakladığımı bilmeden sapladılar yüreğimdeki yerlerine yalan dünyanın sahte gerçeklerini</br>
-ama daha kötüsü,</br>
-benim de bir yürek taşıdığımı unuttular anne</br>
-unuttular&hellip;</p>
-
-<p>Buraya her baktığımda etmeseydin böyle sözler diyeceğim,</br>
-hadi yazdın da bari burada durmasaydı bunlar diyeceğim biliyorum.</br>
-Biliyorum çünkü fersah fersah uzaklık estirecekler bana&hellip;</p>
-
-<p>Son olarak Üstad Necip Fazıl&#8217;ın o güzide sözleriyle vadeleri de tamamlayalım.</p>
-
-<blockquote><p>Anne girdin düşüme.</br>
-Yorganın olsun duam;</br>
-Mezarında üşüme.</p>
-
-<p>Anlamam, anlatamam.</br>
-Düşen düştü peşime,</br>
-Artık vadeler tamam&hellip;</br>
-NFK</p></blockquote>
 ]]></content>
   </entry>
   
@@ -2571,6 +2513,71 @@ Yeri gelmişkende belirteyim,  <code>ng-app</code>&lsquo;in kullanımı W3C stan
 <p><code>$watch</code>’lar bitene kadar bu çevirim devam eder. $digest loop bittiğinde değişiklik var ise DOM&#8217;da değişiklik yapılır.</p>
 
 <p>Uzun uzadıya elimden geldiğince anlatmaya çalıştım. Velhasıl-ı kelam faydalı olması dileğiyle&hellip;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJS Nedir?]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/"/>
+    <updated>2015-08-07T22:31:00+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir</id>
+    <content type="html"><![CDATA[<p>Google&#8217;da çalışan Misko Hevery&#8217;nin 2009 yılında şahsi bir projesi olarak başlayan AngularJS şuan açık kaynak olarak yayınlanmakta olup; yüzlerce geliştiriciye ve binlerce kullanıcıya sahip devasa bir  frontend geliştirme frameworklerinden biridir. Adındanda anlaşılacağı üzere gelişmiş bir javascript kütüphanesidir.</p>
+
+<p>Aslına bakarsanız AngularJS ile Javascript ve Jquery&#8217;nin yaptığı herşeyi yapabilirsiniz.  Bu noktada Anguları tercih etme meselesine gelirsek; kolaylığı, custom directive özelliği, az kod ile çok iş yapılabilmesi (“Write less do more” her ne kadar Jquery sloganı olsada..), hızlı response sağlaması vs. şeklinde sayılabilecek bir çok güzelliği barındırmaktadır. Angular kullanmak için daha fazla neden arıyorsanız Murat Çorlu&#8217;nun yazdığı <a href="http://muratcorlu.com/post/angularjs-kullanmak-icin-10-neden/">yazıyı</a> okumanızı tavsiye ederim.</p>
+
+<p><img class="center" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRIgkmHJXLPra2-SCPAmtpn6xXWSwcvVOnrLc9hn_wV3ntJH6RZ1g"></p>
+
+<p>Angularjs deyince hepsi olmamakla birlikte akla gelebilecek temel unsurlar yukarıdaki resimde mevcuttur. Hepsinden kabaca söz edip daha detaylı bilgileri başka blog girdilerinde yazmayı düşünüyorum.</p>
+
+<!--more-->
+
+
+<ul>
+<li>Angularda two way binding dediğimiz şey çift yönlü veri bağlama yani Model&#8217;deki değişiklikleri View&#8217;e, View&#8217;deki değişiklikleri Model&#8217;e aktarma işlemidir. Bir de one time binding var. Bunların izahını sonraya bırakıyorum.</li>
+<li>Angularda Template dediğimiz şeyler aslında viewlerimizdir.</li>
+<li>Bir sayfadan başka sayfaya geçildiğinde geri işlemi için eski state&#8217;i tutan bir hafızaya (geçmiş bilgisine) ihtiyaç vardır bunu  History mekanızması sağlar.</li>
+<li>Factories, Services ve yukarıdaki resimde olmayan Provider Angular&#8217;da servis oluşturma komponentleridir.</li>
+<li>Angular bünyesinde Jquery&#8217;nin Lite versiyonu vardır. Bunu jqLite modülü ile sağlar. Eğer projenizde jquery dosyaları yok ise Angular jqlite modülünü kullanacaktır. Aksi takdirde sistemde yüklü olan jquery dosyasını kullanır.</li>
+<li>MVC bir design patterndir. Angular ilk başlarda MVC mantığı ile geliştirilmiş ancak daha sonrasında MVVM design patterni kullanılmıştır.  Buradaki VM(ViewModel) aynı zamanda angulardaki $scope servisine denkttir.</li>
+<li>Angularda Directive&#8217;ler dışında DOM&#8217;a müdahale etmemek gerekiyor. Directive deyince DOM manipülasyonlarının yoğun olarak yapıldığı yer aklımıza gelmeli. Yapısal directiveler anguların kendi bünyesindeki  directivelerdir (ng-controller, ng-if, ng-show vs.). Birde kendimizin oluşturabileceği custom directiveler vardır. Custom directiveler ile kendi Html etiketimizi oluşturup Html&#8217;e yeni özellikler ekleyebiliriz.</li>
+<li>Angular form validasyonlarında benimde severek kullandığım validasyon mekanizmasına sahiptir. Sunucuya gitmeden client tarafında verileri validasyona tabi tutuyoruz.</li>
+<li><p>Dependency Injection ise uygulamanın bağımlılıklarının belirtilmesidir. Mesela bir modulde third party kütüphane kullanma ihtiyacı var ise ya da farklı bir modul ile ilişkili ise bunları dependecy olarak module eklememiz gerekmektedir.</p></li>
+<li><p>Angular ile Single Page Application(SPA) oluşturabilirsiniz. SPA imkanıyla beraber angular route kaynaklı bazı SEO problemleri yaşanabilir. Angularda route yapısında # karakteri kullanılır.</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#/users
+</span><span class='line'>#/users/new</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Google # işaretinin gerçek bir adres karakteri olmadığını bildiği için bu karakterden sonra ne yazıldıysa yazılsın onu indexlemiyor. <img alt="pensive" src="http://ecmelkytz.github.com/images/emoji/unicode/1f614.png" class="emoji" /></p>
+
+<p>Yukarıdaki bilgiler detaya inmeden kabaca üstünden geçilerek yazılmıştır. Bu sayfadaki bütün bilgilerin ayrıntısını ilerleyen zamanlarda yazmayı düşünmekteyim.</p>
+
+<p>Son olarak;
+Angular hızlı response oluşturur dedik. Peki nasıl?</p>
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222532/browser1_pyrbaa.png"></p>
+
+<p>Bir web sitesine girmeye çalıştığınızı düşünün. İlk olarak browserdan server&#8217;a URL isteğinde bulunuyoruz. Server bize cevap olarak web sayfasını ve assets (Javascript vs.)&lsquo;i döndürüyor. Daha sonra kullanıcı herhangi bir linke tıkladığında, server&#8217;a yine bir istek gidiyor ve dönen cevap ilk dönen cevap ile aynı oluyor. Yani tekrar sayfanın tamamı ve assets yükleniyor.</p>
+
+<p>Birde AngularJS ile bu iş nasıl oluyor ona bakalım.</p>
+
+<p><img class="center" src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_350,w_450/v1448222636/browser2_fqhyc3.png"></p>
+
+<p>Sayfa ilk yüklendiğinde geleneksel senaryo ile aynı responsu alacağız. Ancak kullanıcı bir linke tıkladığında veya başka bir yeni istekte bulunduğunda diğerinde olduğu gibi bütün bir sayfayı ve assets&#8217;i yüklemiyor. Önceden oluşturduğu veriden istenilen veriyi JSON data olarak çekiyor. Dolayısıyla istemci-sunucu trafiğini azaltmış olup hızlı bir cevap elde etmiş oluyoruz.</p>
+
+<h3>Faydalı olabilecek linkler</h3>
+
+<ul>
+<li>Projenin github üzerinden son hali : <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js</a></li>
+<li>Mail listesi: <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#97;&#110;&#103;&#117;&#108;&#97;&#114;&#64;&#x67;&#111;&#111;&#x67;&#108;&#x65;&#103;&#x72;&#x6f;&#x75;&#112;&#115;&#46;&#99;&#x6f;&#109;">&#x61;&#110;&#x67;&#x75;&#108;&#97;&#x72;&#64;&#103;&#x6f;&#x6f;&#103;&#x6c;&#x65;&#x67;&#x72;&#x6f;&#x75;&#112;&#115;&#46;&#99;&#x6f;&#x6d;</a></li>
+<li>Blog sayfası: <a href="http://blog.angularjs.org">http://blog.angularjs.org</a></li>
+<li>Bütün versiyonları: <a href="https://code.angularjs.org">https://code.angularjs.org</a></li>
+</ul>
+
 ]]></content>
   </entry>
   
