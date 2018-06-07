@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2017-07-27T13:33:32+03:00</updated>
+  <updated>2018-06-07T11:19:44+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -14,9 +14,209 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Rails: ActiveStorage]]></title>
+    <link href="http://ecmelkytz.github.com/blog/2018/05/28/rails-activestorage/"/>
+    <updated>2018-05-28T11:16:46+03:00</updated>
+    <id>http://ecmelkytz.github.com/blog/2018/05/28/rails-activestorage</id>
+    <content type="html"><![CDATA[<h2>1. ActiveStorage Nedir?</h2>
+
+<p>Rails 5.2 ile gelen ActiveStorage özelliği, dosyaları Amazon S3, Google Cloud, Microsoft Azure Cloud gibi cloud bir servise upload etmemizi sağlar.</p>
+
+<h2>2. Kurulum</h2>
+
+<p><code>rails active_storage:install</code></p>
+
+<p>Bu çalıştırılan kod <code>active_storage_blobs</code> ve <code>active_storage_attachments</code> tablolarını oluşturan bir migrate dosyası ve servis konfigürasyonları için config altında <strong>storage.yml</strong> dosyası oluşturur.</p>
+
+<p align="center"><img src="http://drive.google.com/uc?export=view&id=1_yLpznYWjIT29iiWDXgKgd3zEXW8gdR2"/></p>
+
+
+<h2>3. ActiveStorage&#8217;ın Temel Sınıfları</h2>
+
+<ul>
+<li>ActiveStorage::Service</li>
+<li>ActiveStorage::Blob</li>
+<li>ActiveStorage::Attachment</li>
+</ul>
+
+
+<h3>3.1 ActiveStorage::Service</h3>
+
+<p><strong>Service</strong> sadece baytların hareketinden sorumlu kısımdır. Dosyanın baytlarını bellekten ve browserdan alıp disk&#8217;e taşır.</p>
+
+<pre><code class="ruby">class ActiveStorage::Service
+  def upload(key, io, checksum: nil)
+    raise NotImplementedError
+  end
+  def download(key)
+    raise NotImplementedError
+  end
+end
+</code></pre>
+
+<p>ActiveStorage::Service aslında bir patterndir. Sadece bir tane service değil, birden fazla subclass var. Yani ActiveStorage::Service&#8217;i direk çağırıp metodlarını kullanamayız. Onun subclass&#8217;larından biriyle çağırabiliriz. Tüm subclass&#8217;larda upload ve download metodu mevcut çünkü her servis kendi gerçeklemesini farklı bir yol ile yapmaktadır.</p>
+
+<p>Disk alt sınıfı:  <code>class ActiveStorage::Service::DiskService &lt; Service</code></p>
+
+<p>S3 alt sınıf: <code>class ActiveStorage::Service::S3Service &lt; Service</code></p>
+
+<p>Farklı bir servis kullanmak istiyorsak bu pattern doğrultusunda oluşturup kullanabiliriz. ActiveStorage şu an Disk, Amazon S3, Microsoft Azure Storage, Google Cloud Storage, Mirror servislerini desteklemektedir.</p>
+
+<h4>3.1.1 Yeni Servis Konfigürasyonu</h4>
+
+<p><strong>storage.yml</strong> içerisinde default servis olarak Disk kullanılmaktadır. Hangi servisi kullanmak istiyorsak onu belirtmeliyiz. Örneğin Amazon S3 servisini eklemek için aşağıdaki gibi bir düzenleme yapmamız ve <a href="https://github.com/aws/aws-sdk-ruby">aws-sdk-s3</a> gem&#8217;ini Gemfile&#8217;a eklememiz gerekmektedir.</p>
+
+<pre><code class="yml">local:
+  service: Disk
+  root: &lt;%= Rails.root.join('storage') %&gt;
+
+amazon:
+  service: S3
+  access_key_id: ""
+  secret_access_key: ""
+  region: ""
+  bucket: ""
+</code></pre>
+
+<h4>3.1.2 Mirror Servis Özelliği</h4>
+
+<p>Birden fazla servisi senkronize olarak mirror servis olarak kullanarak yedekli çalışabiliriz. Bir dosya eklendiğinde veya silindiğinde bütün mirror edilmiş servislere aynı anda yansıtılır. Bu özellik production&#8217;da servisler arası geçişi kolaylaştırmak için kullanılabilir.</p>
+
+<p>Mirror servis örneği:
+&#8220;`yml
+s3_west_coast:
+  service: S3
+  access_key_id: &ldquo;&rdquo;
+  secret_access_key: &ldquo;&rdquo;
+  &hellip;</p>
+
+<p>s3_east_coast:
+  service: S3
+  access_key_id: &ldquo;&rdquo;
+  secret_access_key: &ldquo;&rdquo;
+  &hellip;</p>
+
+<p>production:
+  service: Mirror
+  primary: s3_east_coast
+  mirrors:
+    - s3_west_coast
+&#8220;`
+Dosyalar primary servisden sunulur.</p>
+
+<h3>3.2 ActiveStorage::Blob</h3>
+
+<p><strong>Blob</strong>; dosya adı,  content-type gibi metadataların tutulduğu yerdir. Dosyanın aslı depolama servisinde ya da diskte saklanır. Her blob’un depolama servisinde identifier key&#8217;i vardır.</p>
+
+<pre><code class="ruby">create_table :active_storage_blobs do |t|
+  t.string   :key,        null: false
+  t.string   :filename,   null: false
+  t.string   :content_type
+  t.text     :metadata
+  t.bigint   :byte_size,  null: false
+  t.string   :checksum,   null: false
+  t.datetime :created_at, null: false
+
+  t.index [ :key ], unique: true
+end
+</code></pre>
+
+<h3>3.3  ActiveStorage::Attachment</h3>
+
+<p><strong>Attachment</strong>, blob ile model arasında bağlantıyı sağlar. Bir blob birden fazla modelle bağlantılı olabilir.</p>
+
+<pre><code class="ruby">create_table :active_storage_attachments do |t|
+  t.string     :name,     null: false
+  t.references :record,   null: false, polymorphic: true, index: false
+  t.references :blob,     null: false
+  t.datetime :created_at, null: false
+
+  t.index [ :record_type, :record_id, :name, :blob_id ], name: "index_active_storage_attachments_uniqueness", unique: true
+end
+</code></pre>
+
+<h2>4. Nasıl dosya eklenir?</h2>
+
+<p><code>Car</code> adında bir modeliniz var diyelim ve araba resimlerini tutmak için dosya upload etmek istiyorsunuz. O halde yapacağınız ilk iş bir migration dosyası ile modelinize resimleri tutacağınız yeni bir kolon eklemeniz olacaktır. Bu upload yapmak istediğiniz her model için geçerlidir.</p>
+
+<p>ActiveStorage ise diğer dosya upload çözümlerinden biraz farklı çalışır. ActiveStorage&#8217;da modelinize yeni bir field eklemeye gerek yoktur. Dosya ile ilgili bütün bilgiler activestorage install edilirken oluşturulan <code>blobs</code> ve <code>attachments</code> tablolarında tutulmaktadır.</p>
+
+<h3>4.1 Bir dosya attach etmek için yapılması gerekenler</h3>
+
+<pre><code class="ruby">class Car &lt; ApplicationRecord
+  has_one_attached :image
+end
+
+# strong_parameters
+params.require(:car).permit(:name, :image)
+</code></pre>
+
+<h3>4.2 Birden fazla dosya attach etmek için yapılması gerekenler</h3>
+
+<pre><code class="ruby">class Car &lt; ApplicationRecord
+  has_many_attached :images
+end
+
+# strong_parameters
+params.require(:car).permit(:name, images: [])
+</code></pre>
+
+<h2>5. Transformation İşlemleri</h2>
+
+<p>Transforming işlemcilerin(processor) destekleği metodlar ölçüsünde bloblar üzerinde resimlerin varyasyonlarını oluşturabiliriz. Default processor olarak MiniMagick kullanılmaktadır ancak <a href="https://www.rubydoc.info/gems/ruby-vips/Vips/Image">Vips</a>&lsquo;de kullanılabilir.</p>
+
+<p>Biçimlendirmeyi etkinleştirmek için <a href="https://github.com/janko-m/image_processing">image_processing</a> gemi kullanılmaktadır. Bununla ilgili <a href="https://github.com/rails/rails/pull/32471">pull request</a>.
+<code>
+gem 'image_processing', '~&gt; 1.2'
+</code>
+Aşağıdaki satır yorumlandığı zaman bir defaya mahsus orijinal blob&#8217;un biçimlendirilmiş halinin URL&#8217;i oluşturulur ve dosyalarınız nerede tutuluyorsa disk/cloud oraya kaydedilir.</p>
+
+<pre><code class="erb">&lt;%= image_tag @cat.image.variant(resize: "100x100") %&gt;
+</code></pre>
+
+<h2>6. Direk Upload</h2>
+
+<p>ActiveStorage bir ruby gemi olmasının yanında bünyesinde javascript kütüphanesi de barındırır. Dosyalarımızı Rails uygulamasına değil de direk cloud bir servise upload etmek istediğimiz zaman bu javascript kodları devreye girmektedir.</p>
+
+<p>Blob oluşurken bir identifier key üretilir ve dosya bu key ile cloud servise upload edilir. Resme tekrar ulaşmak istediğimizde bu key ile bağlantı kurulup erişilmektedir. Direk upload işleminde blob oluşturulma ve resmin store edilme sıralamasında değişiklik olur.</p>
+
+<h3>Direk upload işlemi için</h3>
+
+<pre><code class="erb">&lt;%= form.file_field :images, multiple: true, direct_upload: true %&gt;
+</code></pre>
+
+<h2>7. Tartışma</h2>
+
+<p>Rails dosya upload işlemleri için <a href="https://github.com/carrierwaveuploader/carrierwave">carrierview</a>, <a href="https://github.com/thoughtbot/paperclipcarrierview">paperclip</a>, <a href="https://github.com/refile/refile">refine</a> gibi bir çok güzel kütüphaneye sahip. Hepsinin kendi içinde farklı yaklaşımları var. Doğru bir tercih için ihtiyaçlar belirlenmeli ve kütüphanelerin özellik setine bakılarak bir seçim yapılmalıdır.</p>
+
+<p>Paperclip geliştiricileri artık Rails&#8217;in kendi upload çözümü olan ActiveStorage&#8217;ın kullanımını tavsiye ediyor. Paperclip ile ActiveStorage&#8217;ı karşılaştıracak olursak dosya validasyonları konusunda ActiveStorage&#8217;ın şu an için güzel bir çözümü yok. Bununla ilgili <a href="https://github.com/musaffa/file_validators">file_validators</a> gibi 3rd party çözüm önerileri var ya da custom validasyon yazılması gerekiyor.</p>
+
+<p>&ldquo;ActiveStrorage&#8217;ı kullanalım mı?, ActiveStorage&#8217;a geçiş yapalım mı?&rdquo; tarzında sorulara araştırmalarım sonucunda şöyle bir cevap elde ettim diyebilirim:</p>
+
+<blockquote><p>Uygulamanızda halihazırda kullandığınız bir upload çözümü var ve siz bundan memnunsanız ActiveStorage&#8217;a geçiş yapmanız için değerli bir sebebiniz yok demektir. Böyle bir durumda, ActiveStrorage&#8217;da bulunan bir özelliği kullanmak istiyorsanız geçiş yapabilirsiniz. Mirror servis özelliği gibi. Yani  başka bir upload çözümüne geçiş yapmayı düşünüyorsanız bunu kullanmak istediğiniz özellik bazında karar verin.</p>
+
+<p>Eğer yeni bir uygulamaya başlıyorsanız ActiveStorage&#8217;ı deneyin.</p></blockquote>
+
+<h2>8. Kaynakça</h2>
+
+<ul>
+<li><a href="http://guides.rubyonrails.org/active_storage_overview.html">http://guides.rubyonrails.org/active_storage_overview.html</a></li>
+<li><a href="https://prograils.com/posts/rails-5-2-active-storage-new-approach-to-file-uploads">https://prograils.com/posts/rails-5-2-active-storage-new-approach-to-file-uploads</a></li>
+<li><a href="https://skillsmatter.com/skillscasts/11458-introduction-to-active-storage">https://skillsmatter.com/skillscasts/11458-introduction-to-active-storage</a></li>
+<li><a href="https://www.youtube.com/watch?v=-_w4uqoVSpw">RailsConf 2018: Inside Active Storage</a></li>
+<li><a href="https://www.engineyard.com/blog/active-storage">https://www.engineyard.com/blog/active-storage</a></li>
+<li><a href="http://www.akitaonrails.com/2017/07/07/upcoming-built-in-upload-solution-for-rails-5-2-activestorage">http://www.akitaonrails.com/2017/07/07/upcoming-built-in-upload-solution-for-rails-5-2-activestorage</a></li>
+<li><a href="https://www.reddit.com/r/rails/comments/8gif2j/paperclip_is_dead_time_to_start_using">https://www.reddit.com/r/rails/comments/8gif2j/paperclip_is_dead_time_to_start_using</a></li>
+<li><a href="http://api.rubyonrails.org/v5.2.0/">http://api.rubyonrails.org/v5.2.0/</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Rails: default_scope kullanmak kötü bir fikir mi?]]></title>
     <link href="http://ecmelkytz.github.com/blog/2017/03/12/rails-default-scope-kullanmak-kotu-bir-fikir-mi/"/>
-    <updated>2017-03-12T14:27:27+02:00</updated>
+    <updated>2017-03-12T15:27:27+03:00</updated>
     <id>http://ecmelkytz.github.com/blog/2017/03/12/rails-default-scope-kullanmak-kotu-bir-fikir-mi</id>
     <content type="html"><![CDATA[<p><code>default_scope</code> belirli bir model üzerinde yapılacak tüm işlemler için varsayılan bir kapsam belirtmemizi sağlayan ActiveRecord metodudur.</p>
 
@@ -493,63 +693,6 @@ $ users.unscoped
 </span></code></pre></td></tr></table></div></figure></p>
 
 <p>Callback&#8217;ler ile kullanımı ve  acts_as_paranoid hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rails: ActiveRecord ile ilgili ufak bir sır]]></title>
-    <link href="http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/"/>
-    <updated>2016-04-05T11:06:13+03:00</updated>
-    <id>http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir</id>
-    <content type="html"><![CDATA[<p>Bu yazımda ActiveRecord&#8217;un bizden sakladığı ufak bir sırra ve bunun performans olarak yansımalarının neler olduğuna değineceğim.</p>
-
-<p>Bu sır, ActiverRecord&#8217;un bize sorguların(queries) ne kadar sürede tamamlandığını tam anlamıyla söylememesidir.</p>
-
-<p>Nasıl mı? Basit bir örnek üzerinde görelim. Veritabanında yaklaşık 13000 user nesnemizin (object) olduğunu ve bunları <code>all</code> metodu ile çağırdığımızı düşünelim.</p>
-
-<!--more-->
-
-
-<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="sr">&lt;h1&gt;=&gt; User Load (32.0ms)  SELECT &lt;code&gt;users&lt;/</span><span class="n">code</span><span class="o">&gt;.</span><span class="n">*</span> <span class="no">FROM</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">users</span><span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;=&gt;</span> <span class="o">[</span><span class="c1">#&lt;User id: 5, ... &gt;, #&lt;User id: 6, ... &gt;, #&lt;User id: 7, ... &gt;, &amp;hellip; ]&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>ActiveRecord&#8217;un bu hinliğini bilmeyen biri yukarıdaki query için geçen sürenin 32.0ms olduğunu düşünecektir. Ancak ActiveRecord burada bize tam anlamıyla doğruyu söylemiyor. Çünkü bu süre bizim object&#8217;lerimizin ne kadar sürede oluşturulduğunu içermiyor. O halde Benchmark ile bu query&#8217;nin gerçekte ne kadar maliyeti olduğunu bulalım.</p>
-
-<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Benchmark</span><span class="o">.</span><span class="n">measure</span> <span class="p">{</span> <span class="no">User</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">to_a</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">user</span>      <span class="nb">system</span>      <span class="n">total</span>      <span class="n">real</span>
-</span><span class='line'><span class="mi">0</span><span class="o">.</span><span class="mi">310000</span>   <span class="mi">0</span><span class="o">.</span><span class="mo">060000</span>   <span class="mi">0</span><span class="o">.</span><span class="mi">370000</span> <span class="p">(</span>  <span class="mi">0</span><span class="o">.</span><span class="mi">387782</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Toplam(total) süreye bakarsak bu query&#8217;nin harcadığı gerçek süre 370.0ms. Bu süre ise bize diğer süre ile arasındaki farkın 10 kattan daha fazla olduğunu göstermektedir. Geçen sürenin çoğunluğu ActiveRecord nesnelerinin oluşturulmasında kullanılır.</p>
-
-<p>ActiveRecord query sürelerini daha yakından inceleyerek performans konusunda biraz iyileştirme yapabilmemiz mümkün.</p>
-
-<p>Aşağıdaki response&#8217;un görünenden daha uzun sürede tamamlanacağını artık söyleyebiliriz.</p>
-
-<p><figure class='code'><figcaption><span>Terminal </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Completed</span> <span class="mi">200</span> <span class="no">OK</span> <span class="k">in</span> <span class="mi">669</span><span class="n">ms</span> <span class="p">(</span><span class="ss">Views</span><span class="p">:</span> <span class="mi">608</span><span class="o">.</span><span class="mi">3</span><span class="n">ms</span> <span class="o">|</span> <span class="ss">ActiveRecord</span><span class="p">:</span> <span class="mi">43</span><span class="o">.</span><span class="mi">0</span><span class="n">ms</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<p>Eğer request&#8217;te pluck ve select metodlarını kullandıysak ve bu request süresini yarı yarıya düşürmek istiyorsak bu metodların kullanımına dikkat etmemiz gerekmektedir. Nasıl dikkat etmeniz gerektiğini <a href="http://ecmelkytz.github.io/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/">Select ve Pluck metodları arasındaki fark nedir?</a> başlıklı blog girdimde bulabilirsiniz.</p>
 ]]></content>
   </entry>
   
