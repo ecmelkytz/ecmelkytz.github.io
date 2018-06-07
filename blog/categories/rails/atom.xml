@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rails | Ecmel Kaytazoğlu]]></title>
   <link href="http://ecmelkytz.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://ecmelkytz.github.com/"/>
-  <updated>2018-06-07T11:19:44+03:00</updated>
+  <updated>2018-06-07T11:25:18+03:00</updated>
   <id>http://ecmelkytz.github.com/</id>
   <author>
     <name><![CDATA[Ecmel Kaytazoğlu]]></name>
@@ -54,13 +54,16 @@
 end
 </code></pre>
 
-<p>ActiveStorage::Service aslında bir patterndir. Sadece bir tane service değil, birden fazla subclass var. Yani ActiveStorage::Service&#8217;i direk çağırıp metodlarını kullanamayız. Onun subclass&#8217;larından biriyle çağırabiliriz. Tüm subclass&#8217;larda upload ve download metodu mevcut çünkü her servis kendi gerçeklemesini farklı bir yol ile yapmaktadır.</p>
+<p>ActiveStorage::Service aslında bir patterndir. Sadece bir tane service değil, birden fazla subclass var. Yani ActiveStorage::Service&#8217;i direk çağırıp <strong>upload/download</strong> metodlarını kullanamayız. Onun subclass&#8217;larından biriyle çağırabiliriz. Tüm subclass&#8217;larda upload ve download metodu mevcut çünkü her servis kendi gerçeklemesini farklı bir yol ile yapmaktadır.</p>
 
 <p>Disk alt sınıfı:  <code>class ActiveStorage::Service::DiskService &lt; Service</code></p>
 
 <p>S3 alt sınıf: <code>class ActiveStorage::Service::S3Service &lt; Service</code></p>
 
 <p>Farklı bir servis kullanmak istiyorsak bu pattern doğrultusunda oluşturup kullanabiliriz. ActiveStorage şu an Disk, Amazon S3, Microsoft Azure Storage, Google Cloud Storage, Mirror servislerini desteklemektedir.</p>
+
+<!--more-->
+
 
 <h4>3.1.1 Yeni Servis Konfigürasyonu</h4>
 
