@@ -124,7 +124,7 @@
 
 <p><code>rails active_storage:install</code></p>
 
-<p>Bu çalıştırılan kod <code>active_storage_blobs</code> ve <code>active_storage_attachments</code> tablolarını oluşturan bir migrate dosyası ve servis konfigürasyonları için config altında <strong>storage.yml</strong> dosyası oluşturur.</p>
+<p>Bu çalıştırılan kod <code>active_storage_blobs</code> ve <code>active_storage_attachments</code> tablolarını oluşturan bir migration dosyası ve servis konfigürasyonları için config altında <strong>storage.yml</strong> dosyası oluşturur.</p>
 
 <p align="center"><img src="http://drive.google.com/uc?export=view&id=1_yLpznYWjIT29iiWDXgKgd3zEXW8gdR2"/></p>
 
@@ -161,7 +161,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>ActiveStorage::Service aslında bir patterndir. Sadece bir tane service değil, birden fazla subclass var. Yani ActiveStorage::Service&#8217;i direk çağırıp <strong>upload/download</strong> metodlarını kullanamayız. Onun subclass&#8217;larından biriyle çağırabiliriz. Tüm subclass&#8217;larda upload ve download metodu mevcut çünkü her servis kendi gerçeklemesini farklı bir yol ile yapmaktadır.</p>
+<p>ActiveStorage::Service aslında bir <strong>pattern</strong>dir. Sadece bir tane service değil, birden fazla subclass barındırır. Yani ActiveStorage::Service&#8217;i direk çağırıp <strong>upload/download</strong> metodlarını kullanamayız. Onun subclass&#8217;larından biriyle çağırabiliriz. Tüm alt sınıflarda upload ve download metodu mevcut çünkü her servis kendi gerçeklemesini farklı bir yol ile yapmaktadır.</p>
 
 <p>Disk alt sınıfı:  <code>class ActiveStorage::Service::DiskService &lt; Service</code></p>
 
