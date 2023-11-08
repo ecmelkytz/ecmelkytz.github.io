@@ -1,0 +1,136 @@
+
+
+[   
+      
+  {
+  "tag" : "angularjs",
+  "posts" : [
+      
+      "./angularjs-two-way-binding-one-time-binding.html",
+      
+      "./angularjs-single-page-application.html",
+      
+      "./angularjs-calisma-mantigi.html",
+      
+      "./angularjs-nedir.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "bash",
+  "posts" : [
+      
+      "./soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "coding",
+  "posts" : [
+      
+      "./rails-activestorage.html",
+      
+      "./rails-default-scope-kullanmak-kotu-bir-fikir-mi.html",
+      
+      "./rails-tab-manulerde-paginate-islemi.html",
+      
+      "./rails-paranoia-ile-veri-silmekten-korkmay%C4%B1n.html",
+      
+      "./rails-activerecord-enum-usage.html",
+      
+      "./angularjs-two-way-binding-one-time-binding.html",
+      
+      "./angularjs-single-page-application.html",
+      
+      "./angularjs-calisma-mantigi.html",
+      
+      "./soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama.html",
+      
+      "./attr_accessor-usage-in-ruby.html",
+      
+      "./ruby-upcase-downcase-capitalize-titleize.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "git",
+  "posts" : [
+      
+      "./git-komutlari.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "github",
+  "posts" : [
+      
+      "./git-komutlari.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "rails",
+  "posts" : [
+      
+      "./rails-activestorage.html",
+      
+      "./rails-default-scope-kullanmak-kotu-bir-fikir-mi.html",
+      
+      "./rails-tab-manulerde-paginate-islemi.html",
+      
+      "./rails-paranoia-ile-veri-silmekten-korkmay%C4%B1n.html",
+      
+      "./rails-activerecord-enum-usage.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "research",
+  "posts" : [
+      
+      "./rails-activestorage.html",
+      
+      "./bir-developerin-hayatini-kolaylastiracak-3-prensip.html",
+      
+      "./chroma-key-nedir.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "ruby",
+  "posts" : [
+      
+      "./rails-activerecord-enum-usage.html",
+      
+      "./attr_accessor-usage-in-ruby.html",
+      
+      "./ruby-upcase-downcase-capitalize-titleize.html"
+      
+    ]
+  } ,
+    
+      
+  {
+  "tag" : "şiir",
+  "posts" : [
+      
+      "./pervane.html"
+      
+    ]
+  } 
+    
+]

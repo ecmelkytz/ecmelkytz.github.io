@@ -1,0 +1,92 @@
+# Site settings
+title: Ecmel ALBAYRAK
+description: 'Rails, Ruby, Rust, AngularJS and error solutions, innovations and explanations about some technologies.' # this means to ignore newlines until "baseurl:"
+permalink: ':title:output_ext'
+baseurl: "/" # the subpath of your site, e.g. /blog
+url: "https://ecmelkytz.github.io" 
+logo: "/assets/img/branding/banner.png"
+logo-icon: "/assets/img/branding/favicon.png"
+logo-icon-SEO: "/assets/img/branding/banner-black.png" # must be a non SVG file
+
+# Night/Dark mode
+# Default mode is "auto", "auto" is for auto nightshift
+# (19:00 - 07:00), "manual" is for manual toggle, and
+# "on/off" is for default on/off.
+#
+# Whatever the user's choice is, it will supersede the
+# default setting of the site and be kept during the
+# visit (session). Only the dark mode setting is "manual",
+# it will be always kept on every visit (i.e. no matter
+# the browser is closed or not)
+night_mode: "auto"
+
+logo-dark: "/assets/img/branding/banner-black.png"
+highlight_theme: syntax-base16.monokai.dark # select a dark theme for the code highlighter if needed
+
+# Author settings
+author: Ecmel Albayrak
+author-pic: myself.png
+about-author:
+
+# Contact links
+email: ecmel.kytz@gmail.com
+phone: 
+website: https://ecmelkytz.github.io
+linkedin:
+github: ecmelkytz
+twitter:
+bandcamp:
+stackoverflow: 6455352
+
+# Newsletter
+mailchimp: "https://gmail.us21.list-manage.com/subscribe/post?u=e71dfaf1f7566dfcd0cb8bdb0&amp;id=dc5ae02c7a&amp;f_id=0093c9e6f0"
+
+# Tracker
+analytics: UA-73221741-1
+fbadmin:
+
+# Paginate
+paginate: 8
+paginate_path: 'page:num'
+words_per_minute: 200
+
+extensions:
+  mermaid_enable: true
+
+# Comments
+comments: disqus #[disqus, utteranc]
+comments_opts:
+  repo: # The GitHub repo URL.  https://utteranc.es/
+  issue_term: # The GitHub issue label
+  label: # The GitHub comments label
+  theme: # The GitHub comment's there. e.g. github-dark
+  # Disqus
+  discus_identifier: ecmelkytz
+  comments_curtain: yes # leave empty to show the disqus embed directly
+
+# Build settings
+markdown: kramdown
+mathjax: true
+highlighter: rouge
+compress_html:
+  clippings: all
+  comments: all
+  startings: [html, head, body]
+
+# Outputting
+timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+category_archive:
+  type: liquid
+  path: /categories/
+
+sass:
+  style: compressed
+
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-sitemap
+
+include: [_pages]
+exclude: ["node_modules", "gulpfile.js", "package.json", "yarn.lock", "package-lock.json", "assets/css/sass/"]

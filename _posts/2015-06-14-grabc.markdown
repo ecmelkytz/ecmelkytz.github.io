@@ -1,0 +1,33 @@
+---
+layout: post
+read_time: true
+show_date: true
+title: Grabc - Terminal Application That Finds Hex and RGB Codes of Colors
+date: 2015-06-14 11:44:17 +0200
+description:
+img: banners/devices.jpg 
+tags:
+author: Ecmel Albayrak
+github:
+---
+
+While doing research to find the RGB equivalent of a color I saw on the screen, I came across a terminal application called **grabc**.
+
+I can say that it will be very convenient, especially for front-end developers.
+
+### Setup
+
+```bash
+sudo apt-get install grabc
+```
+
+### Usage
+
+When you type **grabc** into the terminal, the cursor will look like a '+' shape and the hex and RGB code of the color of the place that you clicked will be printed on the screen.
+
+```bash
+$ grabc
+
+#f55567
+245,85,103
+```

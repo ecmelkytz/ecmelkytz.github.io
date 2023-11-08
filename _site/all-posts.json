@@ -1,0 +1,39 @@
+{
+  "posts" : [
+    
+    "./rails-activestorage.html",
+    
+    "./rails-default-scope-kullanmak-kotu-bir-fikir-mi.html",
+    
+    "./pervane.html",
+    
+    "./rails-tab-manulerde-paginate-islemi.html",
+    
+    "./git-komutlari.html",
+    
+    "./rails-paranoia-ile-veri-silmekten-korkmay%C4%B1n.html",
+    
+    "./bir-developerin-hayatini-kolaylastiracak-3-prensip.html",
+    
+    "./rails-activerecord-enum-usage.html",
+    
+    "./angularjs-two-way-binding-one-time-binding.html",
+    
+    "./angularjs-single-page-application.html",
+    
+    "./angularjs-calisma-mantigi.html",
+    
+    "./angularjs-nedir.html",
+    
+    "./soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama.html",
+    
+    "./attr_accessor-usage-in-ruby.html",
+    
+    "./grabc.html",
+    
+    "./chroma-key-nedir.html",
+    
+    "./ruby-upcase-downcase-capitalize-titleize.html"
+    
+  ]
+}

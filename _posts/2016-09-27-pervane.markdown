@@ -1,0 +1,21 @@
+---
+layout: post
+read_time: true
+show_date: true
+title: Pervane
+date: 2017-02-27 16:44:14 +0300
+img: banners/writer.jpg
+tags: [şiir]
+category:
+author: Ecmel Albayrak
+---
+
+Dâr-ı fenanın sanına felek bir kez olsun düşmeye\
+Ahîz eylenen dil-i viran niyet etmez sönmeye\
+Vakti gelmez beklenenin hesabını dürmeye\
+Yanmaya pervane bir sözümüz mü olmasın?
+
+Dermanı yaş imiş gönle haşr olan\
+Olmaya cihanda bir kâmı nâr olan\
+Bir seni içre öte bir beri yoktan da var olan\
+Yanmaya pervane bir gönlümüz mü olmasın?

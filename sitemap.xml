@@ -1,207 +1,56 @@
+---
+layout: null
+sitemap:
+  exclude: 'yes'
+---
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2018/05/28/rails-activestorage/</loc>
-    <lastmod>2018-05-28T11:16:46+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2017/03/12/rails-default-scope-kullanmak-kotu-bir-fikir-mi/</loc>
-    <lastmod>2017-03-12T15:27:27+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2017/02/27/pervane/</loc>
-    <lastmod>2017-02-27T16:44:14+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/09/24/rails-tab-menulerde-paginate-islemi/</loc>
-    <lastmod>2016-09-24T09:58:22+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/08/12/git-komutlari-2/</loc>
-    <lastmod>2016-08-12T15:04:05+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/08/11/git-komutlari-1/</loc>
-    <lastmod>2016-08-11T10:39:24+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/05/01/rails-select-ve-pluck-arasindaki-fark/</loc>
-    <lastmod>2016-05-01T15:53:59+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/04/09/rails-acts-as-paranoid-nedir/</loc>
-    <lastmod>2016-04-09T13:58:21+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/04/05/rails-activerecord-ile-ilgili-ufak-bir-sir/</loc>
-    <lastmod>2016-04-05T11:06:13+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/03/27/bir-developerin-hayatini-kolaylastiracak-3-prensip-kiss-yagni-dry/</loc>
-    <lastmod>2016-03-27T10:44:16+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/03/25/rails-activesupportconcern-kullanimi/</loc>
-    <lastmod>2016-03-25T09:22:23+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/03/10/rails-activerecord-enum-kullanimi/</loc>
-    <lastmod>2016-03-10T14:00:01+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/01/27/rails-routes-dont-repeat-yourself-dry/</loc>
-    <lastmod>2016-01-27T10:37:13+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2016/01/20/ubuntu-initramfs-hatasi/</loc>
-    <lastmod>2016-01-20T14:30:38+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/09/19/rails-angularjs-ile-crud-islemleri/</loc>
-    <lastmod>2015-09-19T15:40:24+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/09/12/rails-angularjs-unknown-provider-tprovider-hatasi/</loc>
-    <lastmod>2015-09-12T23:49:27+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/09/02/soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama/</loc>
-    <lastmod>2015-09-02T12:37:26+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/08/28/angularjs-two-way-binding-one-time-binding/</loc>
-    <lastmod>2015-08-28T23:31:15+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/08/15/angularjs-single-page-application/</loc>
-    <lastmod>2015-08-15T23:04:08+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/08/11/angularjs-calisma-mantigi/</loc>
-    <lastmod>2015-08-11T00:26:37+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/08/07/angularjs-nedir/</loc>
-    <lastmod>2015-08-07T22:31:00+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/07/03/ruby-attr-accessor-kullanimi/</loc>
-    <lastmod>2015-07-03T15:45:44+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2015/06/14/html-renklerin-hex-ve-rgb-kodlarini-bulan-terminal-uygulamasi-grabc/</loc>
-    <lastmod>2015-06-14T12:44:17+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/11/29/chroma-key-nedir/</loc>
-    <lastmod>2014-11-29T21:46:50+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/11/17/rails-upcase/</loc>
-    <lastmod>2014-11-17T21:58:03+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/09/26/how-to-change-a-particular-column-background-color-in-jquery-of-datatable/</loc>
-    <lastmod>2014-09-26T23:13:32+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/08/28/rails-plus-ckeditor/</loc>
-    <lastmod>2014-08-28T16:13:22+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/08/10/rails-the-json-native-gem-requires-installed-build-tools-hatasi/</loc>
-    <lastmod>2014-08-10T10:41:35+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/06/05/tekno-girisim/</loc>
-    <lastmod>2014-06-05T14:57:18+03:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/2014/02/15/second-life-pandorabots/</loc>
-    <lastmod>2014-02-15T09:56:37+02:00</lastmod>
-    <priority>0.8</priority>
-  </url>
-  
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/</loc>
-    <lastmod>2018-10-19T10:25:37+03:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/archives/</loc>
-    <lastmod>2018-10-19T10:25:37+03:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  
-  <url>
-    <loc>http://ecmelkytz.github.com/blog/about/about.html</loc>
-    <lastmod>2014-09-11T15:28:56Z</lastmod>
-    <priority>0.6</priority>
-  </url>
-  
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% for post in site.posts %}
+    {% unless post.published == false %}
+    <url>
+      <loc>{{ site.url }}{{ post.url }}</loc>
+      {% if post.sitemap.lastmod %}
+        <lastmod>{{ post.sitemap.lastmod | date: "%Y-%m-%d" }}</lastmod>
+      {% elsif post.date %}
+        <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+      {% else %}
+        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+      {% endif %}
+      {% if post.sitemap.changefreq %}
+        <changefreq>{{ post.sitemap.changefreq }}</changefreq>
+      {% else %}
+        <changefreq>daily</changefreq>
+      {% endif %}
+      {% if post.sitemap.priority %}
+        <priority>{{ post.sitemap.priority }}</priority>
+      {% else %}
+        <priority>0.5</priority>
+      {%- endif -%}
+    </url>
+    {% endunless %}
+  {% endfor %}
+  {% for page in site.pages %}
+    {% unless page.sitemap.exclude == "yes" or page.url contains "assets" %}
+    <url>
+      <loc>{{ site.url }}{{ page.url | remove: "index.html" }}</loc>
+      {% if page.sitemap.lastmod %}
+        <lastmod>{{ page.sitemap.lastmod | date: "%Y-%m-%d" }}</lastmod>
+      {% elsif page.date %}
+        <lastmod>{{ page.date | date_to_xmlschema }}</lastmod>
+      {% else %}
+        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+      {% endif %}
+      {% if page.sitemap.changefreq %}
+        <changefreq>{{ page.sitemap.changefreq }}</changefreq>
+      {% else %}
+        <changefreq>daily</changefreq>
+      {% endif %}
+      {% if page.sitemap.priority %}
+        <priority>{{ page.sitemap.priority }}</priority>
+      {% else %}
+        <priority>0.5</priority>
+      {% endif %}
+    </url>
+    {% endunless %}
+  {% endfor %}
 </urlset>

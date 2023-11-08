@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-08T14:07:43+03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ecmel ALBAYRAK</title><subtitle>Rails, Ruby, Rust, AngularJS and error solutions, innovations and explanations about some technologies.</subtitle><author><name>Ecmel Albayrak</name></author><entry><title type="html">Rails: ActiveStorage</title><link href="http://localhost:4000/rails-activestorage.html" rel="alternate" type="text/html" title="Rails: ActiveStorage" /><published>2018-05-28T11:16:46+03:00</published><updated>2018-05-28T11:16:46+03:00</updated><id>http://localhost:4000/rails-activestorage</id><content type="html" xml:base="http://localhost:4000/rails-activestorage.html"><![CDATA[<h2 id="1-activestorage-nedir">1. ActiveStorage Nedir?</h2>
+
+<p>Rails 5.2 ile gelen ActiveStorage özelliği, dosyaları Amazon S3, Google Cloud, Microsoft Azure Cloud gibi cloud bir servise upload etmemizi sağlar.</p>
+
+<h2 id="2-kurulum">2. Kurulum</h2>
+
+<p><code class="language-plaintext highlighter-rouge">rails active_storage:install</code></p>
+
+<p>Bu çalıştırılan kod <code class="language-plaintext highlighter-rouge">active_storage_blobs</code> ve <code class="language-plaintext highlighter-rouge">active_storage_attachments</code> tablolarını oluşturan bir migration dosyası ve servis konfigürasyonları için config altında <strong>storage.yml</strong> dosyası oluşturur.</p>
+
+<p><img src="http://drive.google.com/uc?export=view&amp;id=1_yLpznYWjIT29iiWDXgKgd3zEXW8gdR2" alt="activestorage" /></p>
+
+<h2 id="3-activestorageın-temel-sınıfları">3. ActiveStorage’ın Temel Sınıfları</h2>
+
+<ul>
+  <li>ActiveStorage::Service</li>
+  <li>ActiveStorage::Blob</li>
+  <li>ActiveStorage::Attachment</li>
+</ul>
+
+<h3 id="31-activestorageservice">3.1 ActiveStorage::Service</h3>
+
+<p><strong>Service</strong> sadece baytların hareketinden sorumlu kısımdır. Dosyanın baytlarını bellekten ve browserdan alıp disk’e taşır.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ActiveStorage::Service</span>
+  <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="ss">checksum: </span><span class="kp">nil</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="no">NotImplementedError</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="no">NotImplementedError</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>ActiveStorage::Service aslında bir <strong>pattern</strong>dir. Sadece bir tane service değil, birden fazla subclass barındırır. Yani ActiveStorage::Service’i direk çağırıp <strong>upload/download</strong> metodlarını kullanamayız. Onun subclass’larından biriyle çağırabiliriz. Tüm alt sınıflarda upload ve download metodu mevcut çünkü her servis kendi gerçeklemesini farklı bir yol ile yapmaktadır.</p>
+
+<p>Disk alt sınıfı:  <code class="language-plaintext highlighter-rouge">class ActiveStorage::Service::DiskService &lt; Service</code></p>
+
+<p>S3 alt sınıf: <code class="language-plaintext highlighter-rouge">class ActiveStorage::Service::S3Service &lt; Service</code></p>
+
+<p>Farklı bir servis kullanmak istiyorsak bu pattern doğrultusunda oluşturup kullanabiliriz. ActiveStorage şu an Disk, Amazon S3, Microsoft Azure Storage, Google Cloud Storage, Mirror servislerini desteklemektedir.</p>
+
+<!--more-->
+
+<h4 id="311-yeni-servis-konfigürasyonu">3.1.1 Yeni Servis Konfigürasyonu</h4>
+
+<p><strong>storage.yml</strong> içerisinde default servis olarak Disk kullanılmaktadır. Hangi servisi kullanmak istiyorsak onu belirtmeliyiz. Örneğin Amazon S3 servisini eklemek için aşağıdaki gibi bir düzenleme yapmamız ve <a href="https://github.com/aws/aws-sdk-ruby">aws-sdk-s3</a> gem’ini Gemfile’a eklememiz gerekmektedir.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">local</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">Disk</span>
+  <span class="na">root</span><span class="pi">:</span> <span class="s">&lt;%= Rails.root.join('storage') %&gt;</span>
+
+<span class="na">amazon</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+</code></pre></div></div>
+
+<h4 id="312-mirror-servis-özelliği">3.1.2 Mirror Servis Özelliği</h4>
+
+<p>Birden fazla servisi senkronize olarak mirror servis olarak kullanarak yedekli çalışabiliriz. Bir dosya eklendiğinde veya silindiğinde bütün mirror edilmiş servislere aynı anda yansıtılır. Bu özellik production’da servisler arası geçişi kolaylaştırmak için kullanılabilir.</p>
+
+<p>Mirror servis örneği:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">s3_west_coast</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="s">...</span>
+
+<span class="na">s3_east_coast</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="s">...</span>
+
+<span class="na">production</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">Mirror</span>
+  <span class="na">primary</span><span class="pi">:</span> <span class="s">s3_east_coast</span>
+  <span class="na">mirrors</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">s3_west_coast</span>
+</code></pre></div></div>
+
+<p>Dosyalar primary servisden sunulur.</p>
+
+<h3 id="32-activestorageblob">3.2 ActiveStorage::Blob</h3>
+
+<p><strong>Blob</strong>; dosya adı,  content-type gibi metadataların tutulduğu yerdir. Dosyanın aslı depolama servisinde ya da diskte saklanır. Her blob’un depolama servisinde identifier key’i vardır.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create_table</span> <span class="ss">:active_storage_blobs</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span>   <span class="ss">:key</span><span class="p">,</span>        <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span>   <span class="ss">:filename</span><span class="p">,</span>   <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span>   <span class="ss">:content_type</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">text</span>     <span class="ss">:metadata</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">bigint</span>   <span class="ss">:byte_size</span><span class="p">,</span>  <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span>   <span class="ss">:checksum</span><span class="p">,</span>   <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="ss">:created_at</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span>
+
+  <span class="n">t</span><span class="p">.</span><span class="nf">index</span> <span class="p">[</span> <span class="ss">:key</span> <span class="p">],</span> <span class="ss">unique: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="33--activestorageattachment">3.3  ActiveStorage::Attachment</h3>
+
+<p><strong>Attachment</strong>, blob ile model arasında bağlantıyı sağlar. Bir blob birden fazla modelle bağlantılı olabilir.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create_table</span> <span class="ss">:active_storage_attachments</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span>     <span class="ss">:name</span><span class="p">,</span>     <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">references</span> <span class="ss">:record</span><span class="p">,</span>   <span class="ss">null: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">polymorphic: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">index: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">references</span> <span class="ss">:blob</span><span class="p">,</span>     <span class="ss">null: </span><span class="kp">false</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="ss">:created_at</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span>
+
+  <span class="n">t</span><span class="p">.</span><span class="nf">index</span> <span class="p">[</span> <span class="ss">:record_type</span><span class="p">,</span> <span class="ss">:record_id</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:blob_id</span> <span class="p">],</span> <span class="ss">name: </span><span class="s2">"index_active_storage_attachments_uniqueness"</span><span class="p">,</span> <span class="ss">unique: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h2 id="4-nasıl-dosya-eklenir">4. Nasıl dosya eklenir?</h2>
+
+<p><code class="language-plaintext highlighter-rouge">Car</code> adında bir modelimiz olsun ve araba resimlerini tutmak için dosya upload etmek isteyelim. O halde Rails’de yapacağımız ilk iş bir migration ile modelimize resimleri tutacağımız yeni bir kolon eklemektir. Bu dosya upload yapmak istediğimiz her model için geçerlidir.</p>
+
+<p>ActiveStorage ise diğer dosya upload çözümlerinden biraz farklı çalışır. ActiveStorage’da modelinize yeni bir alan eklemenize gerek yok. Dosya ile ilgili bütün bilgiler activestorage install edilirken oluşturulan <code class="language-plaintext highlighter-rouge">blobs</code> ve <code class="language-plaintext highlighter-rouge">attachments</code> tablolarında tutulmaktadır.</p>
+
+<h3 id="41-bir-dosya-attach-etmek-için-yapılması-gerekenler">4.1 Bir dosya attach etmek için yapılması gerekenler</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_one_attached</span> <span class="ss">:image</span>
+<span class="k">end</span>
+
+<span class="c1"># strong_parameters</span>
+<span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:car</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:image</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="42-birden-fazla-dosya-attach-etmek-için-yapılması-gerekenler">4.2 Birden fazla dosya attach etmek için yapılması gerekenler</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many_attached</span> <span class="ss">:images</span>
+<span class="k">end</span>
+
+<span class="c1"># strong_parameters</span>
+<span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:car</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">images: </span><span class="p">[])</span>
+</code></pre></div></div>
+
+<h2 id="5-transformation-i̇şlemleri">5. Transformation İşlemleri</h2>
+
+<p>Transforming işlemcilerin(processor) destekleği metodlar ölçüsünde bloblar üzerinde resimlerin varyasyonlarını oluşturabiliriz. Default processor olarak MiniMagick kullanılmaktadır ancak <a href="https://www.rubydoc.info/gems/ruby-vips/Vips/Image">Vips</a>‘de kullanılabilir.</p>
+
+<p>Biçimlendirmeyi etkinleştirmek için <a href="https://github.com/janko-m/image_processing">image_processing</a> gemi kullanılmaktadır. Bununla ilgili <a href="https://github.com/rails/rails/pull/32471">pull request</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem <span class="s1">'image_processing'</span>, <span class="s1">'~&gt; 1.2'</span>
+</code></pre></div></div>
+
+<p>Aşağıdaki satır yorumlandığı zaman bir defaya mahsus orijinal blob’un biçimlendirilmiş halinin URL’i oluşturulur ve dosyalarınız nerede tutuluyorsa disk/cloud oraya kaydedilir.</p>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="vi">@cat</span><span class="p">.</span><span class="nf">image</span><span class="p">.</span><span class="nf">variant</span><span class="p">(</span><span class="ss">resize: </span><span class="s2">"100x100"</span><span class="p">)</span> <span class="cp">%&gt;</span>
+</code></pre></div></div>
+
+<h2 id="6-direk-upload">6. Direk Upload</h2>
+
+<p>ActiveStorage bir ruby gemi olmasının yanında bünyesinde javascript kütüphanesi de barındırır. Dosyalarımızı Rails uygulamasına değil de direk cloud bir servise upload etmek istediğimiz zaman bu javascript kodları devreye girmektedir.</p>
+
+<p>Blob oluşurken bir identifier key üretilir ve dosya bu key ile cloud servise upload edilir. Resme tekrar ulaşmak istediğimizde bu key ile bağlantı kurulup erişilmektedir. Direk upload işleminde blob oluşturulma ve resmin store edilme sıralamasında değişiklik olur.</p>
+
+<h3 id="direk-upload-işlemi-için">Direk upload işlemi için</h3>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">file_field</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">multiple: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">direct_upload: </span><span class="kp">true</span> <span class="cp">%&gt;</span>
+</code></pre></div></div>
+
+<h2 id="7-tartışma">7. Tartışma</h2>
+
+<p>Rails dosya upload işlemleri için <a href="https://github.com/carrierwaveuploader/carrierwave">carrierview</a>, <a href="https://github.com/thoughtbot/paperclipcarrierview">paperclip</a>, <a href="https://github.com/refile/refile">refine</a> gibi bir çok güzel kütüphaneye sahip. Hepsinin kendi içinde farklı yaklaşımları var. Doğru bir tercih için ihtiyaçlar belirlenmeli ve kütüphanelerin özellik setine bakılarak bir seçim yapılmalıdır.</p>
+
+<p>Paperclip geliştiricileri artık Rails’in kendi upload çözümü olan ActiveStorage’ın kullanımını tavsiye ediyor. Paperclip ile ActiveStorage’ı karşılaştıracak olursak dosya validasyonları konusunda ActiveStorage’ın şu an için güzel bir çözümü yok. Bununla ilgili <a href="https://github.com/musaffa/file_validators">file_validators</a> gibi 3rd party çözüm önerileri var ya da custom validasyon yazılması gerekiyor.</p>
+
+<p>“ActiveStrorage’ı kullanalım mı?, ActiveStorage’a geçiş yapalım mı?” tarzında sorulara araştırmalarım sonucunda şöyle bir cevap elde ettim diyebilirim:</p>
+
+<blockquote>
+  <p>Uygulamanızda halihazırda kullandığınız bir upload çözümü var ve siz bundan memnunsanız ActiveStorage’a geçiş yapmanız için değerli bir sebebiniz yok demektir. Böyle bir durumda, ActiveStrorage’da bulunan bir özelliği kullanmak istiyorsanız geçiş yapabilirsiniz. Mirror servis özelliği gibi. Yani  başka bir upload çözümüne geçiş yapmayı düşünüyorsanız bunu kullanmak istediğiniz özellik bazında karar verin.</p>
+
+  <p>Eğer yeni bir uygulamaya başlıyorsanız ActiveStorage’ı deneyin.</p>
+</blockquote>
+
+<h2 id="8-kaynakça">8. Kaynakça</h2>
+
+<ul>
+  <li>http://guides.rubyonrails.org/active_storage_overview.html</li>
+  <li>https://prograils.com/posts/rails-5-2-active-storage-new-approach-to-file-uploads</li>
+  <li>https://skillsmatter.com/skillscasts/11458-introduction-to-active-storage</li>
+  <li><a href="https://www.youtube.com/watch?v=-_w4uqoVSpw">RailsConf 2018: Inside Active Storage</a></li>
+  <li>https://www.engineyard.com/blog/active-storage</li>
+  <li>http://www.akitaonrails.com/2017/07/07/upcoming-built-in-upload-solution-for-rails-5-2-activestorage</li>
+  <li>http://api.rubyonrails.org/v5.2.0/</li>
+</ul>]]></content><author><name>Ecmel Albayrak</name></author><category term="coding" /><category term="rails" /><category term="research" /><summary type="html"><![CDATA[1. ActiveStorage Nedir?]]></summary></entry><entry><title type="html">Rails: default_scope Kullanmak Kötü Bir Fikir mi?</title><link href="http://localhost:4000/rails-default-scope-kullanmak-kotu-bir-fikir-mi.html" rel="alternate" type="text/html" title="Rails: default_scope Kullanmak Kötü Bir Fikir mi?" /><published>2017-03-12T15:27:27+03:00</published><updated>2017-03-12T15:27:27+03:00</updated><id>http://localhost:4000/rails-default-scope-kullanmak-kotu-bir-fikir-mi</id><content type="html" xml:base="http://localhost:4000/rails-default-scope-kullanmak-kotu-bir-fikir-mi.html"><![CDATA[<p><code class="language-plaintext highlighter-rouge">default_scope</code> belirli bir model üzerinde yapılacak tüm işlemler için varsayılan bir kapsam belirtmemizi sağlayan ActiveRecord metodudur.</p>
+
+<p>Bu scope’u(kapsamı) modelimizde soft-deletion işlemi yapmak için kullanabiliriz. Soft-delete işlemi için <a href="https://github.com/rubysherpas/paranoia">paranioa</a> kullanmanızı ayrıca öneririm. <a href="http://ecmelkytz.github.io/rails-paranoia-ile-veri-silmekten-korkmayın.html">Acts_as_paranoid ile veri silmekten korkmayın</a> başlıklı blog girdimde bundan bahsetmiştim.</p>
+
+<p>Aşağıdaki gibi <code class="language-plaintext highlighter-rouge">deleted_on</code> kolonunu kullanarak default bir scope oluşturalım.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># Eğer bir veri silindiyse `deleted_on` alanı dolu olacak.</span>
+  <span class="n">default_scope</span> <span class="n">where</span><span class="p">(</span><span class="ss">deleted_on: </span><span class="kp">nil</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><strong>Animal</strong> modelinde tanımladığımız <code class="language-plaintext highlighter-rouge">default_scope</code> ile silinen kayıtları saklamış ve sadece silinmemiş olan kayıtlarla iş yapmamızı sağlamış olacağız.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="no">Animal</span><span class="p">.</span><span class="nf">limit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="no">Animal</span> <span class="no">Load</span> <span class="p">(</span><span class="mf">4.2</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span> <span class="sb">`animals`</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="sb">`animals`</span> <span class="no">WHERE</span> <span class="sb">`animals`</span><span class="p">.</span><span class="nf">`</span><span class="n">deleted_on</span><span class="sb">` IS NULL LIMIT 3
+
+</span></code></pre></div></div>
+
+<p>Bu scope tanımlaması bazı senaryolar için gerçekten kullanışlı bir durum olabilir ancak <code class="language-plaintext highlighter-rouge">default_scope</code> kullanımının tehlikeli bir yanı olduğunu da gözardı etmemek gerek. Çünkü bu scope modelimizin (initialization) başlatılmasını etkiler. Yani tüm (all) model kayıtlarımız üzerinde işlem yapmayı engellemiş oluruz.</p>
+
+<p>Bir örnek görelim:</p>
+
+<p><strong>Animal</strong> modelimizin polymorfic bir ilişkiye sahip olduğunu farzedelim ve <code class="language-plaintext highlighter-rouge">default_scope</code> ile  her zaman type’ı <strong>Cat</strong> olacak şekilde filtreleyelim.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">belongs_to</span> <span class="ss">:genus</span><span class="p">,</span> <span class="ss">polymorphic: </span><span class="kp">true</span>
+  <span class="n">default_scope</span> <span class="n">where</span><span class="p">(</span><span class="ss">genus_type: </span><span class="s1">'Cat'</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Yeni bir <strong>Animal</strong> oluşturmaya çalıştığımız zaman <code class="language-plaintext highlighter-rouge">genus_type</code>‘ı varsayılan olarak <strong>Cat</strong> olacaktır.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="no">Animal</span><span class="p">.</span><span class="nf">new</span>
+<span class="o">=&gt;</span> <span class="o">&lt;</span><span class="no">Animal</span> <span class="ss">id: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">name: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">genus_id: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">genus_type: </span><span class="s2">"Cat"</span><span class="p">,</span> <span class="ss">created_at: </span><span class="kp">nil</span><span class="p">,</span> <span class="ss">updated_at: </span><span class="kp">nil</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>Bu tarz yan etkiler bilinmeden/farkına varılmadan kullanılırsa can sıkıcı problemlerin yaşanılması kaçınılmaz olacaktır.</p>
+
+<p>Ayrıca <code class="language-plaintext highlighter-rouge">default_scope</code> kullandıktan sonra devam sorgularının yazılmasının da zor olduğunu belirtmek isterim.</p>
+
+<p>Örneğin modelimizde type’ı <strong>Cat</strong> olmayanları şu şekilde bulmaya çalışalım:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="no">Animal</span><span class="p">.</span><span class="nf">where</span><span class="p">.</span><span class="nf">not</span><span class="p">(</span><span class="ss">genus_type: </span><span class="s1">'Cat'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Bu query ile istediğimiz sonucu elde edemeyeceğiz. Çünkü default olarak sadece type’ı <strong>Cat</strong> olanlar baz alınarak query başlatılacaktır. Önceden de bahsettiğim gibi burada initialization’ı etkilemiş oluyoruz. Peki diğer type’lara sahip kayıtlara hiç mi ulaşamayacağız? Elbette bunun da bir yolu var. Bunu sağlamak için ek olarak <code class="language-plaintext highlighter-rouge">unscope/unscoped</code> kullanmamız gerekecek.</p>
+
+<h4 id="activerecord-kapsamlarını-nasıl-sileriz">ActiveRecord kapsamlarını nasıl sileriz?</h4>
+
+<p>Aşağıdaki kapsamlara sahip bir User modelimiz olsun.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">scope</span> <span class="ss">:active</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">locked: </span><span class="kp">false</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">scope</span> <span class="ss">:admins</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">role: </span><span class="s1">'admin'</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">scope</span> <span class="ss">:ordered</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">order</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Tüm kapsamları kullandık</span>
+<span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">active</span><span class="p">.</span><span class="nf">admins</span><span class="p">.</span><span class="nf">ordered</span>
+<span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">"users"</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="s2">"users"</span> <span class="no">WHERE</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"locked"</span> <span class="o">=</span> <span class="s1">'f'</span> <span class="no">AND</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"role"</span> <span class="o">=</span> <span class="s1">'admin'</span> <span class="no">ORDER</span> <span class="no">BY</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"name"</span> <span class="no">ASC</span>
+</code></pre></div></div>
+
+<p>Kapsamları kaldırmak için <code class="language-plaintext highlighter-rouge">unscope</code> ve <code class="language-plaintext highlighter-rouge">unscoped</code> metodlarını devreye sokalım:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Tek bir kolon üzerindeki koşulları kaldırmak için</span>
+<span class="o">&gt;</span> <span class="n">users</span><span class="p">.</span><span class="nf">unscope</span><span class="p">(</span><span class="ss">where: :role</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">"users"</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="s2">"users"</span> <span class="no">WHERE</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"locked"</span> <span class="o">=</span> <span class="s1">'f'</span> <span class="no">ORDER</span> <span class="no">BY</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"name"</span> <span class="no">ASC</span>
+
+<span class="c1"># Bütün koşulları kaldırmak için</span>
+<span class="o">&gt;</span> <span class="n">users</span><span class="p">.</span><span class="nf">unscope</span><span class="p">(</span><span class="ss">:where</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">"users"</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="s2">"users"</span> <span class="no">ORDER</span> <span class="no">BY</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"name"</span> <span class="no">ASC</span>
+
+<span class="c1"># Order kaldırmak için</span>
+<span class="o">&gt;</span> <span class="n">users</span><span class="p">.</span><span class="nf">unscope</span><span class="p">(</span><span class="ss">:order</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">"users"</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="s2">"users"</span> <span class="no">WHERE</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"locked"</span> <span class="o">=</span> <span class="s1">'f'</span> <span class="no">AND</span> <span class="s2">"users"</span><span class="o">.</span><span class="s2">"role"</span> <span class="o">=</span> <span class="s1">'admin'</span>
+
+<span class="c1"># Bütün kapsamları kaldırmak için</span>
+<span class="o">&gt;</span> <span class="n">users</span><span class="p">.</span><span class="nf">unscoped</span>
+<span class="o">=&gt;</span> <span class="no">SELECT</span> <span class="s2">"users"</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="s2">"users"</span>
+</code></pre></div></div>
+
+<p>Bir diğer dikkat etmemiz gereken husus <code class="language-plaintext highlighter-rouge">unscoped</code> kullanımı olacak. Çünkü bu query sadece default kapsamları değil tanımlı bütün kapsamları kaldıracaktır. <code class="language-plaintext highlighter-rouge">unscoped</code> Rails 3’den beri mevcut ancak <code class="language-plaintext highlighter-rouge">unscope</code> Rails 4 ile geldi.</p>
+
+<p>Vel hasıl-ı kelam kullanacağımız <code class="language-plaintext highlighter-rouge">default_scope</code>‘un kapsamını, uzun vadedeki etkilerini biliyorsak kullanmamızda bir sakınca olmayacaktır.</p>]]></content><author><name>Ecmel Albayrak</name></author><category term="coding" /><category term="rails" /><summary type="html"><![CDATA[default_scope belirli bir model üzerinde yapılacak tüm işlemler için varsayılan bir kapsam belirtmemizi sağlayan ActiveRecord metodudur.]]></summary></entry><entry><title type="html">Pervane</title><link href="http://localhost:4000/pervane.html" rel="alternate" type="text/html" title="Pervane" /><published>2017-02-27T16:44:14+03:00</published><updated>2017-02-27T16:44:14+03:00</updated><id>http://localhost:4000/pervane</id><content type="html" xml:base="http://localhost:4000/pervane.html"><![CDATA[<p>Dâr-ı fenanın sanına felek bir kez olsun düşmeye<br />
+Ahîz eylenen dil-i viran niyet etmez sönmeye<br />
+Vakti gelmez beklenenin hesabını dürmeye<br />
+Yanmaya pervane bir sözümüz mü olmasın?</p>
+
+<p>Dermanı yaş imiş gönle haşr olan<br />
+Olmaya cihanda bir kâmı nâr olan<br />
+Bir seni içre öte bir beri yoktan da var olan<br />
+Yanmaya pervane bir gönlümüz mü olmasın?</p>]]></content><author><name>Ecmel Albayrak</name></author><category term="şiir" /><summary type="html"><![CDATA[Dâr-ı fenanın sanına felek bir kez olsun düşmeye Ahîz eylenen dil-i viran niyet etmez sönmeye Vakti gelmez beklenenin hesabını dürmeye Yanmaya pervane bir sözümüz mü olmasın?]]></summary></entry><entry><title type="html">Rails: Tab menülerde paginate işlemi</title><link href="http://localhost:4000/rails-tab-manulerde-paginate-islemi.html" rel="alternate" type="text/html" title="Rails: Tab menülerde paginate işlemi" /><published>2016-09-24T09:58:22+03:00</published><updated>2016-09-24T09:58:22+03:00</updated><id>http://localhost:4000/rails-tab-manulerde-paginate-islemi</id><content type="html" xml:base="http://localhost:4000/rails-tab-manulerde-paginate-islemi.html"><![CDATA[<p>Tab menülerde paginate işlemini yapılandırırken karşılaştığım sorunlar:</p>
+
+<p>İlk önce tablar arasında geçişlerde bir sıkıntı yaşadım. Bunu <a href="https://github.com/mislav/will_paginate">will_paginate</a>‘in <code class="language-plaintext highlighter-rouge">param_name</code> parametresiyle şöyle hallettim.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@teachers</span> <span class="o">=</span> <span class="no">Teacher</span><span class="p">.</span><span class="nf">paginate</span><span class="p">(</span><span class="ss">page: </span><span class="n">params</span><span class="p">[</span><span class="ss">:teachers_page</span><span class="p">],</span> <span class="ss">per_page: </span><span class="mi">10</span><span class="p">)</span>
+<span class="vi">@students</span> <span class="o">=</span> <span class="no">Student</span><span class="p">.</span><span class="nf">paginate</span><span class="p">(</span><span class="ss">page: </span><span class="n">params</span><span class="p">[</span><span class="ss">:students_page</span><span class="p">],</span> <span class="ss">per_page: </span><span class="mi">10</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="sx">%= will_paginate @teachers, param_name: "teachers_page" %&gt;
+&lt;%=</span> <span class="n">will_paginate</span> <span class="vi">@students</span><span class="p">,</span> <span class="ss">param_name: </span><span class="s2">"students_page"</span> <span class="o">%&gt;</span>
+</code></pre></div></div>
+
+<p>Diğer bir sorun ise ilk tab dışındaki diğer tablarda paginate işlemiyle başka sayfalara geçiş yaptığım zaman (?pages=2) sistem sayfayı ilk tab’ın konumuna atıyordu.</p>
+
+<p>Yani <code class="language-plaintext highlighter-rouge">yapmak istediğim ama aslında olan</code> tam da şu şekildeydi:</p>
+
+<iframe src="//giphy.com/embed/GQTHzCNx0UgdW" width="480" height="270" frameborder="0" class="giphy-embed" allowfullscreen="" style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+<p>Bu sorunu da HTML5’in localStorage’ını kullanarak şu şekilde hallettim:</p>
+
+<!--more-->
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># GET /users/1</span>
+<span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@user_activities_for_course_weeks</span> <span class="o">=</span> <span class="no">PublicActivity</span><span class="o">::</span><span class="no">Activity</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:trackable</span><span class="p">,</span> <span class="ss">:owner</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">owner_id: </span><span class="no">User</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">]),</span> <span class="ss">trackable_type: </span><span class="s2">"CourseWeek"</span><span class="p">).</span><span class="nf">paginate</span><span class="p">(</span><span class="ss">page: </span><span class="n">params</span><span class="p">[</span><span class="ss">:course_weeks</span><span class="p">],</span> <span class="ss">per_page: </span><span class="mi">10</span><span class="p">)</span>
+  <span class="vi">@user_activities_for_teachers</span> <span class="o">=</span> <span class="no">PublicActivity</span><span class="o">::</span><span class="no">Activity</span><span class="p">.</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:trackable</span><span class="p">,</span> <span class="ss">:owner</span><span class="p">).</span><span class="nf">where</span><span class="p">(</span><span class="ss">owner_id: </span><span class="no">User</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">]),</span> <span class="ss">trackable_type: </span><span class="s2">"Teacher"</span><span class="p">).</span><span class="nf">paginate</span><span class="p">(</span><span class="ss">page: </span><span class="n">params</span><span class="p">[</span><span class="ss">:teachers</span><span class="p">],</span> <span class="ss">per_page: </span><span class="mi">10</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"activityTab"</span> <span class="na">class=</span><span class="s">"nav nav-tabs"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Course Weeks"</span><span class="p">,</span> <span class="s2">"#tab_week"</span><span class="p">,</span> <span class="ss">id: </span><span class="s2">"profile-tab"</span><span class="p">,</span> <span class="ss">role: </span><span class="s2">"tab"</span><span class="p">,</span> <span class="s2">"data-toggle"</span> <span class="o">=&gt;</span> <span class="s2">"tab"</span> <span class="cp">%&gt;</span><span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Teachers"</span><span class="p">,</span> <span class="s2">"#tab_teacher"</span><span class="p">,</span> <span class="ss">role: </span><span class="s2">"tab"</span><span class="p">,</span> <span class="ss">id: </span><span class="s2">"profile-tab"</span><span class="p">,</span> <span class="s2">"data-toggle"</span> <span class="o">=&gt;</span> <span class="s2">"tab"</span> <span class="cp">%&gt;</span><span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"tab-content"</span><span class="nt">&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s2">"week_activities"</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s2">"teacher_activities"</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">"tabpanel"</span> <span class="na">class=</span><span class="s">"tab-pane fade active in"</span> <span class="na">id=</span><span class="s">"tab_week"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"messages"</span><span class="nt">&gt;</span>
+    <span class="cp">&lt;%</span> <span class="vi">@user_activities_for_course_weeks</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">activity</span><span class="o">|</span> <span class="cp">%&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        ...
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">will_paginate</span> <span class="vi">@user_activities_for_course_weeks</span><span class="p">,</span> <span class="ss">class: </span><span class="s2">"apple_pagination"</span><span class="p">,</span> <span class="ss">param_name: </span><span class="s2">"course_weeks"</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">"tabpanel"</span> <span class="na">class=</span><span class="s">"tab-pane fade"</span> <span class="na">id=</span><span class="s">"tab_teacher"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"messages"</span><span class="nt">&gt;</span>
+    <span class="cp">&lt;%</span> <span class="vi">@user_activities_for_teachers</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">activity</span><span class="o">|</span> <span class="cp">%&gt;</span>
+      <span class="nt">&lt;li</span> <span class="na">style=</span><span class="s">"list-style-type: none;"</span><span class="nt">&gt;</span>
+        ...
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">will_paginate</span> <span class="vi">@user_activities_for_teachers</span><span class="p">,</span> <span class="ss">class: </span><span class="s2">"apple_pagination"</span><span class="p">,</span> <span class="ss">param_name: </span><span class="s2">"teachers"</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">a[data-toggle="tab"]</span><span class="dl">'</span><span class="p">).</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">show.bs.tab</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">localStorage</span><span class="p">.</span><span class="nf">setItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">activeTab</span><span class="dl">'</span><span class="p">,</span> <span class="nf">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nf">attr</span><span class="p">(</span><span class="dl">'</span><span class="s1">href</span><span class="dl">'</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">activeTab</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">activeTab</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="k">if </span><span class="p">(</span><span class="nx">activeTab</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#activityTab a[href="</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">activeTab</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">"]</span><span class="dl">'</span><span class="p">).</span><span class="nf">tab</span><span class="p">(</span><span class="dl">'</span><span class="s1">show</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Farklı çözüm önerileriyle aydınlandığım vakit burayı güncelleyeceğim.</p>]]></content><author><name>Ecmel Albayrak</name></author><category term="coding" /><category term="rails" /><summary type="html"><![CDATA[Tab menülerde paginate işlemini yapılandırırken karşılaştığım sorunlar:]]></summary></entry><entry><title type="html">Git Komutları</title><link href="http://localhost:4000/git-komutlari.html" rel="alternate" type="text/html" title="Git Komutları" /><published>2016-08-11T10:39:24+03:00</published><updated>2016-08-11T10:39:24+03:00</updated><id>http://localhost:4000/git-komutlari</id><content type="html" xml:base="http://localhost:4000/git-komutlari.html"><![CDATA[<h4 id="git-diff">git diff</h4>
+
+<p>Kendi yerelimizde yaptığımız değişiklikler neticesinde, projeyi yönlendirdiğimiz repo arasında oluşan farkları gösterir. Hangi satırı sildiğimiz, hangi satırı eklediğimiz vs. bilgilerini içerir.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git diff  <span class="c">#Yapılan bütün değişiklikleri gösterecektir.</span>
+</code></pre></div></div>
+
+<p>Yapılan bütün değişiklikleri değil de sadece istediğimiz dosya içerisinde nasıl bir değişiklik yapıldığını görmek için o dosyanın adını <code class="language-plaintext highlighter-rouge">git diff</code> komutunun yanına eklemeliyiz.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git diff README.md <span class="c">#README.md dosyasında yapılan değişiklikleri gösterir.</span>
+</code></pre></div></div>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470987741/diff_nhrmdn.png" alt="" /></p>
+
+<!--more-->
+
+<h4 id="git-blame">git blame</h4>
+
+<p>Belirlenen dosyadaki her bir satırın hangi commit ile eklendiği, kimin tarafından ve ne zaman eklendiği bilgilerini gösterir.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git blame README.md
+</code></pre></div></div>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1470990914/git_blame_phsyrz.png" alt="" /></p>
+
+<h4 id="git-checkout">git checkout</h4>
+
+<p>Dosyalarda yapmış olduğumuz değişiklikleri geri alır. Bu komut ile yapılan değişiklikleri geri aldığımız için <code class="language-plaintext highlighter-rouge">git status</code> komutunun ekran çıktısında dosyamızın ismi artık gözükmeyecektir.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/examp-git<span class="nv">$ </span>git checkout README.md <span class="c">#README.md dosyasındaki değişiklikleri siler.</span>
+~/examp-git<span class="nv">$ </span>git checkout <span class="nb">.</span> <span class="c">#Yapılan bütün değişiklikleri geri alır.</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">git checkout HEAD~</code> komutu ile projemizi istediğimiz commit durumuna geri döndürebiliriz. Şöyle ki: Projemizin bulunduğu dizinde <code class="language-plaintext highlighter-rouge">git log</code> komutunu çalıştırdığımız zaman en son commitden en baştaki committe doğru bütün commitler sıralanacaktır.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git log
+commit 898de0b8f2d21497569ed980c990d32778e7bd5c
+Author: ecmel &lt;ecmel.kytz@gmail.com&gt;
+Date:   Tue Jul 26 08:57:38 2016 +0300
+
+    Hava durumuna yeni açıklama ekle
+
+commit 1985f16aa89d41fae740086c53fb1ecefca4affc
+Author: ecmel &lt;ecmel.kytz@gmail.com&gt;
+Date:   Wed Jul 20 12:47:44 2016 +0300
+
+    Tasarımsal düzenlemeler
+
+commit d44645020926795a4f6b9d74c279632d344543ec
+Author: ecmel &lt;ecmel.kytz@gmail.com&gt;
+Date:   Wed Jul 20 09:20:50 2016 +0300
+
+    Excel dosya isimlerinde düzenleme yap
+</code></pre></div></div>
+
+<p>En son commit “Hava durumuna yeni açıklama ekle” iken ben “Excel dosya isimlerinde düzenleme yap” commiti durumuna geçmek istiyorsam çalıştırmam gereken kod: <code class="language-plaintext highlighter-rouge">git checkout HEAD~2</code></p>
+
+<p>Geçmek istediğim commit en son commitden(master) kaç commit gerideyse <code class="language-plaintext highlighter-rouge">HEAD~</code> yanına o rakamı koyuyoruz. Sistemi tekrar son haline geri döndürmek için ise <code class="language-plaintext highlighter-rouge">git checkout master</code> yazmamız yeterli.</p>
+
+<h4 id="git-clean">git clean</h4>
+
+<p><code class="language-plaintext highlighter-rouge">git checkout</code> ile dosyalarda yapılan değişiklikleri geri alabiliyorduk. <code class="language-plaintext highlighter-rouge">git clean</code> ile ise yeni eklenen dosyaları silebiliyoruz.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git clean <span class="nt">-fd</span> <span class="c">#Bütün eklenen yeni dosyaları siler.</span>
+~/isy<span class="nv">$ </span>git clean new_file.txt <span class="c">#new_file adında yeni eklenen dosyayı siler.</span>
+</code></pre></div></div>
+
+<h4 id="git-reset">git reset</h4>
+
+<ul>
+  <li>
+    <p>Söz gelimi yaptığımız değişiklikleri <code class="language-plaintext highlighter-rouge">git add .</code> komutu ile izlemeye aldık ve hepsini izlemeden çıkarmak istiyoruz, o halde <code class="language-plaintext highlighter-rouge">git reset</code> komutunu kullanmamız gerekmektedir. İzlenen bütün dosyaları değil de sadece bazı dosyaları izlemeden çıkarmak için: <code class="language-plaintext highlighter-rouge">git reset HEAD file_name</code> komutu çalıştırılmalı.</p>
+  </li>
+  <li>
+    <p>Yapılan değişiklikler için commit mesajını yazdık ve github’a göndermeden commit mesajını değiştirmek istiyorsak şu komut çalıştırılmalı:</p>
+  </li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git reset <span class="nt">--soft</span> HEAD~
+</code></pre></div></div>
+
+<p>Bu komut izlemeyi kaldırmayacaktır. <code class="language-plaintext highlighter-rouge">git commit -m ""</code> diyerek yeni commit mesajımızı girebiliriz.</p>
+
+<ul>
+  <li>Github’a gönderdiğimiz son commiti geri almak için:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git reset <span class="o">(</span>kalmasını istediğin commit numarası ör:def668e<span class="o">)</span>
+git push <span class="nt">-f</span>
+</code></pre></div></div>
+
+<p>Bu komutu kullanırken dikkatli olmak gerek zira referans aldığınız commit numarasından önceki bütün commitleri silersiniz. Yani sistemi, referans aldığınız commit durumuna almış olursunuz ve ondan önceki bütün commitleri silersiniz. Silinen commitler ile yapılan değişiklikler sizin yerelinizde gözükür ve tek commit ile tekrar <code class="language-plaintext highlighter-rouge">push</code> edebilirsiniz. Çok gerekmediği takdirde birden fazla commiti geri alıp tek commit ile tekrar göndermek projenin gelişim aşaması için anlaşılmazlıklara sebebiyet verebilir. Bu sebeple ben genel itibariyle son attığım commiti değiştirmek için kullanıyorum bu komutu.</p>
+
+<h4 id="git-stash">git stash</h4>
+
+<p>En sevdiğim kodlardan bir tanesi. Kısacası yaptığımız değişiklikleri geçici olarak depolamamızı sağlar.</p>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1471261268/stash_ewoovx.png" alt="" /></p>
+
+<p>Şöyle bir senaryo düşünelim: Uygulamamızdaki bir çok dosyada değişiklik yaptık, yeni dosyalar ekledik vs. ve aniden bir iş çıktı, o işi yapıp biran önce commit etmemiz gerekti. İşte bu tarz durumlarda hangi dosyaları göndereceğinizi eliyip seçmek yerine <code class="language-plaintext highlighter-rouge">git stash</code> komutu ile önceden yaptığımız değişiklikleri kaydedip(artık <code class="language-plaintext highlighter-rouge">git status</code> ile gözükmeyecekler) acil yapmamız gereken işi yapıp commitleyip eski işimize tekrar dönebiliriz.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git stash
+Saved working directory and index state WIP on master: 898de0b Hava durumuna yeni açıklama ekle
+HEAD is now at 898de0b Hava durumuna yeni açıklama ekle
+</code></pre></div></div>
+
+<p>Acil durum düzenlemelerini yaptıktan sonra yedeklediğimiz diğer işimize şu şekilde dönüyoruz:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git stash pop
+</code></pre></div></div>
+
+<h4 id="gitignore">.gitignore</h4>
+
+<p>Yapılan değişikliklerin takip edilmesini istemediğimiz dosyaları/dosya yollarını <code class="language-plaintext highlighter-rouge">.gitignore</code>‘un içerisine ekliyoruz. Ancak <code class="language-plaintext highlighter-rouge">.gitignore</code>‘a sonradan eklenen dosya yolları <code class="language-plaintext highlighter-rouge">git status</code> ile değişiklik yapılanlar arasında gösterilir. Bu durumu düzeltmek için şu yol izlenir:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/isy<span class="nv">$ </span>git <span class="nb">rm</span> <span class="nt">-r</span> <span class="nt">--cached</span> <span class="nb">.</span>
+~/isy<span class="nv">$ </span>git add <span class="nb">.</span>
+~/isy<span class="nv">$ </span>git commit <span class="nt">-m</span> <span class="s2">".gitignore artık düzgün çalışıyor"</span>
+</code></pre></div></div>
+
+<p>Bu komutların yaptığı şey tam olarak şöyle: Takibini yapmasını istemediğiniz dosyalar remote ettiğimiz yerdeki repo’da mevcut olduğu için o dosyaların silinmesini sağlar. O dosyaları sildikten sonra artık yaptığınız değişiklikler izlenmeyecek ve <code class="language-plaintext highlighter-rouge">git status</code> ile görüntülenmeyecektir.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Repo'daki dosyalar silinmesin ve yaptığım değişiklikler izlenmesin</code>‘i istiyorsak şu işimizi görecektir:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git update-index <span class="nt">--assume-unchanged</span> FILE_NAME
+</code></pre></div></div>]]></content><author><name>Ecmel Albayrak</name></author><category term="git" /><category term="github" /><summary type="html"><![CDATA[git diff]]></summary></entry><entry><title type="html">Rails: Paranoia ile Veri Silmekten Korkmayın</title><link href="http://localhost:4000/rails-paranoia-ile-veri-silmekten-korkmay%C4%B1n.html" rel="alternate" type="text/html" title="Rails: Paranoia ile Veri Silmekten Korkmayın" /><published>2016-04-09T13:58:21+03:00</published><updated>2016-04-09T13:58:21+03:00</updated><id>http://localhost:4000/rails-paranoia-ile-veri-silmekten-korkmay%C4%B1n</id><content type="html" xml:base="http://localhost:4000/rails-paranoia-ile-veri-silmekten-korkmay%C4%B1n.html"><![CDATA[<iframe src="//giphy.com/embed/bEVKYB487Lqxy" width="480" height="264" frameborder="0" class="giphy-embed" allowfullscreen="" style="display: block;margin: 0 auto;margin-bottom:20px"></iframe>
+
+<blockquote>
+  <p>“Bu veriyi silersem ileride lazım olur mu?”</p>
+
+  <p>“Eyvah! Yanlış veriyi sildim şimdi ne yapacağım?”</p>
+</blockquote>
+
+<p>tarzında çeşitlendirilebilen kaygılarınız var ise paranoia gemi imdadınıza yetişecektir.</p>
+
+<h3 id="peki-nedir-bu-paranoia-ve-nasıl-kullanılır">Peki nedir bu paranoia ve nasıl kullanılır?</h3>
+
+<p>Paranoia silme işleminde <code class="language-plaintext highlighter-rouge">soft delete</code> yapmamıza olanak sağlar. Yani veriyi sildiğimiz zaman aslında tam anlamıyla veritabanından o veriyi yok etmiş olmuyoruz.</p>
+
+<p>Tabloya type’ı datetime olacak şekilde ekleyeceğimiz <code class="language-plaintext highlighter-rouge">deleted_at</code> alanı sayesinde silme işlemi yaptığımız zaman sadece bu kolonun değeri güncellenecek ve silinme zamanı burada tutulacak.</p>
+
+<p>Bu plugin Active Record’un sadece destroy metodu üzerinde override yapmaz aynı zamanda find ve count metodları üzerinde de değişiklik yapar. Sql sorgularına deleted_at’i null olanların getirilmesiyle ilgili eklemeler getirecektir.</p>
+
+<p>Migration ile modelimize <code class="language-plaintext highlighter-rouge">deleted_at</code> alanını ekleyelim:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vg">$rails</span> <span class="n">generate</span> <span class="n">migration</span> <span class="no">AddDeletedAtToUsers</span> <span class="n">deleted_at</span><span class="ss">:datetime:index</span>
+</code></pre></div></div>
+
+<p>Migration dosya içeriğimiz:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AddDeletedAtToUsers</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span><span class="p">,</span> <span class="ss">:datetime</span>
+    <span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:deleted_at</span>
+  <span class="k">end</span>  
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">acts_as_paranoid</span>
+  <span class="o">...</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Şimdi bir user silelim:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">count</span>
+<span class="c1"># =&gt; 2</span>
+
+<span class="o">&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">last</span><span class="p">.</span><span class="nf">destroy</span>
+<span class="c1"># deleted_at güncellenecektir.</span>
+
+<span class="o">&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">count</span>
+<span class="c1"># =&gt; 1</span>
+
+<span class="c1"># Silinen veriler ile birlikte hepsini bulmak için:</span>
+<span class="o">&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">with_deleted</span>
+
+<span class="c1"># Sadece silinen verileri bulmak için:</span>
+<span class="o">&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">only_deleted</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">User.count</code> kullandığımızda veya <code class="language-plaintext highlighter-rouge">find</code> ile o user’ı bulmaya çalıştığımızda user silinmiş gibi davranacaktır ancak veritabanında users tablosuna baktığımız zaman bu silinmiş sandığımız kaydın hala orada durduğunu ve <code class="language-plaintext highlighter-rouge">deleted_at</code> alanının verinin silindiği zamanı tuttuğunu göreceğiz.</p>
+
+<p>Peki paranoia ile hiçbir zaman veritabanından bir veriyi tam anlamıyla silemeyecek miyiz? Bunun da bir çözümü var. Herşeye rağmen kesinlikle silmek istediğimiz kayıtlar var ise:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="vg">$User</span><span class="p">.</span><span class="nf">last</span><span class="p">.</span><span class="nf">really_destroy!</span>
+</code></pre></div></div>
+
+<p>Eğer veritabanında tutacağımız kolon adının <code class="language-plaintext highlighter-rouge">deleted_at</code> yerine <code class="language-plaintext highlighter-rouge">destroyed_at</code> (veya herhangi birşey) olmasını istiyorsak:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">acts_as_paranoid</span> <span class="ss">column: :destroyed_at</span>
+  <span class="o">...</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Callback’ler ile kullanımı ve paranoia hakkında daha fazla bilgi için <a href="https://github.com/rubysherpas/paranoia">bakınız</a>.</p>]]></content><author><name>Ecmel Albayrak</name></author><category term="coding" /><category term="rails" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Bir Developer’ın Hayatını Kolaylaştıracak 3 Prensip: KISS, YAGNI, DRY</title><link href="http://localhost:4000/bir-developerin-hayatini-kolaylastiracak-3-prensip.html" rel="alternate" type="text/html" title="Bir Developer’ın Hayatını Kolaylaştıracak 3 Prensip: KISS, YAGNI, DRY" /><published>2016-03-27T10:44:16+03:00</published><updated>2016-03-27T10:44:16+03:00</updated><id>http://localhost:4000/bir-developerin-hayatini-kolaylastiracak-3-prensip</id><content type="html" xml:base="http://localhost:4000/bir-developerin-hayatini-kolaylastiracak-3-prensip.html"><![CDATA[<h3 id="kiss-keep-it-simple-stupid">KISS: Keep It Simple, Stupid!</h3>
+
+<p>Gereksiz karmaşıklıktan uzak durmayı, yazdığımız kodun bizden sonrakilerin kolaylıkla anlayabilmesini/geliştirebilmesini sağlamayı hedefleyen bir prensiptir.</p>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/c_scale,h_159,w_495/v1460285517/keepitsimple_rnld5x.jpg" alt="kiss" /></p>
+
+<p>Bu ifade <a href="https://en.wikipedia.org/wiki/Kelly_Johnson_(engineer)">Kelly Johnson</a> tarafından kullanılmıştır ve şöyle bir açıklama getirmiştir:</p>
+<blockquote>
+  <p>Eğer sistemlerinizi kompleks yapmak yerine onları daha basit tutarsanız sisteminiz en iyi şekilde çalışacaktır. Bu nedenle tasarımda hedef nokta basitlik olmalı ve gereksiz karmaşıklıktan kaçınılmalıdır.</p>
+</blockquote>
+
+<!--more-->
+
+<h4 id="diğer-açılımları">Diğer açılımları</h4>
+
+<p><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>imple <strong>S</strong>illy</p>
+
+<p><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>hort and <strong>S</strong>imple</p>
+
+<p><strong>K</strong>eep <strong>I</strong>t <strong>Si</strong>mple and <strong>S</strong>traightforward</p>
+
+<p><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>mall and <strong>S</strong>imple</p>
+
+<h3 id="yagni-you-arent-gonna-need-it--buna-i̇htiyacın-olmayacak">YAGNI: You Aren’t Gonna Need It / Buna İhtiyacın Olmayacak</h3>
+
+<p>Extreme Programming(XP)’nin prensiplerinden biridir. Proje geliştirirken bazen ileride ihtiyaç olacağını düşündüğümüz bazı ekstra özellikleri şimdiden planlar ve yapmaya başlarız. Bu bizi, ileride kullanılmayacak ya da daha farklı bir şeye ihtiyaç duyacağımız bir durumla karşı karşıya bırakabilir. Bu da ihtiyaç dışı planlama ve kodlama için vakit kaybına neden olmuş olacaktır. Aynı zamanda sistem daha karmaşık hale gelecektir ki bu da KISS prensibine aykırı bir durumdur.</p>
+
+<h3 id="dry-dont-repeat-yourself--kendini-tekrar-etme">DRY: Don’t Repeat Yourself / Kendini Tekrar Etme</h3>
+
+<p>Rails’in temel prensiplerden biridir. Aynı metodlar/fonksiyonlar sistemimizde farklı yerlerde kullanılıp tekrar ediliyorsa bu prensibe uymuyoruz demektir.</p>
+
+<p>Andrew Hunt ve David Thomas, “The Pragmatic Programmer” adlı kitaplarında bu prensipten şöyle söz etmişlerdir:</p>
+
+<blockquote>
+  <p>Bir sistem içinde bilginin her bir parçası tek, kesin ve güvenilir olmalıdır.</p>
+</blockquote>
+
+<p>Diğer bir deyişle:</p>
+<blockquote>
+  <p>Sistemin fonksiyonel davranışları, kodun tek bir parçası içerisinde tutulmaya çalışılmalıdır.</p>
+</blockquote>]]></content><author><name>Ecmel Albayrak</name></author><category term="research" /><summary type="html"><![CDATA[KISS: Keep It Simple, Stupid!]]></summary></entry><entry><title type="html">Rails: ActiveRecord Enum Usage</title><link href="http://localhost:4000/rails-activerecord-enum-usage.html" rel="alternate" type="text/html" title="Rails: ActiveRecord Enum Usage" /><published>2016-03-10T14:00:01+02:00</published><updated>2016-03-10T14:00:01+02:00</updated><id>http://localhost:4000/rails-activerecord-enum-usage</id><content type="html" xml:base="http://localhost:4000/rails-activerecord-enum-usage.html"><![CDATA[<p>Let’s have a model called Car and we want to keep information such as whether the car is rented, available or unavailable.</p>
+
+<h5 id="should-we-use-more-than-one-column-why">Should we use more than one column? Why?</h5>
+
+<p>Let’s imagine that we added these fields to our table as follows.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AddStatusesToCars</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:boolean</span>
+    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:available</span><span class="p">,</span> <span class="ss">:boolean</span>
+    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:unavailable</span><span class="p">,</span> <span class="ss">:boolean</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>According to this scenario, the car must be either rented, available or unavailable. It should not be both rented and available at the same time. We can handle this with validation. However, this time, when one is true, the other two columns will be empty. So let’s look at a way to do this in a single column:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AddStatusToCars</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:status</span><span class="p">,</span> <span class="ss">:integer</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">0</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="no">STATUSES</span> <span class="o">=</span> <span class="sx">%w{rented available unavailable}</span>
+
+    <span class="k">def</span> <span class="nf">status_to_s</span>
+      <span class="no">STATUSES</span><span class="p">[</span><span class="n">status</span><span class="p">]</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">available?</span>
+      <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">'available'</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">rented?</span>
+      <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">'rented'</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">unavailable?</span>
+      <span class="n">status_to_s</span> <span class="o">==</span> <span class="s1">'unavailable'</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Let’s look at its usage:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="no">Car</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">status_to_s</span>
+<span class="c1"># =&gt; “available”</span>
+
+<span class="o">&gt;</span> <span class="no">Car</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">available?</span>
+<span class="c1"># =&gt; true</span>
+
+<span class="o">&gt;</span> <span class="no">Car</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">rented?</span>
+<span class="c1"># =&gt; false</span>
+
+<span class="o">&gt;</span> <span class="no">Car</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">unavailable?</span>
+<span class="c1"># =&gt; false</span>
+</code></pre></div></div>
+
+<p>This may be preferable instead of creating three columns. But, how do we solve the process of creating extra methods?</p>
+
+<p>Let’s call the Enum into play.</p>
+
+<p>Add the status field to our car model:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AddStatusToCars</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:cars</span><span class="p">,</span> <span class="ss">:status</span><span class="p">,</span> <span class="ss">:integer</span><span class="p">,</span> <span class="ss">default: </span><span class="mi">0</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Define our statuses with enum in our car model.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">enum</span> <span class="ss">status: </span><span class="p">[</span><span class="ss">:available</span><span class="p">,</span> <span class="ss">:rented</span><span class="p">,</span> <span class="ss">:unavailable</span><span class="p">]</span>
+  <span class="c1"># or define with number</span>
+  <span class="c1"># enum status: [</span>
+  <span class="c1">#   available:   1,</span>
+  <span class="c1">#   rented:      2,</span>
+  <span class="c1">#   unavailable: 3</span>
+  <span class="c1"># ]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Let’s look at its usage:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">car</span> <span class="o">=</span> <span class="no">Car</span><span class="p">.</span><span class="nf">first</span>
+<span class="o">&gt;</span> <span class="n">car</span><span class="p">.</span><span class="nf">status</span>
+<span class="c1"># =&gt; “available”</span>
+
+<span class="o">&gt;</span> <span class="n">car</span><span class="p">.</span><span class="nf">rented?</span>
+<span class="c1"># =&gt; false</span>
+
+<span class="c1"># Change the car status to rented</span>
+<span class="n">car</span><span class="p">.</span><span class="nf">status</span> <span class="o">=</span> <span class="ss">:rented</span>
+<span class="n">car</span><span class="p">.</span><span class="nf">rented!</span> <span class="c1"># updated</span>
+<span class="n">car</span><span class="p">.</span><span class="nf">rented?</span>
+<span class="c1"># =&gt; true</span>
+
+<span class="c1"># To find all rented cars (scope method)</span>
+ <span class="o">&gt;</span> <span class="no">Car</span><span class="p">.</span><span class="nf">rented</span>
+<span class="c1"># =&gt; SELECT "cars".* FROM "cars" WHERE "cars"."status" = ?  [["status", 1]]</span>
+<span class="c1"># [#&lt;Car:0x007f41d3eeeeee</span>
+<span class="c1"># id: 1,</span>
+<span class="c1"># status: 1,</span>
+<span class="c1"># ]</span>
+
+
+<span class="c1"># To find all unavailable cars (scope method)</span>
+<span class="o">&gt;</span> <span class="no">Car</span><span class="p">.</span><span class="nf">unavailable</span>
+<span class="c1"># =&gt; SELECT "cars".* FROM "cars" WHERE "cars"."status" = ?  [["status", 2]]</span>
+<span class="c1"># =&gt; []  (There isn't any available car)</span>
+</code></pre></div></div>]]></content><author><name>Ecmel Albayrak</name></author><category term="coding" /><category term="rails" /><category term="ruby" /><summary type="html"><![CDATA[Let’s have a model called Car and we want to keep information such as whether the car is rented, available or unavailable.]]></summary></entry><entry><title type="html">Two Way Binding - One Time Binding In AngularJS</title><link href="http://localhost:4000/angularjs-two-way-binding-one-time-binding.html" rel="alternate" type="text/html" title="Two Way Binding - One Time Binding In AngularJS" /><published>2015-08-28T23:31:15+03:00</published><updated>2015-08-28T23:31:15+03:00</updated><id>http://localhost:4000/angularjs-two-way-binding-one-time-binding</id><content type="html" xml:base="http://localhost:4000/angularjs-two-way-binding-one-time-binding.html"><![CDATA[<p><img src="https://docs.angularjs.org/img/guide/concepts-databinding1.png" alt="data-binding" /></p>
+
+<p>Two way binding (çift yönlü veri bağlama) modeldeki değişiklikleri view’e, view’deki değişiklikleri modele aktarma işlemidir. Daha önceki <a href="http://ecmelkytz.github.io/blog/2015/08/11/angularjs-calisma-mantigi/">yazımda</a> two way binding ve doğal olarak digest cycle’dan uzun uzadıya bahsetmiştim.</p>
+
+<p>Two way binding, kullanıcı etkileşimlerinin direk view kısmına aktarılması kısmında çok güzel bir işleve sahip olsa da; digest cycle tetiklendikten sonra en az 2, maksimum 10 kez çalıştığı düşünülürse performans anlamında büyük sorunlar oluşturacaktır. Şöyle ki; benim data binding sayım arttığı ölçüde $digest loop’un sayısı da artacaktır. Kullanıcı etkileşiminin yoğun olduğu bir sayfada performans anlamında yaşanabilecek sıkıntılar elbette ki kaçınılmaz olacaktır.</p>
+
+<p>Hal böyle olunca Angularjs geliştiricileri Angular 1.3 versiyonu ile data binding’den kaynaklanan performans sorunlarını gidermek adına one-time binding’i tanıttılar. One time binding view-model güncelleme işlemini bir kez yapıyor, bundan sonra yapılan etkileşimler herhangi bir şekilde view’e ya da modele yansıtılmıyor. Yani digest cycle bir kez kullanıcı etkileşimlerini dinliyor ve bu sayede güncelleme bir kez yapılmış oluyor.</p>
+
+<h3 id="one-time-binding-nasıl-çalışır-görelim">One-time binding nasıl çalışır görelim</h3>
+
+<p><img src="http://res.cloudinary.com/dro8cemyf/image/upload/v1449581533/one-time-binding_eaj5td.gif" alt="one-time-binding" /></p>
+
+<p>Yukarıdaki gif’den de anlaşılacağı üzere model’de yazdığım yazının ilk karakteri view’e bağlanıyor. Ondan sonraki etkileşimlerde hiçbir şekilde veri bağlama yapılmıyor.</p>
+
+<h3 id="syntax-farkına-bakalım">Syntax farkına bakalım</h3>
+
+<p>Two way binding</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;p&gt;</span> {{ name }} <span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+
+<p>One time binding</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;p&gt;</span> {{ ::name }} <span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>]]></content><author><name>Ecmel Albayrak</name></author><category term="coding" /><category term="angularjs" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">AngularJS Single Page Application</title><link href="http://localhost:4000/angularjs-single-page-application.html" rel="alternate" type="text/html" title="AngularJS Single Page Application" /><published>2015-08-15T23:04:08+03:00</published><updated>2015-08-15T23:04:08+03:00</updated><id>http://localhost:4000/angularjs-single-page-application</id><content type="html" xml:base="http://localhost:4000/angularjs-single-page-application.html"><![CDATA[<p>Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.</p>
+
+<p>Angularjs ile bir single page application nasıl oluşturuluyor. Angular bunun için nasıl bir route mekanizması kullanıyor ona bakalım.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nf">module</span><span class="p">(</span><span class="dl">'</span><span class="s1">myApp</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">ngRoute</span><span class="dl">'</span><span class="p">]);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nf">config</span><span class="p">([</span><span class="dl">'</span><span class="s1">$routeProvider</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$routeProvider</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$routeProvider</span><span class="p">.</span>
+    <span class="nf">when</span><span class="p">(</span><span class="dl">"</span><span class="s2">/home</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">templateUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">home.html</span><span class="dl">'</span>
+    <span class="p">}).</span>
+    <span class="nf">when</span><span class="p">(</span><span class="dl">"</span><span class="s2">/services</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">templateUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">services.html</span><span class="dl">'</span>
+    <span class="p">}).</span>
+    <span class="nf">when</span><span class="p">(</span><span class="dl">"</span><span class="s2">/clients</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">templateUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">clients.html</span><span class="dl">'</span>
+    <span class="p">}).</span>
+    <span class="nf">otherwise</span><span class="p">({</span>
+      <span class="na">redirectTo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/home</span><span class="dl">'</span>
+    <span class="p">});</span>
+<span class="p">}]);</span>
+</code></pre></div></div>
+
+<p>Uygulamamızın modul’une ngRoute modul’unu dependency olarak belirtiyoruz. Yani modulun bağımlılıklarını belirtiyoruz. Bu sayede ngRoute içindeki her fonksiyonu/servisi kendi uygulamamızda da kullanabiliyoruz.</p>
+
+<p>Config sadece Provider’lar için kullanılır. Provider’lar Angularjs’de en gelişmiş servis oluşturma kompanentidir. Buradaki <code class="language-plaintext highlighter-rouge">$routeProvider</code> servisi uygulama başlamadan Routing konfigürasyonunu sağlar.</p>
+
+<p><code class="language-plaintext highlighter-rouge">$routeProvider</code> sayesinde eğer url isteği /home olursa template olarak <em>home.html</em> kullanılmasını, eğer istek /services olursa template olarak <em>services.html</em> kullanılmasını sağlıyoruz. <code class="language-plaintext highlighter-rouge">.otherwise</code> ise olmayan herhangi farklı bir istekte bulunulursa /home url’e yönlendirmek için kullanılmaktadır.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1&gt;</span>Services Page<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;p&gt;</span>Nobody can give you freedom. If you're a man, you take it.<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+
+<p>Angular route yapısı için daha çok <a href="https://github.com/angular-ui/ui-router">ui-router</a> kullanılması tavsiye edilir.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html</span> <span class="na">ng-app=</span><span class="s">"myApp"</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.angularjs.org/1.3.9/angular.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.angularjs.org/1.3.9/angular-route.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"script.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#/home"</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#/services"</span><span class="nt">&gt;</span>Services<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#/clients"</span><span class="nt">&gt;</span>Clients<span class="nt">&lt;/a&gt;&lt;/li&gt;&lt;br&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">ng-view</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Angularjs route yapısında <code class="language-plaintext highlighter-rouge">#</code> karakteri kullanılır. O yüzden linklerdeki url’lerde <code class="language-plaintext highlighter-rouge">#</code> karakteri kullanılmıştır. <code class="language-plaintext highlighter-rouge">ng-view</code> aslında Rails’de ki <code class="language-plaintext highlighter-rouge">yield</code> ile aynı işlevi görür. Angularda eğer bunu eklemezsek sayfada görüntü oluşmayacaktır.</p>
+
+<p>Angular Single Page Application örneğinin <a href="http://plnkr.co/edit/BrCnZCuCuT2b7ZdkTju1?p=preview">plunker adresi</a>.</p>]]></content><author><name>Ecmel Albayrak</name></author><category term="coding" /><category term="angularjs" /><summary type="html"><![CDATA[Single page application (SPA), tek bir sayfada sunulan uygulamaların genel adıdır. SPA ile sayfa içinde gezinebilmemiz onu ayrı sayfalara bölmez.]]></summary></entry></feed>
