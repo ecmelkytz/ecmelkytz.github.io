@@ -1734,7 +1734,7 @@ img + small, img + br + small {
     margin-block-start: 0;
     padding-inline-start: 0;
     text-align: center;
-    padding-inline-start: 65px;
+    padding-inline-start: 20px;
     padding-top: 5px;
 }
 .contact-icons ul {

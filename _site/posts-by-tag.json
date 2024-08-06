@@ -50,9 +50,7 @@
       
       "./soap-web-servis-ile-curl-kullanimini-bash-ile-harmanlama.html",
       
-      "./attr_accessor-usage-in-ruby.html",
-      
-      "./ruby-upcase-downcase-capitalize-titleize.html"
+      "./attr_accessor-usage-in-ruby.html"
       
     ]
   } ,
@@ -116,9 +114,7 @@
       
       "./rails-activerecord-enum-usage.html",
       
-      "./attr_accessor-usage-in-ruby.html",
-      
-      "./ruby-upcase-downcase-capitalize-titleize.html"
+      "./attr_accessor-usage-in-ruby.html"
       
     ]
   } ,
